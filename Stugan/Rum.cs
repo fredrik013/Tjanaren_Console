@@ -6,7 +6,25 @@ using System.Threading.Tasks;
 
 namespace Stugan
 {
-    internal class Rum
+    public class Rum
     {
+        public string Namn { get; set; }
+
+        public string Beskrivning { get; set; }
+
+        public List<SpelSak> Saker { get; set; } = new List<SpelSak>();
+
+        public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
+
+        public Rum(string namn, string beskrivning)
+        {
+            Namn = namn;
+            Beskrivning = beskrivning;
+        }
+
+        public void Koppla(string riktning, Rum nastaRum)
+        {
+            Utgangar[riktning] = nastaRum;
+        }
     }
 }
