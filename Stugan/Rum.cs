@@ -12,14 +12,17 @@ namespace Stugan
 
         public string Beskrivning { get; set; }
 
+        public bool HarUndersokts { get; set; } = false; 
+
         public List<Spelsak> Saker { get; set; } = new List<Spelsak>();
 
         public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
 
-        public Rum(string namn, string beskrivning)
+        public Rum(string namn, string beskrivning, bool harundersokts = false )
         {
             Namn = namn;
             Beskrivning = beskrivning;
+            HarUndersokts = harundersokts;
         }
 
         public void Koppla(string riktning, Rum nastaRum)
