@@ -1,8 +1,9 @@
 ﻿using DavyKager;
 using Stugan;
 using static System.Console;
+using System.Linq;
 
-// Snygg avslutning för JAWS vid Alt+F4 eller stängning
+// Snygg avslutning för JAWS vid stängning
 AppDomain.CurrentDomain.ProcessExit += (s, e) =>
 {
     Tolk.Unload();
@@ -16,14 +17,18 @@ Tolk.Load();
 // ==========================================
 // 2. SKAPA VÄRLDEN
 // ==========================================
-var garden = new Rum("Gårdsplanen", "Du står på en grusad gårdsplan utanför stugan i Ljungsbro. Dörren till hallen är öppen mot norr.");
+var garden = new Rum("Gårdsplanen", "Du står på en grusad gårdsplan utanför stugan i Ljungsbro. Norr ser du en inbjudande glasveranda.");
 
-var hallen = new Rum("Hallen", "Du är i hallen. Till vänster finns köket. Söderut ser du gårdsplanen.");
-var sax = new Spelsak("Sax", "En rostig skräddarsax som ser ut att kunna klippa igenom det mesta.");
+var verandan = new Rum("Verandan", "Du står på verandan.");
+garden.Koppla("UpArrow", verandan);
+verandan.Koppla("DownArrow", garden);
+
+var hallen = new Rum("Hallen", "Du är i hallen. Till vänster finns köket och söderut ser du verandan. Vid väggen står en gammal skohylla.");
+var sax = new Spelsak("Sax", "En rostig skräddarsax.");
 hallen.Saker.Add(sax);
 
-garden.Koppla("UpArrow", hallen);
-hallen.Koppla("DownArrow", garden);
+verandan.Koppla("UpArrow", hallen);
+hallen.Koppla("DownArrow", verandan);
 
 var koket = new Rum("Köket", "Ett hemtrevligt kök. Hallen ligger till höger.");
 hallen.Koppla("LeftArrow", koket);
@@ -37,11 +42,10 @@ List<Spelsak> ryggsack = new List<Spelsak>();
 bool speletKors = true;
 
 Clear();
-// Här skriver vi bara instruktionerna på skärmen (tyst)
-WriteLine("(Piltangenter: Gå | I: Ryggsäck | T: Ta upp | Alt+F4: Avsluta)");
+WriteLine("(Piltangenter: Gå | I: Ryggsäck | T: Ta upp | U: Undersök | Alt+F4: Avsluta)");
 WriteLine("----------------------------------");
 
-// Här pratar vi bara EN gång
+// Prata ut startläget
 Prata(nuvarandeRum.Beskrivning);
 
 // ==========================================
@@ -63,24 +67,83 @@ while (speletKors)
             var sakAttTa = nuvarandeRum.Saker[0];
             ryggsack.Add(sakAttTa);
             nuvarandeRum.Saker.Remove(sakAttTa);
+
+            Clear();
+            // Vi pratar bara bekräftelsen för att undvika tjat
             Prata($"Du plockar upp {sakAttTa.Namn}.");
+
+            // Resten skrivs tyst för markören
+            WriteLine($"\nPlats: {nuvarandeRum.Namn}");
+            foreach (var sak in nuvarandeRum.Saker)
+            {
+                WriteLine($"Kvar i rummet: {sak.Namn}.");
+            }
         }
         else
         {
             Prata("Här finns inget att plocka upp.");
         }
     }
+    else if (knapp.Key == ConsoleKey.U)
+    {
+        if (nuvarandeRum == hallen && !hallen.HarUndersokts)
+        {
+            var tofflor = new Spelsak("Tofflor", "Ett par varma, mjuka tofflor.");
+            hallen.Saker.Add(tofflor);
+            hallen.HarUndersokts = true;
+
+            Clear();
+            // Prata bara det nya fyndet
+            Prata("Du letar igenom skohyllan och hittar ett par tofflor!");
+
+            // Skriv rumsinfo tyst
+            WriteLine($"\n{nuvarandeRum.Beskrivning}");
+            foreach (var sak in nuvarandeRum.Saker)
+            {
+                WriteLine($"Här ser du: {sak.Namn}.");
+            }
+        }
+        else if (nuvarandeRum.HarUndersokts)
+        {
+            Prata("Du ser inget mer av intresse här.");
+        }
+        else
+        {
+            Prata("Du ser inget särskilt när du tittar närmare.");
+            nuvarandeRum.HarUndersokts = true;
+        }
+    }
     else if (knapp.Key == ConsoleKey.Escape)
     {
-        // Tyst
+        // Tyst läge
     }
     else
     {
         string riktning = knapp.Key.ToString();
         if (nuvarandeRum.Utgangar.ContainsKey(riktning))
         {
-            nuvarandeRum = nuvarandeRum.Utgangar[riktning];
-            VisaRum(nuvarandeRum);
+            var nastaRum = nuvarandeRum.Utgangar[riktning];
+
+            // PUSSEL-KONTROLL
+            if (nuvarandeRum == hallen && nastaRum == koket)
+            {
+                bool harTofflor = ryggsack.Any(s => s.Namn.Equals("Tofflor", StringComparison.OrdinalIgnoreCase));
+
+                if (!harTofflor)
+                {
+                    Prata("Stopp! Du kan inte gå in i köket med ytterskorna på. Det är nystädat!");
+                }
+                else
+                {
+                    nuvarandeRum = nastaRum;
+                    VisaRum(nuvarandeRum);
+                }
+            }
+            else
+            {
+                nuvarandeRum = nastaRum;
+                VisaRum(nuvarandeRum);
+            }
         }
         else
         {
