@@ -12,7 +12,7 @@ namespace Stugan
 
         public string Beskrivning { get; set; }
 
-        public List<SpelSak> Saker { get; set; } = new List<SpelSak>();
+        public List<Spelsak> Saker { get; set; } = new List<Spelsak>();
 
         public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
 
