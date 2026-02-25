@@ -1,17 +1,16 @@
-﻿using Stugan;
+﻿using DavyKager;
+using Stugan;
 using static System.Console;
 using System.Linq;
 
-// ==========================================
-// 1. INITIALISERING
-// ==========================================
-// Vi skapar rummen med dina originalbeskrivningar
+AppDomain.CurrentDomain.ProcessExit += (s, e) => { Tolk.Unload(); };
+Tolk.Load();
+
 var garden = new Rum("Gårdsplanen", "Du står på en grusad gårdsplan utanför stugan i Ljungsbro. Norr ser du en inbjudande glasveranda.");
 var verandan = new Rum("Verandan", "Du står på verandan.");
 var hallen = new Rum("Hallen", "Du är i hallen. Till vänster finns köket och söderut ser du verandan. Vid väggen står en gammal skohylla.");
 var koket = new Rum("Köket", "Ett hemtrevligt kök. Hallen ligger till höger.");
 
-// Kopplingar
 garden.Koppla("UpArrow", verandan);
 verandan.Koppla("DownArrow", garden);
 verandan.Koppla("UpArrow", hallen);
@@ -25,24 +24,20 @@ hallen.Saker.Add(sax);
 Spelare spelare = new Spelare(garden);
 bool speletKors = true;
 
-// Starta skärmen
 Clear();
 WriteLine("(Piltangenter: Gå | I: Ryggsäck | T: Ta upp | U: Undersök | Alt+F4: Avsluta)");
 WriteLine("----------------------------------");
 WriteLine(spelare.NuvarandeRum.Beskrivning);
 
-// ==========================================
-// 2. SPEL-LOOPEN
-// ==========================================
 while (speletKors)
 {
     var knapp = ReadKey(true);
 
     if (knapp.Key == ConsoleKey.I)
     {
-        HanteraRyggsack(spelare.Ryggsack);
-        // Efter ryggsäcken visar vi var vi är igen utan att rensa allt
-        WriteLine($"\nDu är kvar på: {spelare.NuvarandeRum.Namn}");
+        HanteraRyggsack(spelare);
+        Clear();
+        WriteLine(spelare.NuvarandeRum.Beskrivning);
     }
     else if (knapp.Key == ConsoleKey.T)
     {
@@ -66,7 +61,7 @@ while (speletKors)
         }
         else
         {
-            WriteLine(spelare.NuvarandeRum.HarUndersokts ? "Du ser inget mer av intresse här." : "Du ser inget särskilt när du tittar närmare.");
+            WriteLine(spelare.NuvarandeRum.HarUndersokts ? "Du ser inget mer här." : "Du ser inget särskilt.");
             spelare.NuvarandeRum.HarUndersokts = true;
         }
     }
@@ -79,55 +74,86 @@ while (speletKors)
 
             if (spelare.NuvarandeRum == hallen && nastaRum == koket)
             {
-                if (!spelare.Ryggsack.Any(s => s.Namn.ToLower() == "tofflor"))
+                if (spelare.AktivtSkodon != "Tofflor")
                 {
                     WriteLine("Stopp! Du kan inte gå in i köket med ytterskorna på. Det är nystädat!");
                 }
                 else
                 {
-                    spelare.NuvarandeRum = nastaRum;
-                                        Clear();
-                                        WriteLine(spelare.NuvarandeRum.Beskrivning);
+                    BytRum(nastaRum, spelare);
                 }
             }
             else
             {
-                spelare.NuvarandeRum = nastaRum;
-                Clear();
-                                WriteLine(spelare.NuvarandeRum.Beskrivning);
+                BytRum(nastaRum, spelare);
             }
         }
     }
 }
 
-// ==========================================
-// 3. HJÄLPMETODER
-// ==========================================
-
-void HanteraRyggsack(List<Spelsak> ryggsack)
+void BytRum(Rum nasta, Spelare s)
 {
-    if (ryggsack.Count == 0) { WriteLine("Ryggsäcken är tom."); return; }
+    s.NuvarandeRum = nasta;
+    Clear();
+    System.Threading.Thread.Sleep(150);
+    WriteLine(s.NuvarandeRum.Beskrivning);
+}
+
+void HanteraRyggsack(Spelare s)
+{
+    var ryggsack = s.Ryggsack;
+    if (ryggsack.Count == 0)
+    {
+        Tolk.Output("Ryggsäcken är tom.");
+        return;
+    }
 
     int index = 0;
     bool tittar = true;
-    WriteLine($"I ryggsäcken: {ryggsack[index].Namn}.");
+
+    Tolk.Output($"Ryggsäck. {ryggsack.Count} föremål. {ryggsack[index].Namn}");
+    Clear();
+    WriteLine(ryggsack[index].Namn);
 
     while (tittar)
     {
         var k = ReadKey(true);
-        if (k.Key == ConsoleKey.DownArrow && index < ryggsack.Count - 1)
+
+        if (k.Key == ConsoleKey.DownArrow)
         {
-            index++;
-            WriteLine(ryggsack[index].Namn);
+            if (index < ryggsack.Count - 1)
+            {
+                index++;
+                Tolk.Output(ryggsack[index].Namn);
+                WriteLine(ryggsack[index].Namn);
+            }
+            else Tolk.Output("Slut på listan.");
         }
-        else if (k.Key == ConsoleKey.UpArrow && index > 0)
+        else if (k.Key == ConsoleKey.UpArrow)
         {
-            index--;
-            WriteLine(ryggsack[index].Namn);
+            if (index > 0)
+            {
+                index--;
+                Tolk.Output(ryggsack[index].Namn);
+                WriteLine(ryggsack[index].Namn);
+            }
+            else Tolk.Output("Början på listan.");
+        }
+        else if (k.Key == ConsoleKey.Enter)
+        {
+            var valdSak = ryggsack[index];
+            if (valdSak.Namn.ToLower().Contains("tofflor"))
+            {
+                s.AktivtSkodon = "Tofflor";
+                Tolk.Output("Du tar på dig tofflorna.");
+                tittar = false;
+                System.Threading.Thread.Sleep(500);
+            }
+            else Tolk.Output($"Kan inte använda {valdSak.Namn}.");
         }
         else if (k.Key == ConsoleKey.Escape || k.Key == ConsoleKey.I)
         {
-            WriteLine("Du stänger ryggsäcken.");
+            Tolk.Output("Stänger ryggsäcken.");
             tittar = false;
         }
     }
