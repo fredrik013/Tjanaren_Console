@@ -18,7 +18,7 @@ hallen.Koppla("DownArrow", verandan);
 hallen.Koppla("LeftArrow", koket);
 koket.Koppla("RightArrow", hallen);
 
-var sax = new Spelsak("Sax", "En rostig skräddarsax.");
+var sax = new AllmanSak("Sax", "En rostig skräddarsax.");
 hallen.Saker.Add(sax);
 
 Spelare spelare = new Spelare(garden);
@@ -54,7 +54,7 @@ while (speletKors)
     {
         if (spelare.NuvarandeRum == hallen && !hallen.HarUndersokts)
         {
-            var tofflor = new Spelsak("Tofflor", "Ett par varma, mjuka tofflor.");
+            var tofflor = new Klader("Tofflor", "Ett par varma, mjuka tofflor.", "fot", false);
             hallen.Saker.Add(tofflor);
             hallen.HarUndersokts = true;
             WriteLine("Du letar igenom skohyllan och hittar ett par tofflor!");
