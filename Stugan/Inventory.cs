@@ -24,58 +24,90 @@ namespace Stugan
             }
         }
 
-        public void Visa(Spelare spelare)
+        public void Visa(Spelare s)
         {
-            if (_saker.Count == 0)
+            var ryggsack = _saker;
+            if (ryggsack.Count == 0)
             {
                 Tolk.Output("Ryggsäcken är tom.");
                 return;
             }
 
             _markeratIndex = 0;
-            bool iMenyn = true;
+            bool tittar = true;
 
-            // Första presentationen
+            // 1. Rita upp listan en gång (ingen Clear i loopen sen!)
             Clear();
             WriteLine("--- RYGGSÄCK ---");
-            PresenteraValdSak();
-
-            while (iMenyn)
+            for (int i = 0; i < ryggsack.Count; i++)
             {
-                var tangent = ReadKey(true).Key;
+                WriteLine($"   {ryggsack[i].Namn}");
+            }
 
-                switch (tangent)
+            // 2. Sätt initialt fokus
+            UppmärksammaRad();
+
+            while (tittar)
+            {
+                var k = ReadKey(true).Key;
+
+                switch (k)
                 {
                     case ConsoleKey.DownArrow:
-                        if (_markeratIndex < _saker.Count - 1)
+                        if (_markeratIndex < ryggsack.Count - 1)
                         {
                             _markeratIndex++;
-                            // VIKTIGT: Prata först, rita sen!
-                            Tolk.Output(_saker[_markeratIndex].Namn);
-                            PresenteraValdSak();
+                            UppmärksammaRad();
                         }
+                        else Tolk.Output("Slut på listan.");
                         break;
 
                     case ConsoleKey.UpArrow:
                         if (_markeratIndex > 0)
                         {
                             _markeratIndex--;
-                            Tolk.Output(_saker[_markeratIndex].Namn);
-                            PresenteraValdSak();
+                            UppmärksammaRad();
                         }
+                        else Tolk.Output("Början på listan.");
                         break;
 
                     case ConsoleKey.Enter:
-                        // ... (din enter-logik)
-                        iMenyn = false;
+                        var valdSak = ryggsack[_markeratIndex];
+                        if (valdSak.Namn.ToLower().Contains("tofflor"))
+                        {
+                            s.AktivtSkodon = "Tofflor";
+                            Tolk.Output("Du tar på dig tofflorna.");
+                            tittar = false;
+                            System.Threading.Thread.Sleep(500);
+                        }
+                        else Tolk.Output($"Kan inte använda {valdSak.Namn}.");
                         break;
 
                     case ConsoleKey.Escape:
                     case ConsoleKey.I:
-                        iMenyn = false;
+                        Tolk.Output("Stänger ryggsäcken.");
+                        tittar = false;
+                        break;
+
+                    default:
+                        // Gör ingenting vid andra tangenttryck
                         break;
                 }
             }
+        }
+
+        private void UppmärksammaRad()
+        {
+            // Flytta markören till rätt rad (hoppa över rubriken på rad 0)
+            SetCursorPosition(0, _markeratIndex + 1);
+
+            string namn = _saker[_markeratIndex].Namn;
+
+            // Skriv över raden för att trigga JAWS och visa pilen
+            Write($"{namn}   ");
+
+            // Prata
+            Tolk.Output(namn);
         }
 
         private void PresenteraValdSak()
