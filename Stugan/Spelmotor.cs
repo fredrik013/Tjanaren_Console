@@ -48,7 +48,18 @@ namespace Stugan
                     // En förberedelse för "Undersök"
                     Undersok();
                     break;
-
+                case ConsoleKey.UpArrow:
+                    FlyttaSpelare("Norr");
+                    break;
+                case ConsoleKey.DownArrow:
+                    FlyttaSpelare("Soder");
+                    break;
+                case ConsoleKey.RightArrow:
+                    FlyttaSpelare("Oster");
+                    break;
+                case ConsoleKey.LeftArrow:
+                    FlyttaSpelare("Vaster");
+                    break;
                 case ConsoleKey.Escape:
                     Tolk.Output("Avslutar spelet och sparar framstegen i minnet.");
                     _isrunning = false;
@@ -60,6 +71,28 @@ namespace Stugan
                     break;
             }
         }
+
+        private void FlyttaSpelare(string riktning)
+        {
+            var nuvarandeRum = _spelare.NuvarandeRum;
+
+            // Vi kollar om det finns en utgång i den valda riktningen
+            if (nuvarandeRum.Utgangar.ContainsKey(riktning))
+            {
+                // Byt rum!
+                _spelare.NuvarandeRum = nuvarandeRum.Utgangar[riktning];
+
+                Tolk.Output($"Du går åt {riktning}.");
+
+                // Presentera det nya rummet för JAWS
+                _spelare.NuvarandeRum.VisaBeskrivning();
+            }
+            else
+            {
+                Tolk.Output("Där är det stopp, du kan inte gå åt det hållet.");
+            }
+        }
+
 
         private void Undersok()
         {
