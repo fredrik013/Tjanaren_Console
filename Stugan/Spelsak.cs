@@ -12,7 +12,7 @@
 
         public bool ArAktiv { get; set; }
 
-        public Spelsak(string namn, string beskrivning, bool kanplockasupp = true)
+        public Spelsak(string namn, string beskrivning, bool kanplockasupp = true, bool argomd = false)
         {
             Namn = namn;
             Beskrivning = beskrivning;

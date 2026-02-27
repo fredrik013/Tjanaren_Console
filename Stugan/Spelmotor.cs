@@ -48,6 +48,9 @@ namespace Stugan
                     // En förberedelse för "Undersök"
                     Undersok();
                     break;
+                    case ConsoleKey.T:
+                    TaUppSak();
+                    break;
                 case ConsoleKey.UpArrow:
                     FlyttaSpelare("Norr");
                     break;
@@ -60,12 +63,7 @@ namespace Stugan
                 case ConsoleKey.LeftArrow:
                     FlyttaSpelare("Vaster");
                     break;
-                case ConsoleKey.Escape:
-                    Tolk.Output("Avslutar spelet och sparar framstegen i minnet.");
-                    _isrunning = false;
-                    break;
-
-                default:
+                                default:
                     // Här kan vi lägga in ett litet ljud eller meddelande 
                     // om man trycker på en knapp som inte gör något
                     break;
@@ -141,6 +139,45 @@ namespace Stugan
             else
             {
                 WriteLine("Skohyllan är tom sånär som på lite grus.");
+            }
+        }
+
+        private void TaUppSak()
+        {
+            var rum = _spelare.NuvarandeRum;
+
+            // Vi använder samma logik som i din Rum.cs för att hitta vad som faktiskt syns
+            var sakerAttTa = rum.SakerIRummet.Where(s => s.KanPlockasUpp && !s.ArGomd).ToList();
+
+            if (sakerAttTa.Count == 0)
+            {
+                WriteLine("\nDet finns inget här som du kan ta upp.");
+            }
+            else if (sakerAttTa.Count == 1)
+            {
+                var sak = sakerAttTa[0];
+
+                // Flytta saken
+                _spelare.Ryggsack.LaggTill(sak);
+                rum.SakerIRummet.Remove(sak);
+
+                WriteLine($"\nDu plockar upp: {sak.Namn}.");
+            }
+            else
+            {
+                // Om det ligger både öl och bröd framme (lyx!)
+                WriteLine("\nDet finns flera saker här. Vilken vill du ta?");
+                for (int i = 0; i < sakerAttTa.Count; i++)
+                {
+                    WriteLine($"{i + 1}. {sakerAttTa[i].Namn}");
+                }
+
+                // Här kan vi senare lägga till en ReadLine för att välja, 
+                // men vi tar den första så länge så du får testa funktionen.
+                var sak = sakerAttTa[0];
+                _spelare.Ryggsack.LaggTill(sak);
+                rum.SakerIRummet.Remove(sak);
+                WriteLine($"\n(Du tog {sak.Namn})");
             }
         }
     }

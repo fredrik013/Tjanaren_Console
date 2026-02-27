@@ -16,14 +16,15 @@ motor.Starta();
 Rum SkapaVarlden()
 {
     Rum hall = new Rum("Hallen", "En liten hall med en skohylla.");
-    hall.SakerIRummet.Add(new Klader("Tofflor", "Ett par blå plasttofflor.", "fot", true, true));
+    var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "Fötter", true, true, true);
+    hall.SakerIRummet.Add(tofflor);
+
     Rum kok = new Rum("Köket", "Här doftar det Eriksberg och bröd."); // [cite: 2026-02-18]
     hall.Norr = kok;
     kok.Soder = hall;
-
-
-    // Lägg till Eriksbergaren i köket direkt!
     kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En kall Eriksberg Karaktär."));
+
+
 
     return hall;
 }

@@ -6,14 +6,13 @@ namespace Stugan
     {
 
         public AllmanSak(string namn, string beskrivning, bool kanplockasupp = true, bool argomd = false)
-            : base(namn, beskrivning, kanplockasupp)
+            : base(namn, beskrivning, kanplockasupp, argomd)
         {
             Namn = namn;
             Beskrivning = beskrivning;
             KanPlockasUpp = kanplockasupp;
             ArGomd = argomd;
-        }
-
+                            }
         public override void Anvand(Spelare s)
         {
             // En enkel standard-feedback för JAWS så länge

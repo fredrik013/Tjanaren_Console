@@ -8,16 +8,16 @@ namespace Stugan
 
         public string Typ { get; set; } // t.ex. "Huvud", "Kropp", "Fot"
 
-        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten = false, bool arGomd = false)
-            : base(namn, beskrivning, true)
-        {
+        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten, bool kanplockasupp, bool argomd)
+: base(namn, beskrivning, kanplockasupp, argomd)         
+                    {
             Namn = namn;
             Beskrivning = beskrivning;
             Typ = typ;
-            SkyddarMotVatten = false;
-            KanPlockasUpp = true;
+            SkyddarMotVatten = skyddarmotvatten;
+            KanPlockasUpp = kanplockasupp;
             ArGomd = argomd;
-        }
+                    }
 
         public override void Anvand(Spelare s)
         {
