@@ -1,4 +1,10 @@
-﻿using static System.Console;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using static System.Console;
+using DavyKager;
 
 namespace Stugan
 {
@@ -9,15 +15,15 @@ namespace Stugan
         public string Typ { get; set; } // t.ex. "Huvud", "Kropp", "Fot"
 
         public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten, bool kanplockasupp, bool argomd)
-: base(namn, beskrivning, kanplockasupp, argomd)         
-                    {
+: base(namn, beskrivning, kanplockasupp, argomd)
+        {
             Namn = namn;
             Beskrivning = beskrivning;
             Typ = typ;
             SkyddarMotVatten = skyddarmotvatten;
             KanPlockasUpp = kanplockasupp;
             ArGomd = argomd;
-                    }
+        }
 
         public override void Anvand(Spelare s)
         {
