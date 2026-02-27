@@ -1,5 +1,4 @@
-﻿using DavyKager;
-
+﻿using static System.Console;
 namespace Stugan
 {
     public class Rum
@@ -45,7 +44,21 @@ namespace Stugan
 
         public void VisaBeskrivning()
         {
-            Tolk.Output($"{Namn}. {Beskrivning}");
+            // 1. Grundbeskrivningen av rummet
+            WriteLine($"{Namn}. {Beskrivning}");
+
+            // 2. Hitta saker som ligger framme och går att ta
+            // Vi filtrerar bort de som är gömda (ArGomd == true)
+            var synligaSaker = SakerIRummet.Where(s => s.KanPlockasUpp && !s.ArGomd).ToList();
+
+            if (synligaSaker.Count > 0)
+            {
+                WriteLine("Här ser du också:");
+                foreach (var sak in synligaSaker)
+                {
+                    WriteLine(sak.Namn);
+                }
+            }
         }
     }
 }

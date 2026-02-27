@@ -1,11 +1,4 @@
-﻿using System;
-using DavyKager;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Stugan
+﻿namespace Stugan
 {
     public abstract class Spelsak
     {
@@ -15,6 +8,8 @@ namespace Stugan
 
         public bool KanPlockasUpp { get; set; }
 
+        public bool ArGomd { get; set; }
+
         public bool ArAktiv { get; set; }
 
         public Spelsak(string namn, string beskrivning, bool kanplockasupp = true)
@@ -22,8 +17,11 @@ namespace Stugan
             Namn = namn;
             Beskrivning = beskrivning;
             KanPlockasUpp = kanplockasupp;
+            ArGomd = false;
             ArAktiv = false;
-                    }
+        }
+
+
 
         public abstract void Anvand(Spelare s);
     }

@@ -17,7 +17,7 @@ namespace Stugan
         public void Starta()
         {
             // Första hälsningen till JAWS
-            Tolk.Output("Välkommen till Stugan. Spelet har startat.");
+            WriteLine("Välkommen till Stugan!");
 
             // Visa rummet man startar i
             _spelare.NuvarandeRum.VisaBeskrivning();
@@ -74,31 +74,74 @@ namespace Stugan
 
         private void FlyttaSpelare(string riktning)
         {
-            var nuvarandeRum = _spelare.NuvarandeRum;
-
-            // Vi kollar om det finns en utgång i den valda riktningen
-            if (nuvarandeRum.Utgangar.ContainsKey(riktning))
+            // 1. Kolla om det rum spelaren står i har en utgång åt det här hållet
+            if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
-                // Byt rum!
-                _spelare.NuvarandeRum = nuvarandeRum.Utgangar[riktning];
+                // 2. Byt rum!
+                _spelare.NuvarandeRum = _spelare.NuvarandeRum.Utgangar[riktning];
 
-                Tolk.Output($"Du går åt {riktning}.");
+                // Skapa ett snyggt namn för utskriften
+                string snyggRiktning = riktning switch
+                {
+                    "Norr" => "norr",
+                    "Soder" => "söder",
+                    "Oster" => "öster",
+                    "Vaster" => "väster",
+                    _ => riktning.ToLower()
+                };
 
-                // Presentera det nya rummet för JAWS
+                WriteLine($"\nDu går åt {snyggRiktning}.");
+
+                // 4. Visa det nya rummet automatiskt
                 _spelare.NuvarandeRum.VisaBeskrivning();
             }
             else
             {
-                Tolk.Output("Där är det stopp, du kan inte gå åt det hållet.");
+                // Om det inte finns en dörr där
+                WriteLine("Där är det stopp, du kan inte gå åt det hållet.");
             }
         }
 
-
         private void Undersok()
         {
-            Tolk.Output($"Du ser dig omkring i {_spelare.NuvarandeRum.Namn}.");
-            // Här ska vi snart loopa igenom rummets saker...
+            var rum = _spelare.NuvarandeRum;
+            WriteLine($"\nDu ser dig noga omkring i {rum.Namn}...");
+
+            switch (rum.Namn)
+            {
+                case "Hallen":
+                    HanteraHallen();
+                    break;
+
+                case "Köket":
+                    WriteLine("Du kollar på köksbänken. Det ligger lite smulor från veckans lunchbröd här.");
+                    break;
+
+                case "Källaren":
+                    WriteLine("Här är det mörkt och lite fuktigt på golvet. Tur om man har skor på sig.");
+                    break;
+
+                default:
+                    WriteLine("Du hittar inget särskilt när du undersöker rummet.");
+                    break;
+            }
+        }
+
+        private void HanteraHallen()
+        {
+            var rum = _spelare.NuvarandeRum;
+            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tofflor");
+
+            if (tofflor != null && tofflor.ArGomd)
+            {
+                tofflor.ArGomd = false;
+                WriteLine("Du rotar i skohyllan och hittar ett par plasttofflor!");
+                WriteLine("Perfekta för fuktiga utrymmen.");
+            }
+            else
+            {
+                WriteLine("Skohyllan är tom sånär som på lite grus.");
+            }
         }
     }
 }
-

@@ -1,9 +1,4 @@
-﻿using System;
-using DavyKager;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using static System.Console;
 
 namespace Stugan
 {
@@ -13,11 +8,15 @@ namespace Stugan
 
         public string Typ { get; set; } // t.ex. "Huvud", "Kropp", "Fot"
 
-        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten = false)
+        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten = false, bool arGomd = false)
             : base(namn, beskrivning, true)
         {
+            Namn = namn;
+            Beskrivning = beskrivning;
             Typ = typ;
-            SkyddarMotVatten = skyddarmotvatten;
+            SkyddarMotVatten = false;
+            KanPlockasUpp = true;
+            ArGomd = argomd;
         }
 
         public override void Anvand(Spelare s)
@@ -25,12 +24,12 @@ namespace Stugan
             // Här kan vi senare lägga till logik som kollar 'Typ' 
             // så att man inte kan ha både tofflor och stövlar samtidigt.
             this.ArAktiv = true;
-            Tolk.Output($"Du tar på dig {this.Namn}.");
+            WriteLine($"Du tar på dig {this.Namn}.");
 
             if (SkyddarMotVatten)
             {
-                Tolk.Output("Den här kommer hålla dig torr!");
+                WriteLine("Den här kommer hålla dig torr!");
             }
         }
     }
-        }
+}
