@@ -73,16 +73,12 @@ namespace Stugan
 
                     case ConsoleKey.Enter:
                         var valdSak = ryggsack[_markeratIndex];
-                        if (valdSak.Namn.ToLower().Contains("tofflor"))
-                        {
-                            s.AktivtSkodon = "Tofflor";
-                            Tolk.Output("Du tar på dig tofflorna.");
-                            tittar = false;
-                            System.Threading.Thread.Sleep(500);
-                        }
-                        else Tolk.Output($"Kan inte använda {valdSak.Namn}.");
-                        break;
+                        // Vi hämtar svaret från pusselmotorn ("Du tar på dig Tofflor")
+                        string svar = Pusselmotor.HanteraUtrustning(valdSak, s, this);
 
+                        // Vi skickar med svaret in i UppmärksammaRad
+                        UppmärksammaRad(true, svar);
+                        break;
                     case ConsoleKey.Escape:
                     case ConsoleKey.I:
                         Tolk.Output("Stänger ryggsäcken.");
@@ -96,32 +92,37 @@ namespace Stugan
             }
         }
 
-        private void UppmärksammaRad()
+        private void UppmärksammaRad(bool skaPrata = true, string extraMeddelande = "")
         {
-            // Flytta markören till rätt rad (hoppa över rubriken på rad 0)
             SetCursorPosition(0, _markeratIndex + 1);
+            var sak = _saker[_markeratIndex];
 
-            string namn = _saker[_markeratIndex].Namn;
+            string status = "";
+            if (sak is Klader p)
+            {
+                status = p.ArAktiv ? " - påtagen" : " - i ryggsäcken";
+            }
 
-            // Skriv över raden för att trigga JAWS och visa pilen
-            Write($"{namn}   ");
+            string text = $"{sak.Namn}{status}";
+            Write(text.PadRight(40));
 
-            // Prata
-            Tolk.Output(namn);
+            if (skaPrata)
+            {
+                // Om vi skickade med ett svar från pusselmotorn, läs det FÖRST
+                if (!string.IsNullOrEmpty(extraMeddelande))
+                {
+                    Tolk.Output($"{extraMeddelande}. {text}");
+                }
+                else
+                {
+                    Tolk.Output(text);
+                }
+            }
         }
 
-        private void PresenteraValdSak()
+        public List<Spelsak> GetAllaSaker()
         {
-            // Vi flyttar markören till toppen istället för att rensa helt, 
-            // det är snällare mot skärmläsare.
-            SetCursorPosition(0, 1);
-
-            for (int i = 0; i < _saker.Count; i++)
-            {
-                string markor = (i == _markeratIndex) ? "-> " : "   ";
-                string status = _saker[i].ArAktiv ? " [PÅTAGEN]" : "";
-                WriteLine($"{markor}{_saker[i].Namn}{status}                   "); // Mellanslag för att sudda gammal text
-            }
+            return _saker;
         }
     }
 }
