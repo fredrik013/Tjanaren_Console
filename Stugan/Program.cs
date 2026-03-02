@@ -6,6 +6,10 @@ Rum startRum = SkapaVarlden();
 
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
+var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "skodon", true, true, false, true);
+// Vi använder .Add() direkt på listan för att slippa "Du plockar upp"-texten
+spelare.Ryggsack.GetAllaSaker().Add(startBoots);
+Pusselmotor.HanteraUtrustning(startBoots, spelare, spelare.Ryggsack);
 
 // 3. Starta motorn
 Spelmotor motor = new Spelmotor(spelare);

@@ -37,6 +37,29 @@ namespace Stugan
             return $"Du använder {sak.Namn}.";
         }
 
+        public static void FarGaIn(Rum nastaRum, Spelare spelare)
+        {
+            switch (nastaRum.Namn)
+            {
+                case "Köket":
+                    // Din klockrena boots-check
+                    if (spelare.Ryggsack.GetAllaSaker().FirstOrDefault(s => s.Namn.ToLower().Contains("boots")) is Klader boots && boots.ArAktiv)
+                    {
+                        SetCursorPosition(0, 10);
+                        WriteLine("Stopp! Du kan inte gå in i köket med leriga boots. Sätt på tossorna!".PadRight(60));
+                        return; // Vi avbryter här, ingen förflyttning sker!
+                    }
+                    break;
+                case "Källaren":
+                    // Här kan vi lägga in källar-logiken sen (kanske boots/plasttofflor-krav?) [cite: 2026-02-24]
+                    break;
+            }
+
+            // Om vi inte har blivit stoppade av en 'return' ovanför, så genomför vi flytten här!
+            spelare.NuvarandeRum = nastaRum;
+            spelare.NuvarandeRum.VisaBeskrivning();
+        }
+
         public static void Undersok(Spelare spelare)
         {
             var rum = spelare.NuvarandeRum;
@@ -49,7 +72,7 @@ namespace Stugan
                     break;
 
                 case "Köket":
-                    WriteLine("Du kollar på köksbänken. Det ligger lite smulor från veckans lunchbröd här.");
+                    HanteraKoket(spelare);
                     break;
 
                 case "Källaren":
@@ -61,6 +84,7 @@ namespace Stugan
                     break;
             }
         }
+
 
         public static void HanteraHallen(Spelare spelare)
         {
@@ -80,22 +104,18 @@ namespace Stugan
         }
 
 
-        // Den här kollar om vi får gå in i köket
-        public static bool FarGaInIKoket(Inventory inv)
+        public static bool HanteraKoket(Spelare spelare)
         {
-            // Vi letar i ryggsäcken efter något som är "Skodon" OCH "ArAktiv"
-            foreach (var sak in inv.GetAllaSaker())
+            // Vi skippar loopen och går direkt på kärnan i din logik
+            if (spelare.Ryggsack.GetAllaSaker().FirstOrDefault(s => s.Namn.ToLower().Contains("boots")) is Klader boots && boots.ArAktiv)
             {
-                if (sak is Klader plagg && plagg.Typ == "Skodon" && plagg.ArAktiv)
-                {
-                    // Om det är Boots (som vi bestämt är skitiga), returnera false
-                    if (plagg.Namn.ToLower().Contains("boots"))
-                    {
-                        return false;
-                    }
-                }
+                // Om bootsen hittas och är aktiva – Stopp!
+                return false;
             }
-            return true; // Barfota eller tofflor är ok!
+
+            // Annars är allt grönt
+            return true;
         }
+
     }
 }

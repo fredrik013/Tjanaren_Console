@@ -14,7 +14,8 @@
         {
             NuvarandeRum = startRum;
             Ryggsack = new Inventory();
-            AktivtSkodon = "Ytterskor";
+
+            AktivtSkodon = "Boots";
             ArSkadad = false;
         }
     }

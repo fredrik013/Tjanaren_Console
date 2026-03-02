@@ -70,26 +70,12 @@ namespace Stugan
 
         private void FlyttaSpelare(string riktning)
         {
+
             // 1. Kolla om det rum spelaren står i har en utgång åt det här hållet
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
-                // 2. Byt rum!
-                _spelare.NuvarandeRum = _spelare.NuvarandeRum.Utgangar[riktning];
-
-                // Skapa ett snyggt namn för utskriften
-                string snyggRiktning = riktning switch
-                {
-                    "Norr" => "norr",
-                    "Soder" => "söder",
-                    "Oster" => "öster",
-                    "Vaster" => "väster",
-                    _ => riktning.ToLower()
-                };
-
-                WriteLine($"\nDu går åt {snyggRiktning}.");
-
-                // 4. Visa det nya rummet automatiskt
-                _spelare.NuvarandeRum.VisaBeskrivning();
+                var nastaRum = _spelare.NuvarandeRum.Utgangar[riktning];
+                Pusselmotor.FarGaIn(nastaRum, _spelare);
             }
             else
             {

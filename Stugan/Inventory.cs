@@ -73,12 +73,19 @@ namespace Stugan
 
                     case ConsoleKey.Enter:
                         var valdSak = ryggsack[_markeratIndex];
-                        // Vi hämtar svaret från pusselmotorn ("Du tar på dig Tofflor")
                         string svar = Pusselmotor.HanteraUtrustning(valdSak, s, this);
 
-                        // Vi skickar med svaret in i UppmärksammaRad
+                        // FIX: Om det vi precis drog på oss var skor, uppdatera spelarens sträng!
+                        if (valdSak is Klader plagg && plagg.Typ.ToLower() == "skodon")
+                        {
+                            s.AktivtSkodon = plagg.ArAktiv ? plagg.Namn : "";
+                        }
+
+                        // Vi pratar bara om det som faktiskt hände (svar), 
+                        // istället för att läsa upp hela raden igen.
                         UppmärksammaRad(true, svar);
                         break;
+
                     case ConsoleKey.Escape:
                     case ConsoleKey.I:
                         Tolk.Output("Stänger ryggsäcken.");
@@ -94,28 +101,33 @@ namespace Stugan
 
         private void UppmärksammaRad(bool skaPrata = true, string extraMeddelande = "")
         {
+            // 1. Flytta markören till rätt rad i listan
             SetCursorPosition(0, _markeratIndex + 1);
             var sak = _saker[_markeratIndex];
 
+            // 2. Skapa status-texten för skärmen
             string status = "";
             if (sak is Klader p)
             {
                 status = p.ArAktiv ? " - påtagen" : " - i ryggsäcken";
             }
 
-            string text = $"{sak.Namn}{status}";
-            Write(text.PadRight(40));
+            string textRad = $"{sak.Namn}{status}";
+            // Skriv ut på skärmen (fyll ut med mellanslag så gammal text försvinner)
+            Write(textRad.PadRight(40));
 
+            // 3. Hantera vad JAWS ska säga
             if (skaPrata)
             {
-                // Om vi skickade med ett svar från pusselmotorn, läs det FÖRST
+                // Om vi har ett meddelande från pusselmotorn (vid Enter), läs BARA det.
                 if (!string.IsNullOrEmpty(extraMeddelande))
                 {
-                    Tolk.Output($"{extraMeddelande}. {text}");
+                    Tolk.Output(extraMeddelande);
                 }
                 else
                 {
-                    Tolk.Output(text);
+                    // Vid vanlig navigering (pilar), läs upp namnet och statusen.
+                    Tolk.Output(textRad);
                 }
             }
         }
