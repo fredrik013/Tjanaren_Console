@@ -1,5 +1,4 @@
-﻿using DavyKager;
-using static System.Console;
+﻿using static System.Console;
 
 namespace Stugan
 {
@@ -45,10 +44,9 @@ namespace Stugan
                     break;
 
                 case ConsoleKey.U:
-                    // En förberedelse för "Undersök"
-                    Undersok();
+                    Pusselmotor.Undersok(_spelare);
                     break;
-                    case ConsoleKey.T:
+                case ConsoleKey.T:
                     TaUppSak();
                     break;
                 case ConsoleKey.UpArrow:
@@ -63,7 +61,7 @@ namespace Stugan
                 case ConsoleKey.LeftArrow:
                     FlyttaSpelare("Vaster");
                     break;
-                                default:
+                default:
                     // Här kan vi lägga in ett litet ljud eller meddelande 
                     // om man trycker på en knapp som inte gör något
                     break;
@@ -97,48 +95,6 @@ namespace Stugan
             {
                 // Om det inte finns en dörr där
                 WriteLine("Där är det stopp, du kan inte gå åt det hållet.");
-            }
-        }
-
-        private void Undersok()
-        {
-            var rum = _spelare.NuvarandeRum;
-            WriteLine($"\nDu ser dig noga omkring i {rum.Namn}...");
-
-            switch (rum.Namn)
-            {
-                case "Hallen":
-                    HanteraHallen();
-                    break;
-
-                case "Köket":
-                    WriteLine("Du kollar på köksbänken. Det ligger lite smulor från veckans lunchbröd här.");
-                    break;
-
-                case "Källaren":
-                    WriteLine("Här är det mörkt och lite fuktigt på golvet. Tur om man har skor på sig.");
-                    break;
-
-                default:
-                    WriteLine("Du hittar inget särskilt när du undersöker rummet.");
-                    break;
-            }
-        }
-
-        private void HanteraHallen()
-        {
-            var rum = _spelare.NuvarandeRum;
-            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tofflor");
-
-            if (tofflor != null && tofflor.ArGomd)
-            {
-                tofflor.ArGomd = false;
-                WriteLine("Du rotar i skohyllan och hittar ett par plasttofflor!");
-                WriteLine("Perfekta för fuktiga utrymmen.");
-            }
-            else
-            {
-                WriteLine("Skohyllan är tom sånär som på lite grus.");
             }
         }
 

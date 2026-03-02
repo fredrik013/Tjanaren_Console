@@ -1,4 +1,6 @@
-﻿namespace Stugan
+﻿using static System.Console;
+
+namespace Stugan
 {
     public static class Pusselmotor
     {
@@ -25,8 +27,8 @@
 
                 // HÄR SKRIVER VI UT DET PÅ SKÄRMEN!
                 // Vi lägger det på en fast rad, t.ex. rad 10, så det inte krockar med listan
-                Console.SetCursorPosition(0, 10);
-                Console.WriteLine(meddelande.PadRight(40));
+                SetCursorPosition(0, 10);
+                WriteLine(meddelande.PadRight(40));
 
                 return meddelande; // Returnera fortfarande för JAWS skull
             }
@@ -34,6 +36,49 @@
             sak.Anvand(s);
             return $"Du använder {sak.Namn}.";
         }
+
+        public static void Undersok(Spelare spelare)
+        {
+            var rum = spelare.NuvarandeRum;
+            WriteLine($"\nDu ser dig noga omkring i {rum.Namn}...");
+
+            switch (rum.Namn)
+            {
+                case "Hallen":
+                    HanteraHallen(spelare);
+                    break;
+
+                case "Köket":
+                    WriteLine("Du kollar på köksbänken. Det ligger lite smulor från veckans lunchbröd här.");
+                    break;
+
+                case "Källaren":
+                    WriteLine("Här är det mörkt och lite fuktigt på golvet. Tur om man har skor på sig.");
+                    break;
+
+                default:
+                    WriteLine("Du hittar inget särskilt när du undersöker rummet.");
+                    break;
+            }
+        }
+
+        public static void HanteraHallen(Spelare spelare)
+        {
+            var rum = spelare.NuvarandeRum;
+            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tofflor");
+
+            if (tofflor != null && tofflor.ArGomd)
+            {
+                tofflor.ArGomd = false;
+                WriteLine("Du rotar i skohyllan och hittar ett par plasttofflor!");
+                WriteLine("Perfekta för fuktiga utrymmen.");
+            }
+            else
+            {
+                WriteLine("Skohyllan är tom sånär som på lite grus.");
+            }
+        }
+
 
         // Den här kollar om vi får gå in i köket
         public static bool FarGaInIKoket(Inventory inv)
