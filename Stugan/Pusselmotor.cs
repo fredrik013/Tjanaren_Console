@@ -1,10 +1,9 @@
 ﻿using static System.Console;
-
 namespace Stugan
 {
     public static class Pusselmotor
     {
-        // Den här metoden sköter allt med ArAktiv-logiken
+        // Den här metoden sköter allt med ArAktiv-logiken och utrustning
         public static string HanteraUtrustning(Spelsak sak, Spelare s, Inventory inv)
         {
             if (sak is Klader plagg)
@@ -17,46 +16,66 @@ namespace Stugan
                 }
                 else
                 {
-                    if (plagg.Typ.ToLower() == "skodon")
+                    // Om det är skor, se till att ta av andra skor först
+                    if (plagg.Typ.ToLower() == "skodon" && inv != null)
                     {
                         inv.AvaktiveraTyp("skodon");
                     }
+
                     plagg.ArAktiv = true;
                     meddelande = $"Du tar på dig {plagg.Namn}.";
                 }
 
-                // HÄR SKRIVER VI UT DET PÅ SKÄRMEN!
-                // Vi lägger det på en fast rad, t.ex. rad 10, så det inte krockar med listan
-                SetCursorPosition(0, 10);
-                WriteLine(meddelande.PadRight(40));
+                // VIKTIGT: Uppdatera spelarens sträng så dörrvakten fattar
+                if (plagg.Typ.ToLower() == "skodon")
+                {
+                    s.AktivtSkodon = plagg.ArAktiv ? plagg.Namn : "";
+                }
 
-                return meddelande; // Returnera fortfarande för JAWS skull
+                // Skriv bara ut på skärmen om vi faktiskt är inne i ryggsäcks-menyn (inv != null)
+                // Det här gör att uppstarten i Program.cs blir tyst och fin för JAWS.
+                if (inv != null)
+                {
+                    SetCursorPosition(0, 10);
+                    WriteLine(meddelande.PadRight(70));
+                }
+
+                return meddelande;
             }
 
+            // Om det inte är kläder, använd saken som vanligt
             sak.Anvand(s);
             return $"Du använder {sak.Namn}.";
         }
 
         public static void FarGaIn(Rum nastaRum, Spelare spelare)
         {
+            // DÖRRVAKT-LOGIK
             switch (nastaRum.Namn)
             {
                 case "Köket":
-                    // Din klockrena boots-check
-                    if (spelare.Ryggsack.GetAllaSaker().FirstOrDefault(s => s.Namn.ToLower().Contains("boots")) is Klader boots && boots.ArAktiv)
+                    // Kolla om spelaren har boots på fötterna
+                    if (spelare.AktivtSkodon == "Boots")
                     {
                         SetCursorPosition(0, 10);
-                        WriteLine("Stopp! Du kan inte gå in i köket med leriga boots. Sätt på tossorna!".PadRight(60));
-                        return; // Vi avbryter här, ingen förflyttning sker!
+                        System.Threading.Thread.Sleep(100);
+                        WriteLine("Stopp! Du kan inte gå in i köket med leriga boots.".PadRight(70));
+
+                        return; // Avbryt flytten!
                     }
                     break;
+
                 case "Källaren":
-                    // Här kan vi lägga in källar-logiken sen (kanske boots/plasttofflor-krav?) [cite: 2026-02-24]
+                    // Här kan vi senare lägga in krav på skor för att inte bli blöt om fötterna
                     break;
             }
 
-            // Om vi inte har blivit stoppade av en 'return' ovanför, så genomför vi flytten här!
+            // OM VI INTE BLEV STOPPADE: Genomför flytten
             spelare.NuvarandeRum = nastaRum;
+
+            // Läs upp den nya rumsbeskrivningen direkt för JAWS
+            Clear();
+            System.Threading.Thread.Sleep(100);
             spelare.NuvarandeRum.VisaBeskrivning();
         }
 
@@ -74,9 +93,8 @@ namespace Stugan
                 case "Köket":
                     HanteraKoket(spelare);
                     break;
-
                 case "Källaren":
-                    WriteLine("Här är det mörkt och lite fuktigt på golvet. Tur om man har skor på sig.");
+                    WriteLine("Här är det mörkt och fuktigt på golvet. Tur om man har skor på sig.");
                     break;
 
                 default:
@@ -84,7 +102,6 @@ namespace Stugan
                     break;
             }
         }
-
 
         public static void HanteraHallen(Spelare spelare)
         {
@@ -103,19 +120,22 @@ namespace Stugan
             }
         }
 
-
-        public static bool HanteraKoket(Spelare spelare)
+        public static void HanteraKoket(Spelare spelare)
         {
-            // Vi skippar loopen och går direkt på kärnan i din logik
-            if (spelare.Ryggsack.GetAllaSaker().FirstOrDefault(s => s.Namn.ToLower().Contains("boots")) is Klader boots && boots.ArAktiv)
+            var rum = spelare.NuvarandeRum;
+            var brod = rum.SakerIRummet.FirstOrDefault(s => s.Namn == "Lunchbröd");
+
+            if (brod != null && brod.ArGomd)
             {
-                // Om bootsen hittas och är aktiva – Stopp!
-                return false;
+                brod.ArGomd = false; // Nu dyker det upp i rummets lista!
+                WriteLine("\nDu undersöker det dukade bordet och ser bland annat ett brödfat som är täckt med en handduk.");
+                WriteLine("Du lyfter på handduken och hittar lunchbröd!");
+                DavyKager.Tolk.Output("Du hittade lunchbröd under en handduk på bordet.");
             }
-
-            // Annars är allt grönt
-            return true;
+            else
+            {
+                WriteLine("\nKöket är rent och snyggt. Brödfatet står tomt på bordet.");
+            }
         }
-
     }
 }

@@ -7,7 +7,6 @@ Rum startRum = SkapaVarlden();
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
 var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "skodon", true, true, false, true);
-// Vi använder .Add() direkt på listan för att slippa "Du plockar upp"-texten
 spelare.Ryggsack.GetAllaSaker().Add(startBoots);
 Pusselmotor.HanteraUtrustning(startBoots, spelare, spelare.Ryggsack);
 
@@ -19,16 +18,45 @@ motor.Starta();
 
 Rum SkapaVarlden()
 {
-    Rum hall = new Rum("Hallen", "En liten hall med en skohylla.");
+    // Gårdsplanen - Första anhalten
+    Rum gardsplan = new Rum("Gårdsplanen",
+        "Du står på en grusad gårdsplan. Den röda stugan med sina vita knutar ser inbjudande ut i solskenet. " +
+        "Rakt framför dig, åt norr, leder en gammal trädörr in till huset.");
+
+    // Hallen - Nu med mer detaljer och hintar om dörrarna
+    Rum hall = new Rum("Hallen",
+        "Du kliver in i en hemtrevlig hall. Det doftar svagt av såpa och gammalt trä. " +
+        "På väggen hänger en spegel och under den står en skohylla. " +
+        "Rakt fram ser du en dörr., och till höger verkar det finnas en trappa mot källaren.");
+
+    // Koppla ihop gårdsplan och hall
+    gardsplan.Norr = hall;
+    hall.Soder = gardsplan;
+
+    // Föremål i hallen (tofflorna är gömda i skohyllan tills man undersöker)
     var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false);
     hall.SakerIRummet.Add(tofflor);
 
-    Rum kok = new Rum("Köket", "Här doftar det Eriksberg och bröd."); // [cite: 2026-02-18]
+    // Köket - Ligger rakt fram (Norr)
+    Rum kok = new Rum("Köket",
+        "Du kommer in i ett ljust och rymligt kök. Här doftar det av nybakat bröd och en hint av humle. " +
+        "Köksbordet står dukat vid fönstret.");
+
     hall.Norr = kok;
     kok.Soder = hall;
-    kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En kall Eriksberg Karaktär."));
 
+    // Eriksberg Karaktär - Din favorit! [cite: 2026-02-18]
+    kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär."));
 
+    var brod = new AllmanSak("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true);
+    kok.SakerIRummet.Add(brod);
 
-    return hall;
+    // Källaren - Ligger till höger (Oster)
+    Rum kallare = new Rum("Källaren",
+        "En brant trätrappa leder ner till källaren. Här är luften sval och lite fuktig.");
+
+    hall.Oster = kallare;
+    kallare.Vaster = hall;
+
+    return gardsplan;
 }
