@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Stugan
+﻿namespace Stugan
 {
-    public class Spelsak
+    public abstract class Spelsak
     {
         public string Namn { get; set; }
 
@@ -14,11 +8,21 @@ namespace Stugan
 
         public bool KanPlockasUpp { get; set; }
 
-        public Spelsak(string namn, string beskrivning, bool kanplockasupp = true)
+        public bool ArGomd { get; set; }
+
+        public bool ArAktiv { get; set; }
+
+        public Spelsak(string namn, string beskrivning, bool kanplockasupp = true, bool argomd = false)
         {
             Namn = namn;
             Beskrivning = beskrivning;
             KanPlockasUpp = kanplockasupp;
-                    }
+            ArGomd = false;
+            ArAktiv = false;
+        }
+
+
+
+        public abstract void Anvand(Spelare s);
     }
 }
