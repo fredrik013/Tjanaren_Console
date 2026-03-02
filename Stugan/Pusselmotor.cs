@@ -59,7 +59,7 @@ namespace Stugan
                     {
                         SetCursorPosition(0, 10);
                         System.Threading.Thread.Sleep(100);
-                        WriteLine("Stopp! Du kan inte gå in i köket med leriga boots. Sätt på tossorna!".PadRight(70));
+                        WriteLine("Stopp! Du kan inte gå in i köket med leriga boots.".PadRight(70));
 
                         return; // Avbryt flytten!
                     }
