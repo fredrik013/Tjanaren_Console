@@ -7,7 +7,6 @@ Rum startRum = SkapaVarlden();
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
 var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "skodon", true, true, false, true);
-// Vi använder .Add() direkt på listan för att slippa "Du plockar upp"-texten
 spelare.Ryggsack.GetAllaSaker().Add(startBoots);
 Pusselmotor.HanteraUtrustning(startBoots, spelare, spelare.Ryggsack);
 
@@ -19,7 +18,11 @@ motor.Starta();
 
 Rum SkapaVarlden()
 {
+    Rum gardsplan = new Rum("Gårdsplanen", "Du står på en grusad gårdsplan. Solen lyser vackert på ett gammalt hus som ser väldigt inbjudande ut. Rakt framför dig ligger ingången.");
+
     Rum hall = new Rum("Hallen", "En liten hall med en skohylla.");
+    gardsplan.Norr = hall;
+    hall.Soder = gardsplan;
     var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false);
     hall.SakerIRummet.Add(tofflor);
 
@@ -28,7 +31,5 @@ Rum SkapaVarlden()
     kok.Soder = hall;
     kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En kall Eriksberg Karaktär."));
 
-
-
-    return hall;
+    return gardsplan;
 }
