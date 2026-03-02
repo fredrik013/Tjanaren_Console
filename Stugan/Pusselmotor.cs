@@ -55,7 +55,7 @@ namespace Stugan
             {
                 case "Köket":
                     // Kolla om spelaren har boots på fötterna
-                    if (spelare.AktivtSkodon.ToLower().Contains("boots"))
+                    if (spelare.AktivtSkodon == "Boots")
                     {
                         SetCursorPosition(0, 10);
                         System.Threading.Thread.Sleep(100);
@@ -91,10 +91,8 @@ namespace Stugan
                     break;
 
                 case "Köket":
-                    // Lite finlir för köket: smulor från lunchbrödet
-                    WriteLine("Det ligger lite smulor på bänken, annars är det rent och snyggt.");
+                    HanteraKoket(spelare);
                     break;
-
                 case "Källaren":
                     WriteLine("Här är det mörkt och fuktigt på golvet. Tur om man har skor på sig.");
                     break;
@@ -119,6 +117,24 @@ namespace Stugan
             else
             {
                 WriteLine("Skohyllan är tom sånär som på lite grus.");
+            }
+        }
+
+        public static void HanteraKoket(Spelare spelare)
+        {
+            var rum = spelare.NuvarandeRum;
+            var brod = rum.SakerIRummet.FirstOrDefault(s => s.Namn == "Lunchbröd");
+
+            if (brod != null && brod.ArGomd)
+            {
+                brod.ArGomd = false; // Nu dyker det upp i rummets lista!
+                WriteLine("\nDu undersöker det dukade bordet och ser bland annat ett brödfat som är täckt med en handduk.");
+                WriteLine("Du lyfter på handduken och hittar lunchbröd!");
+                DavyKager.Tolk.Output("Du hittade lunchbröd under en handduk på bordet.");
+            }
+            else
+            {
+                WriteLine("\nKöket är rent och snyggt. Brödfatet står tomt på bordet.");
             }
         }
     }

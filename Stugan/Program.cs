@@ -48,6 +48,9 @@ Rum SkapaVarlden()
     // Eriksberg Karaktär - Din favorit! [cite: 2026-02-18]
     kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär."));
 
+    var brod = new AllmanSak("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true);
+    kok.SakerIRummet.Add(brod);
+
     // Källaren - Ligger till höger (Oster)
     Rum kallare = new Rum("Källaren",
         "En brant trätrappa leder ner till källaren. Här är luften sval och lite fuktig.");
