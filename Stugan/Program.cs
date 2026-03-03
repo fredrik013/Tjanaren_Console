@@ -28,16 +28,11 @@ Rum SkapaVarlden()
     gardsplan.Norr = hall;
     hall.Soder = gardsplan;
 
-
-    var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false);
-    hall.SakerIRummet.Add(tofflor);
-
-    var hall2 = new Rum("Hallen2", "Du fortsätter längre in i hallen och kommer in på en mjuk heltäckande matta. Här ska man säkert inte gå med några leriga boots." + "Till vänster hör du en TV. Kanske det är vardagsrummet.");
-    hall2.VisaNamn = "Hallen";
+    InreHall hall2 = new InreHall();
     hall.Norr = hall2;
     hall2.Soder = hall;
 
-    // Skapa rummet
+
     Rum vardagsrum = new Rum("Vardagsrummet",
         "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
         "Ljuset från skärmen fladdrar mot de mörka tapeterna.");
