@@ -83,22 +83,7 @@ namespace Stugan
             rum.UndersokRum(spelare);
         }
 
-        public static void HanteraHallen(Spelare spelare)
-        {
-            var rum = spelare.NuvarandeRum;
-            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tofflor");
 
-            if (tofflor != null && tofflor.ArGomd)
-            {
-                tofflor.ArGomd = false;
-                WriteLine("Du rotar i skohyllan och hittar ett par plasttofflor!");
-                WriteLine("Perfekta för fuktiga utrymmen.");
-            }
-            else
-            {
-                WriteLine("Skohyllan är tom sånär som på lite grus.");
-            }
-        }
 
 
 

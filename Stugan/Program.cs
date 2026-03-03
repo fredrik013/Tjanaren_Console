@@ -24,17 +24,11 @@ Rum SkapaVarlden()
         "Du står på en grusad gårdsplan. Den röda stugan med sina vita knutar ser inbjudande ut i solskenet. " +
         "Rakt framför dig, åt norr, leder en gammal trädörr in till huset.");
 
-    // Hallen - Nu med mer detaljer och hintar om dörrarna
-    Rum hall = new Rum("Hallen",
-        "Du kliver in i en hemtrevlig hall. Det doftar svagt av såpa och gammalt trä. " +
-        "På väggen hänger en spegel och under den står en skohylla. " +
-        "Till vänster ser du en dörr och till höger verkar det finnas en trappa mot källaren." + "Rakt fram fortsätter hallen längre in i huset.");
-
-    // Koppla ihop gårdsplan och hall
+    Hall hall = new Hall();
     gardsplan.Norr = hall;
     hall.Soder = gardsplan;
 
-    // Föremål i hallen (tofflorna är gömda i skohyllan tills man undersöker)
+
     var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false);
     hall.SakerIRummet.Add(tofflor);
 
