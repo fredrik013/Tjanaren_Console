@@ -39,9 +39,23 @@ Rum SkapaVarlden()
 
     var hall2 = new Rum("Hallen2", "Du fortsätter längre in i hallen och kommer in på en mjuk heltäckande matta. Här ska man säkert inte gå med några leriga boots." + "Till vänster hör du en TV. Kanske det är vardagsrummet.");
     hall2.VisaNamn = "Hallen";
-
     hall.Norr = hall2;
     hall2.Soder = hall;
+
+    // Skapa rummet
+    Rum vardagsrum = new Rum("Vardagsrummet",
+        "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
+        "Ljuset från skärmen fladdrar mot de mörka tapeterna.");
+
+    // Lägg till en kort beskrivning (för framtida besök)
+    vardagsrum.VisaNamn = "Vardagsrummet";
+
+    // Lägg till TV:n som en sak man kan titta på
+    vardagsrum.SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+
+    // Koppla ihop det med Hallen 2 (Vardagsrummet ligger till vänster, alltså Väster)
+    hall2.Vaster = vardagsrum;
+    vardagsrum.Oster = hall2;
 
     // Köket - Ligger rakt fram (Norr)
     Rum kok = new Rum("Köket",
