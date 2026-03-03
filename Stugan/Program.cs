@@ -19,11 +19,7 @@ motor.Starta();
 
 Rum SkapaVarlden()
 {
-    // Gårdsplanen - Första anhalten
-    Rum gardsplan = new Rum("Gårdsplanen",
-        "Du står på en grusad gårdsplan. Den röda stugan med sina vita knutar ser inbjudande ut i solskenet. " +
-        "Rakt framför dig, åt norr, leder en gammal trädörr in till huset.");
-
+    Gardsplan gardsplan = new Gardsplan();
     Hall hall = new Hall();
     gardsplan.Norr = hall;
     hall.Soder = gardsplan;
