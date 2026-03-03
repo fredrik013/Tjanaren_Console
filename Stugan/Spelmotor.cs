@@ -49,6 +49,9 @@ namespace Stugan
                 case ConsoleKey.T:
                     TaUppSak();
                     break;
+                case ConsoleKey.B:
+                    _spelare.NuvarandeRum.LasLangBeskrivning();
+                    break;
                 case ConsoleKey.UpArrow:
                     FlyttaSpelare("Norr");
                     break;

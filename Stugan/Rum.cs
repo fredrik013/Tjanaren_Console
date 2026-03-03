@@ -5,7 +5,11 @@ namespace Stugan
     {
         public string Namn { get; set; }
 
+        public string VisaNamn { get; set; }
+
         public string Beskrivning { get; set; }
+
+        public bool HarBesokts { get; set; }
 
         public bool HarUndersokts { get; set; } = false;
 
@@ -24,6 +28,7 @@ namespace Stugan
         public Rum(string namn, string beskrivning, bool harundersokts = false)
         {
             Namn = namn;
+            VisaNamn = namn;
             Beskrivning = beskrivning;
             HarUndersokts = harundersokts;
         }
@@ -44,11 +49,24 @@ namespace Stugan
 
         public void VisaBeskrivning()
         {
+            WriteLine($"{VisaNamn}");
             // 1. Grundbeskrivningen av rummet
-            WriteLine($"{Namn}. {Beskrivning}");
+            if (!HarBesokts)
+            {
+                WriteLine($"{Beskrivning}");
+                HarBesokts = true;
+            }
+            else
+            {
+                WriteLine($"Du är i {VisaNamn}.");
+            }
+            VisaSakerIRummet();
+        }
 
-            // 2. Hitta saker som ligger framme och går att ta
-            // Vi filtrerar bort de som är gömda (ArGomd == true)
+        // 2. Hitta saker som ligger framme och går att ta
+        // Vi filtrerar bort de som är gömda (ArGomd == true)
+        private void VisaSakerIRummet()
+        {
             var synligaSaker = SakerIRummet.Where(s => s.KanPlockasUpp && !s.ArGomd).ToList();
 
             if (synligaSaker.Count > 0)
@@ -59,6 +77,14 @@ namespace Stugan
                     WriteLine(sak.Namn);
                 }
             }
+        }
+
+        public void LasLangBeskrivning()
+        {
+            Clear();
+            WriteLine($"{VisaNamn}");
+            WriteLine(Beskrivning);
+            VisaSakerIRummet();
         }
     }
 }

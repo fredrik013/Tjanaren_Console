@@ -65,9 +65,6 @@ namespace Stugan
                     }
                     break;
 
-                case "Källaren":
-                    // Här kan vi senare lägga in krav på skor för att inte bli blöt om fötterna
-                    break;
             }
 
             // OM VI INTE BLEV STOPPADE: Genomför flytten
@@ -93,8 +90,11 @@ namespace Stugan
                 case "Köket":
                     HanteraKoket(spelare);
                     break;
+                case "Vardagsrummet":
+                    HanteraVardagsrummet(spelare);
+                    break;
                 case "Källaren":
-                    WriteLine("Här är det mörkt och fuktigt på golvet. Tur om man har skor på sig.");
+                    HanteraKallaren(spelare);
                     break;
 
                 default:
@@ -135,6 +135,95 @@ namespace Stugan
             else
             {
                 WriteLine("\nKöket är rent och snyggt. Brödfatet står tomt på bordet.");
+            }
+        }
+
+        public static void HanteraVardagsrummet(Spelare spelare)
+        {
+            var rum = spelare.NuvarandeRum;
+            var tv = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tv");
+
+            if (tv != null)
+            {
+                if (!rum.HarUndersokts)
+                {
+                    // FÖRSTA GÅNGEN: TV:n levererar budskapet
+                    WriteLine("\nDu går fram till den brusande TV:n.");
+                    WriteLine("Genom det gråa flimret hörs en raspig röst:");
+                    WriteLine("'...vissa går på de fina mattorna med leriga boots... det gillas inte...'");
+                    System.Threading.Thread.Sleep(500);
+                    WriteLine("'...tofflorna i skohyllan räcker inte till alla... sök i källaren...'");
+                    System.Threading.Thread.Sleep(500);
+                    WriteLine("'...bzzzzt... prata med läskamraten... bzzzzt...'");
+
+                    WriteLine("\nPlötsligt hörs ett knäppande ljud och skärmen slocknar helt.");
+                    WriteLine("Rummet blir med ens mycket mörkare.");
+
+                    // Här lägger vi till spänningen
+                    WriteLine("I tystnaden som uppstår känner du plötsligt hur nackhåren reser sig.");
+                    WriteLine("Du känner dig intensivt iakttagen från de mörka hörnen.");
+
+                    rum.HarUndersokts = true;
+                }
+                else
+                {
+                    // ANDRA GÅNGEN: TV:n är död
+                    WriteLine("\nTV:n står mörk och tyst. Den verkar ha dött för gott.");
+                    WriteLine("Du ser din egen bleka spegelbild i det svarta glaset...");
+                    WriteLine("...men för ett ögonblick ser det ut som om någon står precis bakom dig.");
+                    WriteLine("Du vänder dig om, men vardagsrummet är tomt. Känslan av att vara iakttagen dröjer kvar.");
+                }
+            }
+            else
+            {
+                // Om TV:n saknas - den ultimata "iakttagen"-känslan
+                WriteLine("\nVardagsrummet är onaturligt tyst.");
+                WriteLine("Du kan inte skaka av dig känslan av att någon ser varje steg du tar.");
+            }
+        }
+
+        public static void HanteraKallaren(Spelare spelare)
+        {
+            var rum = spelare.NuvarandeRum;
+
+            // Vi letar i rummets lista efter saken som heter "Innetofflor"
+            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.Equals("Innetofflor", StringComparison.OrdinalIgnoreCase));
+
+            // 1. Ljudlogik för JAWS (Fötterna)
+            if (string.IsNullOrEmpty(spelare.AktivtSkodon))
+            {
+                WriteLine("\nDet iskalla källarvattnet klafsar obehagligt mellan tårna.");
+            }
+            else if (spelare.AktivtSkodon == "Boots")
+            {
+                WriteLine("\nDina tunga boots dunsar mot betongen. De håller vätan ute men lortar ner.");
+            }
+            else if (spelare.AktivtSkodon == "Plasttofflor")
+            {
+                WriteLine("\nDet 'ploppar' hemtrevligt om plasttofflorna i vätan.");
+            }
+
+            // 2. Själva sökandet
+            if (tofflor != null && tofflor.ArGomd)
+            {
+                // Här hittar vi dem!
+                WriteLine("\nDu undersöker den torra hyllan högt upp på väggen.");
+                WriteLine("Dina fingrar nuddar något mjukt... det är innetofflorna!");
+
+                // VIKTIGT: Vi sätter ArGomd till false så de blir synliga i rummet/kan tas upp
+                tofflor.ArGomd = false;
+
+                WriteLine("\nEtt svagt, belåtet mumlande hörs från mörkret.");
+            }
+            else if (tofflor != null && !tofflor.ArGomd)
+            {
+                // Om vi redan har hittat dem men inte plockat upp dem
+                WriteLine("\nDu ser innetofflorna ligga på hyllan där du hittade dem.");
+            }
+            else
+            {
+                // Om 'tofflor' är null (dvs hittas inte i listan alls)
+                WriteLine("\nDu letar noga på hyllorna men hittar inget mer än damm och spindelväv.");
             }
         }
     }
