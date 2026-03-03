@@ -23,12 +23,21 @@ namespace Stugan.Rooms
                 brod.ArGomd = false; // Nu dyker det upp i rummets lista!
                 WriteLine("\nDu undersöker det dukade bordet och ser bland annat ett brödfat som är täckt med en handduk.");
                 WriteLine("Du lyfter på handduken och hittar lunchbröd!");
-                DavyKager.Tolk.Output("Du hittade lunchbröd under en handduk på bordet.");
             }
             else
             {
                 WriteLine("\nKöket är rent och snyggt. Brödfatet står tomt på bordet.");
             }
+        }
+
+        public override bool KanGaIn(Spelare s)
+        {
+            if (s.AktivtSkodon == "Boots")
+            {
+                WriteLine("Stopp! Du kan inte gå in i köket med leriga boots.");
+                return false;
+            }
+            return true;
         }
     }
 }

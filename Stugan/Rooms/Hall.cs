@@ -9,17 +9,17 @@ namespace Stugan.Rooms
         "På väggen hänger en spegel och under den står en skohylla. " +
         "Till vänster ser du en dörr och till höger verkar det finnas en trappa mot källaren." + "Rakt fram fortsätter hallen längre in i huset.")
         {
-            SakerIRummet.Add(new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false));
+            SakerIRummet.Add(new Klader("Plasttofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false));
         }
 
         public override void UndersokRum(Spelare spelare)
         {
             var rum = spelare.NuvarandeRum;
-            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "tofflor");
+            var plasttofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.ToLower() == "plasttofflor");
 
-            if (tofflor != null && tofflor.ArGomd)
+            if (plasttofflor != null && plasttofflor.ArGomd)
             {
-                tofflor.ArGomd = false;
+                plasttofflor.ArGomd = false;
                 WriteLine("Du rotar i skohyllan och hittar ett par plasttofflor!");
                 WriteLine("Perfekta för fuktiga utrymmen.");
             }
