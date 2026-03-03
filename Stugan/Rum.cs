@@ -86,5 +86,10 @@ namespace Stugan
             WriteLine(Beskrivning);
             VisaSakerIRummet();
         }
+
+        public virtual void UndersokRum(Spelare spelare)
+        {
+            // Som standard händer ingenting speciellt.
+        }
     }
 }
