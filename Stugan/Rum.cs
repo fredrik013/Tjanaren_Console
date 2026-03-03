@@ -5,6 +5,8 @@ namespace Stugan
     {
         public string Namn { get; set; }
 
+        public string VisaNamn { get; set; }
+
         public string Beskrivning { get; set; }
 
         public bool HarUndersokts { get; set; } = false;
@@ -24,6 +26,7 @@ namespace Stugan
         public Rum(string namn, string beskrivning, bool harundersokts = false)
         {
             Namn = namn;
+            VisaNamn = namn;
             Beskrivning = beskrivning;
             HarUndersokts = harundersokts;
         }
@@ -44,8 +47,9 @@ namespace Stugan
 
         public void VisaBeskrivning()
         {
+            WriteLine($"{VisaNamn}");
             // 1. Grundbeskrivningen av rummet
-            WriteLine($"{Namn}. {Beskrivning}");
+            WriteLine($"{Beskrivning}");
 
             // 2. Hitta saker som ligger framme och går att ta
             // Vi filtrerar bort de som är gömda (ArGomd == true)
