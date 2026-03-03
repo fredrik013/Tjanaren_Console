@@ -60,9 +60,13 @@ namespace Stugan
             {
                 WriteLine($"Du är i {VisaNamn}.");
             }
+            VisaSakerIRummet();
+        }
 
-            // 2. Hitta saker som ligger framme och går att ta
-            // Vi filtrerar bort de som är gömda (ArGomd == true)
+        // 2. Hitta saker som ligger framme och går att ta
+        // Vi filtrerar bort de som är gömda (ArGomd == true)
+        private void VisaSakerIRummet()
+        {
             var synligaSaker = SakerIRummet.Where(s => s.KanPlockasUpp && !s.ArGomd).ToList();
 
             if (synligaSaker.Count > 0)
@@ -80,6 +84,7 @@ namespace Stugan
             Clear();
             WriteLine($"{VisaNamn}");
             WriteLine(Beskrivning);
+            VisaSakerIRummet();
         }
     }
 }
