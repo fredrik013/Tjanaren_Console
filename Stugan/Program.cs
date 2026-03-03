@@ -71,10 +71,25 @@ Rum SkapaVarlden()
     var brod = new AllmanSak("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true);
     kok.SakerIRummet.Add(brod);
 
-    // Källaren - Ligger till höger (Oster)
-    Rum kallare = new Rum("Källaren",
-        "En brant trätrappa leder ner till källaren. Här är luften sval och lite fuktig.");
 
+    // Skapa rummet med den kusliga beskrivningen
+    Rum kallare = new Rum("Källaren",
+        "Trappan gnisslar betänkligt för varje steg du tar neråt. Luften är kall och luktar fuktig jord. " +
+        "När du når det råa betonggolvet hörs ett släpande ljud inifrån mörkret... sen blir det knäpptyst.");
+
+    kallare.VisaNamn = "Källaren";
+
+    // Lägg till innetofflorna som TV:n hintade om. 
+    // De är dolda (true) tills man undersöker rummet.
+    Klader innetofflor = new Klader("Innetofflor",
+    "Ett par mjuka, rena innetofflor med filtsula. De ser ut att vara gjorda för fina mattor.",
+    "skodon", false, true, true, false);
+    kallare.SakerIRummet.Add(innetofflor);
+
+
+
+    // Koppla ihop källaren med Hallen (Söder ut från Hallen)
+    // Se till att variabelnamnet 'hall' matchar det du har i din kod
     hall.Oster = kallare;
     kallare.Vaster = hall;
 
