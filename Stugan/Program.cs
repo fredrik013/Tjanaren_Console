@@ -27,7 +27,7 @@ Rum SkapaVarlden()
     Rum hall = new Rum("Hallen",
         "Du kliver in i en hemtrevlig hall. Det doftar svagt av såpa och gammalt trä. " +
         "På väggen hänger en spegel och under den står en skohylla. " +
-        "Rakt fram ser du en dörr., och till höger verkar det finnas en trappa mot källaren.");
+        "Till vänster ser du en dörr., och till höger verkar det finnas en trappa mot källaren." + "Rakt fram fortsätter hallen längre in i huset.");
 
     // Koppla ihop gårdsplan och hall
     gardsplan.Norr = hall;
@@ -37,13 +37,17 @@ Rum SkapaVarlden()
     var tofflor = new Klader("Tofflor", "Ett par blå plasttofflor.", "skodon", true, true, true, false);
     hall.SakerIRummet.Add(tofflor);
 
+    var hall2 = new Rum("Hallen", "Du fortsätter längre in i hallen och kommer in på en mjuk heltäckande matta. Här ska man säkert inte gå med några leriga boots." + "Till vänster hör du en TV. Kanske det är vardagsrummet.");
+    hall.Norr = hall2;
+    hall2.Soder = hall;
+
     // Köket - Ligger rakt fram (Norr)
     Rum kok = new Rum("Köket",
         "Du kommer in i ett ljust och rymligt kök. Här doftar det av nybakat bröd och en hint av humle. " +
         "Köksbordet står dukat vid fönstret.");
 
-    hall.Norr = kok;
-    kok.Soder = hall;
+    hall.Vaster = kok;
+    kok.Oster = hall;
 
     // Eriksberg Karaktär - Din favorit! [cite: 2026-02-18]
     kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär."));
