@@ -28,35 +28,21 @@ Rum SkapaVarlden()
     gardsplan.Norr = hall;
     hall.Soder = gardsplan;
 
-    InreHall hall2 = new InreHall();
-    hall.Norr = hall2;
-    hall2.Soder = hall;
-
-
-    Rum vardagsrum = new Rum("Vardagsrummet",
-        "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
-        "Ljuset från skärmen fladdrar mot de mörka tapeterna.");
-
-    // Lägg till en kort beskrivning (för framtida besök)
-    vardagsrum.VisaNamn = "Vardagsrummet";
-
-    // Lägg till TV:n som en sak man kan titta på
-    vardagsrum.SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
-
-    // Koppla ihop det med Hallen 2 (Vardagsrummet ligger till vänster, alltså Väster)
-    hall2.Vaster = vardagsrum;
-    vardagsrum.Oster = hall2;
-
-
     Kok kok = new Kok();
     hall.Vaster = kok;
     kok.Oster = hall;
 
     Kallare kallare = new Kallare();
-    // Koppla ihop källaren med Hallen (Söder ut från Hallen)
-    // Se till att variabelnamnet 'hall' matchar det du har i din kod
     hall.Oster = kallare;
     kallare.Vaster = hall;
+
+    InreHall hall2 = new InreHall();
+    hall.Norr = hall2;
+    hall2.Soder = hall;
+
+    Vardagsrum vardagsrum = new Vardagsrum();
+    hall2.Vaster = vardagsrum;
+    vardagsrum.Oster = hall2;
 
     return gardsplan;
 }
