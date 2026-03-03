@@ -8,7 +8,7 @@ Rum startRum = SkapaVarlden();
 Spelare spelare = new Spelare(startRum);
 var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "skodon", true, true, false, true);
 spelare.Ryggsack.GetAllaSaker().Add(startBoots);
-Pusselmotor.HanteraUtrustning(startBoots, spelare, spelare.Ryggsack);
+Pusselmotor.HanteraUtrustning(startBoots, spelare, null!);
 
 // 3. Starta motorn
 Spelmotor motor = new Spelmotor(spelare);
