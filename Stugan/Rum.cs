@@ -9,6 +9,8 @@ namespace Stugan
 
         public string Beskrivning { get; set; }
 
+        public bool HarBesokts { get; set; }
+
         public bool HarUndersokts { get; set; } = false;
 
         public List<Spelsak> SakerIRummet { get; set; } = new List<Spelsak>();
@@ -49,7 +51,15 @@ namespace Stugan
         {
             WriteLine($"{VisaNamn}");
             // 1. Grundbeskrivningen av rummet
-            WriteLine($"{Beskrivning}");
+            if (!HarBesokts)
+            {
+                WriteLine($"{Beskrivning}");
+                HarBesokts = true;
+            }
+            else
+            {
+                WriteLine($"Du är i {VisaNamn}.");
+            }
 
             // 2. Hitta saker som ligger framme och går att ta
             // Vi filtrerar bort de som är gömda (ArGomd == true)
@@ -63,6 +73,13 @@ namespace Stugan
                     WriteLine(sak.Namn);
                 }
             }
+        }
+
+        public void LasLangBeskrivning()
+        {
+            Clear();
+            WriteLine($"{VisaNamn}");
+            WriteLine(Beskrivning);
         }
     }
 }
