@@ -100,23 +100,7 @@ namespace Stugan
             }
         }
 
-        public static void HanteraKoket(Spelare spelare)
-        {
-            var rum = spelare.NuvarandeRum;
-            var brod = rum.SakerIRummet.FirstOrDefault(s => s.Namn == "Lunchbröd");
 
-            if (brod != null && brod.ArGomd)
-            {
-                brod.ArGomd = false; // Nu dyker det upp i rummets lista!
-                WriteLine("\nDu undersöker det dukade bordet och ser bland annat ett brödfat som är täckt med en handduk.");
-                WriteLine("Du lyfter på handduken och hittar lunchbröd!");
-                DavyKager.Tolk.Output("Du hittade lunchbröd under en handduk på bordet.");
-            }
-            else
-            {
-                WriteLine("\nKöket är rent och snyggt. Brödfatet står tomt på bordet.");
-            }
-        }
 
         public static void HanteraVardagsrummet(Spelare spelare)
         {

@@ -58,19 +58,10 @@ Rum SkapaVarlden()
     hall2.Vaster = vardagsrum;
     vardagsrum.Oster = hall2;
 
-    // Köket - Ligger rakt fram (Norr)
-    Rum kok = new Rum("Köket",
-        "Du kommer in i ett ljust och rymligt kök. Här doftar det av nybakat bröd och en hint av humle. " +
-        "Köksbordet står dukat vid fönstret.");
 
+    Kok kok = new Kok();
     hall.Vaster = kok;
     kok.Oster = hall;
-
-    // Eriksberg Karaktär - Din favorit! [cite: 2026-02-18]
-    kok.SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär."));
-
-    var brod = new AllmanSak("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true);
-    kok.SakerIRummet.Add(brod);
 
     Kallare kallare = new Kallare();
     // Koppla ihop källaren med Hallen (Söder ut från Hallen)
