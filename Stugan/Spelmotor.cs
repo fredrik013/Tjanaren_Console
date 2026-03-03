@@ -44,7 +44,8 @@ namespace Stugan
                     break;
 
                 case ConsoleKey.U:
-                    Pusselmotor.Undersok(_spelare);
+                    WriteLine($"\nDu ser dig noga omkring i {_spelare.NuvarandeRum.Namn}...");
+                    _spelare.NuvarandeRum.UndersokRum(_spelare);
                     break;
                 case ConsoleKey.T:
                     TaUppSak();
@@ -78,8 +79,17 @@ namespace Stugan
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
                 var nastaRum = _spelare.NuvarandeRum.Utgangar[riktning];
-                Pusselmotor.FarGaIn(nastaRum, _spelare);
+                if (nastaRum.KanGaIn(_spelare))
+                {
+                    _spelare.NuvarandeRum = nastaRum;
+                    Clear();
+                    System.Threading.Thread.Sleep(100); // JAWS-paus
+                    _spelare.NuvarandeRum.VisaBeskrivning();
+                }
+                // Om KanGaIn returnerar false, gör vi ingenting – 
+                // rummet har redan skrivit ut sitt felmeddelande.
             }
+
             else
             {
                 // Om det inte finns en dörr där

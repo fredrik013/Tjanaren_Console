@@ -86,5 +86,15 @@ namespace Stugan
             WriteLine(Beskrivning);
             VisaSakerIRummet();
         }
+
+        public virtual void UndersokRum(Spelare spelare)
+        {
+            // Som standard händer ingenting speciellt.
+        }
+
+        public virtual bool KanGaIn(Spelare s)
+        {
+            return true; // Standard: Alla får komma in!
+        }
     }
 }
