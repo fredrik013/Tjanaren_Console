@@ -45,6 +45,24 @@ namespace Stugan
 
                 switch (k)
                 {
+                    // Inne i switch (k) i Inventory.cs:
+
+                    case ConsoleKey.U:
+                        var sakAttSe = _saker[_markeratIndex];
+
+                        // Vi hämtar den befintliga beskrivningen från objektet
+                        string info = string.IsNullOrWhiteSpace(sakAttSe.Beskrivning)
+                                      ? $"Det finns inget särskilt att notera om {sakAttSe.Namn}."
+                                      : sakAttSe.Beskrivning;
+
+                        // Skriv ut på rad 12 så JAWS läser upp det direkt
+                        SetCursorPosition(0, 12);
+                        WriteLine(info.PadRight(Console.WindowWidth));
+
+                        // Vi pausar lite så man hinner höra beskrivningen innan man trycker vidare
+                        System.Threading.Thread.Sleep(500);
+                        break;
+
                     case ConsoleKey.DownArrow:
                         if (_markeratIndex < _saker.Count - 1)
                         {
@@ -145,19 +163,41 @@ namespace Stugan
         {
             if (sak is Klader plagg)
             {
-                plagg.ArAktiv = !plagg.ArAktiv;
-                if (plagg.Typ.ToLower() == "skodon" && inv != null)
+                plagg.ArAktiv = !plagg.ArAktiv; // Växla status (på/av)
+
+                // Vi kollar på typen i gemener så vi inte råkar missa pga stor bokstav
+                switch (plagg.Typ.ToLower())
                 {
-                    if (plagg.ArAktiv)
-                    {
-                        inv.AvaktiveraTyp("skodon");
-                        plagg.ArAktiv = true;
-                    }
-                    s.AktivtSkodon = plagg.ArAktiv ? plagg.Namn : "";
+                    case "ute":
+                    case "inne":
+                        if (inv != null && plagg.ArAktiv)
+                        {
+                            // Om vi tar på oss något för fötterna, klä av alla andra fotsaker
+                            inv.AvaktiveraTyp("ute");
+                            inv.AvaktiveraTyp("inne");
+                            plagg.ArAktiv = true; // Sätt på just detta plagg igen
+
+                            s.AktivtSkodon = plagg.Typ; // Spara typen (Ute/Inne) hos spelaren
+                        }
+                        else if (!plagg.ArAktiv)
+                        {
+                            s.AktivtSkodon = ""; // Vi tog av oss skorna helt
+                        }
+                        break;
+
+                    case "plagg":
+                        // Mössor, vantar etc. behöver ingen extra logik för fötterna
+                        break;
+
+                    default:
+                        // Om vi glömt sätta en typ, händer inget speciellt
+                        break;
                 }
+
                 return plagg.ArAktiv ? $"Du tar på dig {plagg.Namn}." : $"Du tar av dig {plagg.Namn}.";
             }
 
+            // Vanliga saker (mat, dryck, nycklar)
             string meddelande = sak.Anvand(s);
             if (sak.ForsvinnerVidAnvandning && inv != null)
             {
@@ -184,7 +224,7 @@ namespace Stugan
 
             // 3. Skriv ut raden visuellt med markören ">"
             // PadRight(40) är viktig för att sudda ut gammal text
-            Write($"> {sak.Namn}{status}".PadRight(40));
+            Write($"{sak.Namn}{status}".PadRight(40));
 
             // 4. För att JAWS ska läsa upp statusen korrekt utan Tolk:
             // Vi sätter markören i slutet av raden vi just skrev. 

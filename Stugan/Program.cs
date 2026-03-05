@@ -7,7 +7,7 @@ Rum startRum = SkapaVarlden();
 
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
-var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "skodon", true, true, false, true);
+var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "ute", true, true, false, true);
 spelare.Ryggsack.GetAllaSaker().Add(startBoots);
 Inventory.HanteraUtrustning(startBoots, spelare, null!);
 
