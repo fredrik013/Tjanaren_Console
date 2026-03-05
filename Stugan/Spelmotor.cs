@@ -17,6 +17,8 @@ namespace Stugan
         {
             // Första hälsningen till JAWS
             WriteLine("Välkommen till Stugan!");
+            WriteLine("Du står utanför den gamla träbyggnaden.");
+            WriteLine("Du har din ryggsäck på ryggen och dina boots är ordentligt snörade på fötterna.");
 
             // Visa rummet man startar i
             _spelare.NuvarandeRum.VisaBeskrivning();
