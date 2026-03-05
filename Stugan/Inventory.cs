@@ -169,14 +169,31 @@ namespace Stugan
         private void UppmärksammaRad(bool skaPrata = true)
         {
             if (_saker.Count == 0) return;
+
+            // 1. Flytta markören till den raden vi står på (+1 för rubriken)
             SetCursorPosition(0, _markeratIndex + 1);
+
             var sak = _saker[_markeratIndex];
-            string status = (sak is Klader p && p.ArAktiv) ? " påtagen" : "";
 
-            // Skriv ut raden igen för att visa markören visuellt
-            Write($" {sak.Namn}{status}".PadRight(40));
+            // 2. Fixa statussträngen så den matchar det du vill höra
+            string status = "";
+            if (sak is Klader p)
+            {
+                status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
+            }
 
-            if (skaPrata) Write($"{sak.Namn}{status}");
+            // 3. Skriv ut raden visuellt med markören ">"
+            // PadRight(40) är viktig för att sudda ut gammal text
+            Write($"> {sak.Namn}{status}".PadRight(40));
+
+            // 4. För att JAWS ska läsa upp statusen korrekt utan Tolk:
+            // Vi sätter markören i slutet av raden vi just skrev. 
+            // Det tvingar skärmläsaren att fokusera på den nya texten.
+            if (skaPrata)
+            {
+                // Vi behöver inte en extra Write här, piltangenterna och 
+                // SetCursorPosition sköter snacket om vi har skrivit ut texten ovan.
+            }
         }
     }
 }
