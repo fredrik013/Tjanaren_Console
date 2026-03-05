@@ -45,6 +45,24 @@ namespace Stugan
 
                 switch (k)
                 {
+                    // Inne i switch (k) i Inventory.cs:
+
+                    case ConsoleKey.U:
+                        var sakAttSe = _saker[_markeratIndex];
+
+                        // Vi hämtar den befintliga beskrivningen från objektet
+                        string info = string.IsNullOrWhiteSpace(sakAttSe.Beskrivning)
+                                      ? $"Det finns inget särskilt att notera om {sakAttSe.Namn}."
+                                      : sakAttSe.Beskrivning;
+
+                        // Skriv ut på rad 12 så JAWS läser upp det direkt
+                        SetCursorPosition(0, 12);
+                        WriteLine(info.PadRight(Console.WindowWidth));
+
+                        // Vi pausar lite så man hinner höra beskrivningen innan man trycker vidare
+                        System.Threading.Thread.Sleep(500);
+                        break;
+
                     case ConsoleKey.DownArrow:
                         if (_markeratIndex < _saker.Count - 1)
                         {
@@ -184,7 +202,7 @@ namespace Stugan
 
             // 3. Skriv ut raden visuellt med markören ">"
             // PadRight(40) är viktig för att sudda ut gammal text
-            Write($"> {sak.Namn}{status}".PadRight(40));
+            Write($"{sak.Namn}{status}".PadRight(40));
 
             // 4. För att JAWS ska läsa upp statusen korrekt utan Tolk:
             // Vi sätter markören i slutet av raden vi just skrev. 
