@@ -1,6 +1,4 @@
-﻿using static System.Console;
-
-namespace Stugan
+﻿namespace Stugan
 {
     public class Klader : Spelsak
     {
@@ -20,17 +18,20 @@ namespace Stugan
             ArAktiv = false;
         }
 
-        public override void Anvand(Spelare s)
+        public override string Anvand(Spelare s)
         {
-            // Här kan vi senare lägga till logik som kollar 'Typ' 
-            // så att man inte kan ha både tofflor och stövlar samtidigt.
-            this.ArAktiv = true;
-            WriteLine($"Du tar på dig {this.Namn}.");
+            // Vi växlar status: på blir av, av blir på.
+            ArAktiv = !ArAktiv;
 
-            if (SkyddarMotVatten)
+            string statusText = ArAktiv ? "tar på dig" : "tar av dig";
+            string meddelande = $"Du {statusText} {Namn}.";
+
+            if (ArAktiv && SkyddarMotVatten)
             {
-                WriteLine("Den här kommer hålla dig torr!");
+                meddelande += " Den här kommer hålla dig torr!";
             }
+
+            return meddelande;
         }
     }
 }
