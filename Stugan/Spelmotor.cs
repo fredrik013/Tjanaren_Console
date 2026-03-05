@@ -17,6 +17,8 @@ namespace Stugan
         {
             // Första hälsningen till JAWS
             WriteLine("Välkommen till Stugan!");
+            WriteLine("Du står utanför den gamla träbyggnaden.");
+            WriteLine("Du har din ryggsäck på ryggen och dina boots är ordentligt snörade på fötterna.");
 
             // Visa rummet man startar i
             _spelare.NuvarandeRum.VisaBeskrivning();
@@ -100,39 +102,48 @@ namespace Stugan
         private void TaUppSak()
         {
             var rum = _spelare.NuvarandeRum;
-
-            // Vi använder samma logik som i din Rum.cs för att hitta vad som faktiskt syns
             var sakerAttTa = rum.SakerIRummet.Where(s => s.KanPlockasUpp && !s.ArGomd).ToList();
 
             if (sakerAttTa.Count == 0)
             {
                 WriteLine("\nDet finns inget här som du kan ta upp.");
+                return;
             }
-            else if (sakerAttTa.Count == 1)
+
+            if (sakerAttTa.Count == 1)
             {
                 var sak = sakerAttTa[0];
-
-                // Flytta saken
                 _spelare.Ryggsack.LaggTill(sak);
                 rum.SakerIRummet.Remove(sak);
-
                 WriteLine($"\nDu plockar upp: {sak.Namn}.");
+                System.Threading.Thread.Sleep(800);
             }
             else
             {
-                // Om det ligger både öl och bröd framme (lyx!)
-                WriteLine("\nDet finns flera saker här. Vilken vill du ta?");
+                WriteLine("\nDet finns flera saker här. Vilken vill du ta? (Tryck på siffran)");
                 for (int i = 0; i < sakerAttTa.Count; i++)
                 {
                     WriteLine($"{i + 1}. {sakerAttTa[i].Namn}");
                 }
 
-                // Här kan vi senare lägga till en ReadLine för att välja, 
-                // men vi tar den första så länge så du får testa funktionen.
-                var sak = sakerAttTa[0];
-                _spelare.Ryggsack.LaggTill(sak);
-                rum.SakerIRummet.Remove(sak);
-                WriteLine($"\n(Du tog {sak.Namn})");
+                // Här väntar vi på en siffertangent
+                var knapp = ReadKey(true);
+
+                // Vi gör om char-tecknet till en siffra (t.ex. '1' blir int 1)
+                if (int.TryParse(knapp.KeyChar.ToString(), out int val) && val > 0 && val <= sakerAttTa.Count)
+                {
+                    var sak = sakerAttTa[val - 1]; // -1 eftersom listan börjar på 0
+                    _spelare.Ryggsack.LaggTill(sak);
+                    rum.SakerIRummet.Remove(sak);
+
+                    WriteLine($"\nDu valde att ta: {sak.Namn}.");
+                    System.Threading.Thread.Sleep(1000); // Paus för JAWS
+                }
+                else
+                {
+                    WriteLine("\nOgiltigt val, du plockade inte upp något.");
+                    System.Threading.Thread.Sleep(800);
+                }
             }
         }
     }

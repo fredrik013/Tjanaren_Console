@@ -1,5 +1,4 @@
-﻿using DavyKager;
-using static System.Console;
+﻿using static System.Console;
 
 namespace Stugan
 {
@@ -32,7 +31,7 @@ namespace Stugan
             _markeratIndex = 0;
 
             Clear();
-            WriteLine("--- RYGGSÄCK ---");
+            WriteLine("RYGGSÄCK");
             for (int i = 0; i < _saker.Count; i++)
             {
                 WriteLine($"   {_saker[i].Namn}");
@@ -89,6 +88,41 @@ namespace Stugan
                     case ConsoleKey.I:
                         tittar = false;
                         break;
+
+                    case ConsoleKey.Delete:
+                        var sakAttSlappa = _saker[_markeratIndex];
+
+                        // Om det är kläder vi har på oss, ta av dem först så statusen blir rätt
+                        if (sakAttSlappa is Klader plagg)
+                        {
+                            plagg.ArAktiv = false;
+                            if (plagg.Typ.ToLower() == "skodon") s.AktivtSkodon = "";
+                        }
+
+                        // Flytta från ryggsäck till rummet
+                        s.NuvarandeRum.SakerIRummet.Add(sakAttSlappa);
+                        _saker.RemoveAt(_markeratIndex);
+
+                        // Bekräftelse till användaren
+                        SetCursorPosition(0, 12);
+                        WriteLine($"Du lämnade {sakAttSlappa.Namn} i {s.NuvarandeRum.Namn}.".PadRight(Console.WindowWidth));
+
+                        System.Threading.Thread.Sleep(1000); // Paus för JAWS
+
+                        if (_saker.Count == 0)
+                        {
+                            tittar = false;
+                        }
+                        else
+                        {
+                            // Justera index så vi inte hamnar utanför listan
+                            if (_markeratIndex >= _saker.Count) _markeratIndex = _saker.Count - 1;
+
+                            // Rita om och fortsätt
+                            Visa(s);
+                            return;
+                        }
+                        break;
                 }
             }
         }
@@ -97,7 +131,7 @@ namespace Stugan
         private void RitaHelaMenyn()
         {
             Clear();
-            WriteLine("--- RYGGSÄCK ---");
+            WriteLine("RYGGSÄCK");
             for (int i = 0; i < _saker.Count; i++)
             {
                 string markor = (i == _markeratIndex) ? "> " : "  ";
@@ -135,14 +169,31 @@ namespace Stugan
         private void UppmärksammaRad(bool skaPrata = true)
         {
             if (_saker.Count == 0) return;
+
+            // 1. Flytta markören till den raden vi står på (+1 för rubriken)
             SetCursorPosition(0, _markeratIndex + 1);
+
             var sak = _saker[_markeratIndex];
-            string status = (sak is Klader p && p.ArAktiv) ? " påtagen" : "";
 
-            // Skriv ut raden igen för att visa markören visuellt
-            Write($" {sak.Namn}{status}".PadRight(40));
+            // 2. Fixa statussträngen så den matchar det du vill höra
+            string status = "";
+            if (sak is Klader p)
+            {
+                status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
+            }
 
-            if (skaPrata) Tolk.Output($"{sak.Namn}{status}");
+            // 3. Skriv ut raden visuellt med markören ">"
+            // PadRight(40) är viktig för att sudda ut gammal text
+            Write($"> {sak.Namn}{status}".PadRight(40));
+
+            // 4. För att JAWS ska läsa upp statusen korrekt utan Tolk:
+            // Vi sätter markören i slutet av raden vi just skrev. 
+            // Det tvingar skärmläsaren att fokusera på den nya texten.
+            if (skaPrata)
+            {
+                // Vi behöver inte en extra Write här, piltangenterna och 
+                // SetCursorPosition sköter snacket om vi har skrivit ut texten ovan.
+            }
         }
     }
 }
