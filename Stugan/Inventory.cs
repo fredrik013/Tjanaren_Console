@@ -163,19 +163,41 @@ namespace Stugan
         {
             if (sak is Klader plagg)
             {
-                plagg.ArAktiv = !plagg.ArAktiv;
-                if (plagg.Typ.ToLower() == "skodon" && inv != null)
+                plagg.ArAktiv = !plagg.ArAktiv; // Växla status (på/av)
+
+                // Vi kollar på typen i gemener så vi inte råkar missa pga stor bokstav
+                switch (plagg.Typ.ToLower())
                 {
-                    if (plagg.ArAktiv)
-                    {
-                        inv.AvaktiveraTyp("skodon");
-                        plagg.ArAktiv = true;
-                    }
-                    s.AktivtSkodon = plagg.ArAktiv ? plagg.Namn : "";
+                    case "ute":
+                    case "inne":
+                        if (inv != null && plagg.ArAktiv)
+                        {
+                            // Om vi tar på oss något för fötterna, klä av alla andra fotsaker
+                            inv.AvaktiveraTyp("ute");
+                            inv.AvaktiveraTyp("inne");
+                            plagg.ArAktiv = true; // Sätt på just detta plagg igen
+
+                            s.AktivtSkodon = plagg.Typ; // Spara typen (Ute/Inne) hos spelaren
+                        }
+                        else if (!plagg.ArAktiv)
+                        {
+                            s.AktivtSkodon = ""; // Vi tog av oss skorna helt
+                        }
+                        break;
+
+                    case "plagg":
+                        // Mössor, vantar etc. behöver ingen extra logik för fötterna
+                        break;
+
+                    default:
+                        // Om vi glömt sätta en typ, händer inget speciellt
+                        break;
                 }
+
                 return plagg.ArAktiv ? $"Du tar på dig {plagg.Namn}." : $"Du tar av dig {plagg.Namn}.";
             }
 
+            // Vanliga saker (mat, dryck, nycklar)
             string meddelande = sak.Anvand(s);
             if (sak.ForsvinnerVidAnvandning && inv != null)
             {

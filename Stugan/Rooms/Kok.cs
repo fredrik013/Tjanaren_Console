@@ -41,11 +41,15 @@ namespace Stugan.Rooms
 
         public override bool KanGaIn(Spelare s)
         {
-            if (s.AktivtSkodon == "Boots")
+            // Vi kollar om spelaren har på sig något av typen "Ute"
+            // Vi använder ToLower() för att vara säkra, ifall vi råkat skriva "ute" med litet u på något plagg.
+            if (s.AktivtSkodon.ToLower() == "ute")
             {
-                WriteLine("Stopp! Du kan inte gå in i köket med leriga boots.");
+                WriteLine("Stopp! Du kan inte gå in i köket med uteskor, du smutsar ner det fina golvet!");
                 return false;
             }
+
+            // Om AktivtSkodon är "Inne" eller en tom sträng (barfota) släpps man förbi.
             return true;
         }
     }
