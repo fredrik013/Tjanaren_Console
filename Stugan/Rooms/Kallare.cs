@@ -9,7 +9,7 @@ namespace Stugan.Rooms
                     "Ett släpande ljud hörs inifrån mörkret.")
         {
             // Vi lägger in tofflorna här direkt
-            SakerIRummet.Add(new Klader("Innetofflor", "Mjuka innetofflor för fina mattor.", "inne", false, true, true, false));
+            SakerIRummet.Add(new Klader("Innetofflor", "Mjuka innetofflor för fina mattor.", "inne", false, true, true));
         }
 
         public override void UndersokRum(Spelare spelare)

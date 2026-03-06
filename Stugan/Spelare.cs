@@ -18,5 +18,21 @@
             AktivtSkodon = "ute";
             ArSkadad = false;
         }
+
+        public string AktivtSkodonNamn
+        {
+            get
+            {
+                // Vi letar i ryggsäcken efter det plagg som är aktivt 
+                // och som matchar den aktuella skotypen (inne/ute).
+                var skodon = Ryggsack.GetAllaSaker()
+                    .OfType<Klader>()
+                    .FirstOrDefault(k => k.ArAktiv && (k.Typ == "inne" || k.Typ == "ute"));
+
+                // Om vi hittar ett plagg, returnera dess namn. 
+                // Annars returnera en tom sträng.
+                return skodon?.Namn ?? string.Empty;
+            }
+        }
     }
 }
