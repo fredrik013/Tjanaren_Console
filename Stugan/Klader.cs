@@ -16,8 +16,6 @@
         {
             Typ = typ;
             SkyddarMotVatten = skyddarmotvatten;
-            ArAktiv = false;
-            // Om inget meddelande skickas med, använd standard
             MeddelandePa = string.IsNullOrEmpty(meddelandePa) ? $"Du tar på dig {namn}." : meddelandePa;
             MeddelandeAv = string.IsNullOrEmpty(meddelandeAv) ? $"Du tar av dig {namn}." : meddelandeAv;
         }
