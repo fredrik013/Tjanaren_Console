@@ -96,5 +96,10 @@ namespace Stugan
         {
             return true; // Standard: Alla får komma in!
         }
+
+        public virtual void ReageraPaHandling(string handling)
+        {
+            // Som standard händer absolut ingenting här.
+        }
     }
 }

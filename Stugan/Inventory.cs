@@ -163,9 +163,11 @@ namespace Stugan
         {
             if (sak is Klader plagg)
             {
-                plagg.ArAktiv = !plagg.ArAktiv; // Växla status (på/av)
+                // 1. VIKTIGT: Vi anropar objektets egna Anvand-metod!
+                // Den sköter ArAktiv = !ArAktiv, meddelanden och rummets reaktion.
+                string meddelandeFrånPlagget = plagg.Anvand(s);
 
-                // Vi kollar på typen i gemener så vi inte råkar missa pga stor bokstav
+                // 2. Hantera logiken för fötterna (utesluter andra skor om man tar på sig nya)
                 switch (plagg.Typ.ToLower())
                 {
                     case "ute":
@@ -173,37 +175,30 @@ namespace Stugan
                         if (inv != null && plagg.ArAktiv)
                         {
                             // Om vi tar på oss något för fötterna, klä av alla andra fotsaker
-                            inv.AvaktiveraTyp("ute");
-                            inv.AvaktiveraTyp("inne");
-                            plagg.ArAktiv = true; // Sätt på just detta plagg igen
-
-                            s.AktivtSkodon = plagg.Typ; // Spara typen (Ute/Inne) hos spelaren
+                            // (Men vi rör inte 'plagg.ArAktiv' för JUST DETTA plagg igen, 
+                            // det sköttes nyss i plagg.Anvand)
+                            foreach (var annanSak in inv.GetAllaSaker())
+                            {
+                                if (annanSak is Klader k && k != plagg && (k.Typ == "ute" || k.Typ == "inne"))
+                                {
+                                    k.ArAktiv = false;
+                                }
+                            }
+                            s.AktivtSkodon = plagg.Typ;
                         }
                         else if (!plagg.ArAktiv)
                         {
-                            s.AktivtSkodon = ""; // Vi tog av oss skorna helt
+                            s.AktivtSkodon = "";
                         }
-                        break;
-
-                    case "plagg":
-                        // Mössor, vantar etc. behöver ingen extra logik för fötterna
-                        break;
-
-                    default:
-                        // Om vi glömt sätta en typ, händer inget speciellt
                         break;
                 }
 
-                return plagg.ArAktiv ? $"Du tar på dig {plagg.Namn}." : $"Du tar av dig {plagg.Namn}.";
+                // 3. Returnera det personliga meddelandet vi hämtade från plagg.Anvand
+                return meddelandeFrånPlagget;
             }
 
             // Vanliga saker (mat, dryck, nycklar)
-            string meddelande = sak.Anvand(s);
-            if (sak.ForsvinnerVidAnvandning && inv != null)
-            {
-                inv.GetAllaSaker().Remove(sak);
-            }
-            return meddelande;
+            return sak.Anvand(s);
         }
 
         private void UppmärksammaRad(bool skaPrata = true)

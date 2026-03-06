@@ -2,34 +2,40 @@
 {
     public class Klader : Spelsak
     {
+        public string Typ { get; set; }
+
+        public string MeddelandePa { get; set; } // Ny: Eget meddelande vid PÅ
+
+        public string MeddelandeAv { get; set; } // Ny: Eget meddelande vid AV
+
         public bool SkyddarMotVatten { get; set; }
 
-        public string Typ { get; set; } // t.ex. "Huvud", "Kropp", "Fot"
-
-        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten, bool kanplockasupp, bool argomd, bool araktiv)
-: base(namn, beskrivning, kanplockasupp, argomd)
+        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten,
+                              bool kanplockasupp, bool argomd, string meddelandePa = "", string meddelandeAv = "")
+                    : base(namn, beskrivning, kanplockasupp, argomd)
         {
-            Namn = namn;
-            Beskrivning = beskrivning;
             Typ = typ;
             SkyddarMotVatten = skyddarmotvatten;
-            KanPlockasUpp = kanplockasupp;
-            ArGomd = argomd;
             ArAktiv = false;
+            // Om inget meddelande skickas med, använd standard
+            MeddelandePa = string.IsNullOrEmpty(meddelandePa) ? $"Du tar på dig {namn}." : meddelandePa;
+            MeddelandeAv = string.IsNullOrEmpty(meddelandeAv) ? $"Du tar av dig {namn}." : meddelandeAv;
         }
 
         public override string Anvand(Spelare s)
         {
-            // Vi växlar status: på blir av, av blir på.
             ArAktiv = !ArAktiv;
 
-            string statusText = ArAktiv ? "tar på dig" : "tar av dig";
-            string meddelande = $"Du {statusText} {Namn}.";
+            // Använd de personliga meddelandena istället för generisk logik
+            string meddelande = ArAktiv ? MeddelandePa : MeddelandeAv;
 
-            if (ArAktiv && SkyddarMotVatten)
+            if (ArAktiv && SkyddarMotVatten && !meddelande.Contains("torr"))
             {
-                meddelande += " Den här kommer hålla dig torr!";
+                meddelande += " De här kommer hålla dig torr!";
             }
+
+            // Här triggar vi även rummets reaktion om det finns en sådan
+            s.NuvarandeRum.ReageraPaHandling(ArAktiv ? $"pa_{Namn.ToLower()}" : $"av_{Namn.ToLower()}");
 
             return meddelande;
         }
