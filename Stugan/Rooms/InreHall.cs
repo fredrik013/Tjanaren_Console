@@ -4,7 +4,8 @@ namespace Stugan.Rooms
 {
     public class InreHall : Rum
     {
-        public InreHall() : base("Hallen", "Du fortsätter längre in i hallen och kommer in på en mjuk heltäckande matta. Här ska man säkert inte gå med några leriga boots." + "Till vänster hör du en TV. Kanske det är vardagsrummet.")
+        public InreHall() : base("Hallen", "Du fortsätter längre in i hallen. Golvet här täcks av en tjock, ljus och extremt mjuk heltäckningsmatta " +
+            "som verkar suga upp allt ljud. Till vänster hörs det dämpade ljudet från en TV – det måste vara vardagsrummet.")
         {
         }
 

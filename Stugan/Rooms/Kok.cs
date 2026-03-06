@@ -17,7 +17,7 @@ namespace Stugan.Rooms
 
             SakerIRummet.Add(new AllmanSak("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true)
             {
-                Anvandningsmeddelande = "Du skär upp en rejäl skiva av det nybakade brödet. Mums!",
+                Anvandningsmeddelande = "Du äter upp det nybakade brödet. Mums!",
                 ForsvinnerVidAnvandning = true
             });
         }
