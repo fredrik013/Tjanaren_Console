@@ -4,6 +4,9 @@ namespace Stugan.Rooms
 {
     public class Vardagsrum : Rum
     {
+        private bool harLuftats = false; // För framtiden om man öppnar fönstret?
+        private bool luktarSvett = false;
+
         public Vardagsrum() : base("Vardagsrummet", "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
         "Ljuset från skärmen fladdrar mot de mörka tapeterna.")
         {
@@ -15,6 +18,11 @@ namespace Stugan.Rooms
             var rum = spelare.NuvarandeRum;
             // Vi letar fortfarande efter TV-objektet för att veta om vi kan interagera
             var tv = rum.SakerIRummet.FirstOrDefault(s => s.Namn.Equals("TV", StringComparison.OrdinalIgnoreCase));
+
+            if (luktarSvett)
+            {
+                WriteLine("\nDet vilar en tung, unken doft av fotsvett i rummet.");
+            }
 
             if (tv == null)
             {
@@ -49,6 +57,34 @@ namespace Stugan.Rooms
             else
             {
                 WriteLine("\nTV:n står mörk och tyst. Du ser din spegelbild i det svarta glaset.");
+            }
+        }
+
+        public override void ReageraPaHandling(string handling)
+        {
+            switch (handling.ToLower())
+            {
+                case "pa_ute":
+                    WriteLine("\n[TV:N SPRAKAR TILL]");
+                    WriteLine("'...smutsen från utsidan följer dina steg... det gillas inte...'");
+                    break;
+
+                case "pa_inne":
+                    WriteLine("\n[TV:N FLIMRAR TILL]");
+                    WriteLine("'...mjuka steg... ett klokt val... men sök vidare...'");
+                    break;
+
+                case "av_ute":
+                    luktarSvett = true; // Nu sitter det i väggarna!
+                    WriteLine("\n[TV:N GER IFRÅN SIG ETT DISKRET PIP]");
+                    WriteLine("'...äntligen... men aromen av instängda fötter dröjer sig kvar...'");
+                    WriteLine("En lätt dimma av tveksam doft sprider sig från de varma bootsen.");
+                    break;
+
+                case "av_inne":
+                    WriteLine("\n[TV:N KNÄPPER TILL]");
+                    WriteLine("Rummet känns plötsligt väldigt tyst när du tar av dig tofflorna.");
+                    break;
             }
         }
     }
