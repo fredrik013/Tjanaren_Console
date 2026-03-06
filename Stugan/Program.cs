@@ -7,9 +7,6 @@ Rum startRum = SkapaVarlden();
 
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
-var startBoots = new Klader("Boots", "Dina trogna men leriga boots.", "ute", true, true, false, "Du snörar på dig bootsen.", "Du sparkar av dig bootsen.");
-spelare.Ryggsack.GetAllaSaker().Add(startBoots);
-Inventory.HanteraUtrustning(startBoots, spelare, null!);
 
 // 3. Starta motorn
 Spelmotor motor = new Spelmotor(spelare);
