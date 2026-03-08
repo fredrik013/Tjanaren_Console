@@ -23,17 +23,11 @@
         public override string Anvand(Spelare s)
         {
             ArAktiv = !ArAktiv;
-
-            // Använd de personliga meddelandena istället för generisk logik
             string meddelande = ArAktiv ? MeddelandePa : MeddelandeAv;
 
-            if (ArAktiv && SkyddarMotVatten && !meddelande.Contains("torr"))
-            {
-                meddelande += " De här kommer hålla dig torr!";
-            }
-
-            // Här triggar vi även rummets reaktion om det finns en sådan
-            s.NuvarandeRum.ReageraPaHandling(ArAktiv ? $"pa_{Namn.ToLower()}" : $"av_{Namn.ToLower()}");
+            // Vi skickar med Typ (t.ex. "ute" eller "inne") istället för Namn
+            string handlingStrang = (ArAktiv ? "pa_" : "av_") + Typ.ToLower();
+            s.NuvarandeRum.ReageraPaHandling(handlingStrang);
 
             return meddelande;
         }

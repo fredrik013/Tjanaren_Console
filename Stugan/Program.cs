@@ -17,6 +17,7 @@ motor.Starta();
 Rum SkapaVarlden()
 {
     Gardsplan gardsplan = new Gardsplan();
+
     Hall hall = new Hall();
     gardsplan.Norr = hall;
     hall.Soder = gardsplan;
@@ -36,6 +37,10 @@ Rum SkapaVarlden()
     Vardagsrum vardagsrum = new Vardagsrum();
     hall2.Vaster = vardagsrum;
     vardagsrum.Oster = hall2;
+
+    Glasveranda glasveranda = new Glasveranda();
+    vardagsrum.Vaster = glasveranda;
+    glasveranda.Oster = vardagsrum;
 
     return gardsplan;
 }
