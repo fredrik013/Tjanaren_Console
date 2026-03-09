@@ -1,6 +1,4 @@
-﻿using static System.Console;
-
-namespace Stugan
+﻿namespace Stugan
 {
     public class Redskap : Spelsak
     {
@@ -11,10 +9,11 @@ namespace Stugan
             ArGomd = arGomd;
         }
 
-        public override void Anvand(Spelare spelare)
+        public override string Anvand(Spelare spelare)
         {
-            WriteLine($"Du använder {Namn} för att {AnvandningsOmrade}.");
-            // Här kan vi lägga till specifik logik senare
+            // Istället för WriteLine, så returnerar vi strängen 
+            // så att spelmotorn kan bestämma när den ska läsas upp.
+            return $"Du använder {Namn}.";
         }
     }
 }
