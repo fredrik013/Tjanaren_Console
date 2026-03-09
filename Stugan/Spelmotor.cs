@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using Stugan.Core;
+using static System.Console;
 
 namespace Stugan
 {
@@ -6,11 +7,14 @@ namespace Stugan
     {
         private Spelare _spelare;
 
+        private WorldMap _worldMap;
+
         private bool _isrunning = true;
 
-        public Spelmotor(Spelare spelare)
+        public Spelmotor(Spelare spelare, WorldMap worldMap)
         {
             _spelare = spelare;
+            _worldMap = worldMap;
         }
 
         public void Starta()
