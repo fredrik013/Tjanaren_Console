@@ -1,46 +1,51 @@
 ﻿using Stugan;
+using Stugan.Core;
 using Stugan.Rooms;
 
 // 1. Skapa världen (Rum och föremål)
 
-Rum startRum = SkapaVarlden();
+WorldMap karta = new WorldMap();
+Rum startRum = SkapaVarlden(karta);
 
 // 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
 
 // 3. Starta motorn
-Spelmotor motor = new Spelmotor(spelare);
+Spelmotor motor = new Spelmotor(spelare, karta);
 motor.Starta();
 
 // --- Lokala funktioner (Längst ner i filen) ---
 
-Rum SkapaVarlden()
+Rum SkapaVarlden(WorldMap karta)
 {
     Gardsplan gardsplan = new Gardsplan();
+    gardsplan.Plats = new Position(0, 0, 0);
+    karta.LaggTillRum(gardsplan.Plats, gardsplan);
 
     Hall hall = new Hall();
-    gardsplan.Norr = hall;
-    hall.Soder = gardsplan;
+    hall.Plats = new Position(0, 1, 0);
+    karta.LaggTillRum(hall.Plats, hall);
 
     Kok kok = new Kok();
-    hall.Vaster = kok;
-    kok.Oster = hall;
+    kok.Plats = new Position(-1, 1, 0);
+    karta.LaggTillRum(kok.Plats, kok);
 
     Kallare kallare = new Kallare();
-    hall.Oster = kallare;
-    kallare.Vaster = hall;
+    kallare.Plats = new Position(0, 1, -1);
+    karta.LaggTillRum(kallare.Plats, kallare);
+
 
     InreHall hall2 = new InreHall();
-    hall.Norr = hall2;
-    hall2.Soder = hall;
+    hall2.Plats = new Position(0, 2, 0);
+    karta.LaggTillRum(hall2.Plats, hall2);
 
     Vardagsrum vardagsrum = new Vardagsrum();
-    hall2.Vaster = vardagsrum;
-    vardagsrum.Oster = hall2;
+    vardagsrum.Plats = new Position(-1, 2, 0);
+    karta.LaggTillRum(vardagsrum.Plats, vardagsrum);
 
     Glasveranda glasveranda = new Glasveranda();
-    vardagsrum.Vaster = glasveranda;
-    glasveranda.Oster = vardagsrum;
+    glasveranda.Plats = new Position(-2, 2, 0);
+    karta.LaggTillRum(glasveranda.Plats, glasveranda);
 
     return gardsplan;
 }

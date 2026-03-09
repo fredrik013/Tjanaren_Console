@@ -50,7 +50,7 @@ namespace Stugan.Rooms
             {
                 // Här hittar vi dem!
                 WriteLine("\nDu undersöker den torra hyllan högt upp på väggen.");
-                WriteLine("Dina fingrar nuddar något mjukt... det är innetofflorna!");
+                WriteLine("Dina fingrar nuddar något mjukt... det är ett par innetofflor!");
 
                 // VIKTIGT: Vi sätter ArGomd till false så de blir synliga i rummet/kan tas upp
                 tofflor.ArGomd = false;

@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using Stugan.Core;
+using static System.Console;
 
 namespace Stugan
 {
@@ -6,11 +7,14 @@ namespace Stugan
     {
         private Spelare _spelare;
 
+        private WorldMap _worldMap;
+
         private bool _isrunning = true;
 
-        public Spelmotor(Spelare spelare)
+        public Spelmotor(Spelare spelare, WorldMap worldMap)
         {
             _spelare = spelare;
+            _worldMap = worldMap;
         }
 
         public void Starta()
@@ -49,24 +53,39 @@ namespace Stugan
                     WriteLine($"\nDu ser dig noga omkring i {_spelare.NuvarandeRum.Namn}...");
                     _spelare.NuvarandeRum.UndersokRum(_spelare);
                     break;
+
                 case ConsoleKey.T:
                     TaUppSak();
                     break;
+
                 case ConsoleKey.B:
                     _spelare.NuvarandeRum.LasLangBeskrivning();
                     break;
+
                 case ConsoleKey.UpArrow:
                     FlyttaSpelare("Norr");
                     break;
+
                 case ConsoleKey.DownArrow:
                     FlyttaSpelare("Soder");
                     break;
+
                 case ConsoleKey.RightArrow:
                     FlyttaSpelare("Oster");
                     break;
+
                 case ConsoleKey.LeftArrow:
                     FlyttaSpelare("Vaster");
                     break;
+
+                case ConsoleKey.PageUp:
+                    FlyttaSpelare("Upp");
+                    break;
+
+                case ConsoleKey.PageDown:
+                    FlyttaSpelare("Ner");
+                    break;
+
                 default:
                     // Här kan vi lägga in ett litet ljud eller meddelande 
                     // om man trycker på en knapp som inte gör något
@@ -76,26 +95,38 @@ namespace Stugan
 
         private void FlyttaSpelare(string riktning)
         {
+            Position nuvarandePos = _spelare.NuvarandeRum.Plats;
 
-            // 1. Kolla om det rum spelaren står i har en utgång åt det här hållet
-            if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
+            int x = nuvarandePos.X;
+            int y = nuvarandePos.Y;
+            int z = nuvarandePos.Z;
+
+            switch (riktning)
             {
-                var nastaRum = _spelare.NuvarandeRum.Utgangar[riktning];
+                case "Norr": y++; break;
+                case "Soder": y--; break;
+                case "Oster": x++; break;
+                case "Vaster": x--; break;
+                case "Upp": z++; break; // Page Up ökar Z
+                case "Ner": z--; break; // Page Down minskar Z
+            }
+
+            Position nastaPos = new Position(x, y, z);
+            Rum nastaRum = _worldMap.HamtaRum(nastaPos);
+
+            if (nastaRum != null)
+            {
                 if (nastaRum.KanGaIn(_spelare))
                 {
                     _spelare.NuvarandeRum = nastaRum;
                     Clear();
-                    System.Threading.Thread.Sleep(100); // JAWS-paus
+                    System.Threading.Thread.Sleep(100);
                     _spelare.NuvarandeRum.VisaBeskrivning();
                 }
-                // Om KanGaIn returnerar false, gör vi ingenting – 
-                // rummet har redan skrivit ut sitt felmeddelande.
             }
-
             else
             {
-                // Om det inte finns en dörr där
-                WriteLine("Där är det stopp, du kan inte gå åt det hållet.");
+                WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
             }
         }
 
