@@ -1,4 +1,6 @@
-﻿using static System.Console;
+﻿using Stugan.Core;
+using static System.Console;
+
 namespace Stugan
 {
     public class Rum
@@ -14,6 +16,8 @@ namespace Stugan
         public bool HarUndersokts { get; set; } = false;
 
         public List<Spelsak> SakerIRummet { get; set; } = new List<Spelsak>();
+
+        public Position Plats { get; set; }
 
         public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
 
