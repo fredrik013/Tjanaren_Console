@@ -6,5 +6,17 @@
         {
 
         }
+
+        public override bool KanGaIn(Spelare s)
+        {
+            // Innan spelaren kliver in på verandan, kollar vi var han kommer ifrån
+            if (s.NuvarandeRum is Vardagsrum v)
+            {
+                // Vi använder den befintliga signalen vi byggde förut!
+                v.ReageraPaHandling("vadra");
+            }
+
+            return base.KanGaIn(s);
+        }
     }
 }

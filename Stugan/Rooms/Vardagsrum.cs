@@ -63,6 +63,15 @@ namespace Stugan.Rooms
         {
             switch (handling.ToLower())
             {
+                case "vadra": // NYTT CASE för Ticket #25
+                    if (luktarSvett)
+                    {
+                        luktarSvett = false;
+                        WriteLine("\n[KORSDRAG]");
+                        WriteLine("Frisk luft strömmar in från glasverandan och sveper med sig den unkna doften ut.");
+                    }
+                    break;
+
                 case "pa_ute":
                     WriteLine("\n[TV:N SPRAKAR TILL]");
                     WriteLine("'...smutsen från utsidan följer dina steg... det gillas inte...'");
