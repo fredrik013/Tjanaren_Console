@@ -2,19 +2,13 @@
 using Stugan.Core;
 using Stugan.Rooms;
 
-// 1. Skapa världen (Rum och föremål)
-
 WorldMap karta = new WorldMap();
 Rum startRum = SkapaVarlden(karta);
 
-// 2. Initiera spelaren
 Spelare spelare = new Spelare(startRum);
 
-// 3. Starta motorn
 Spelmotor motor = new Spelmotor(spelare, karta);
 motor.Starta();
-
-// --- Lokala funktioner (Längst ner i filen) ---
 
 Rum SkapaVarlden(WorldMap karta)
 {
@@ -46,6 +40,10 @@ Rum SkapaVarlden(WorldMap karta)
     Glasveranda glasveranda = new Glasveranda();
     glasveranda.Plats = new Position(-2, 2, 0);
     karta.LaggTillRum(glasveranda.Plats, glasveranda);
+
+    Tradgard tradgard = new Tradgard();
+    tradgard.Plats = new Position(-2, 1, 0);
+    karta.LaggTillRum(tradgard.Plats, tradgard);
 
     return gardsplan;
 }

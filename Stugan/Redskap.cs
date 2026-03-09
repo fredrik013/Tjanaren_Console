@@ -11,9 +11,17 @@
 
         public override string Anvand(Spelare spelare)
         {
-            // Istället för WriteLine, så returnerar vi strängen 
-            // så att spelmotorn kan bestämma när den ska läsas upp.
-            return $"Du använder {Namn}.";
+            // Vi skiftar status: var den aktiv blir den inaktiv och tvärtom
+            ArAktiv = !ArAktiv;
+
+            if (ArAktiv)
+            {
+                return $"Du tar fram {Namn} och håller den i ett stadigt grepp.";
+            }
+            else
+            {
+                return $"Du stoppar ner {Namn} i ryggsäcken igen.";
+            }
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Stugan
                 WriteLine($"   {_saker[i].Namn}");
             }
 
-            UppmärksammaRad();
+            UppmarksammaRad();
 
             while (tittar)
             {
@@ -67,7 +67,7 @@ namespace Stugan
                         if (_markeratIndex < _saker.Count - 1)
                         {
                             _markeratIndex++;
-                            UppmärksammaRad();
+                            UppmarksammaRad();
                         }
                         break;
 
@@ -75,7 +75,7 @@ namespace Stugan
                         if (_markeratIndex > 0)
                         {
                             _markeratIndex--;
-                            UppmärksammaRad();
+                            UppmarksammaRad();
                         }
                         break;
 
@@ -99,7 +99,7 @@ namespace Stugan
                             return;
                         }
 
-                        UppmärksammaRad();
+                        UppmarksammaRad();
                         break;
 
                     case ConsoleKey.Escape:
@@ -161,22 +161,18 @@ namespace Stugan
 
         public static string HanteraUtrustning(Spelsak sak, Spelare s, Inventory inv)
         {
+            // 1. Hantera Kläder (Skodon etc)
             if (sak is Klader plagg)
             {
-                // 1. VIKTIGT: Vi anropar objektets egna Anvand-metod!
-                // Den sköter ArAktiv = !ArAktiv, meddelanden och rummets reaktion.
                 string meddelandeFrånPlagget = plagg.Anvand(s);
 
-                // 2. Hantera logiken för fötterna (utesluter andra skor om man tar på sig nya)
                 switch (plagg.Typ.ToLower())
                 {
                     case "ute":
                     case "inne":
                         if (inv != null && plagg.ArAktiv)
                         {
-                            // Om vi tar på oss något för fötterna, klä av alla andra fotsaker
-                            // (Men vi rör inte 'plagg.ArAktiv' för JUST DETTA plagg igen, 
-                            // det sköttes nyss i plagg.Anvand)
+                            // Klä av andra skor om vi tar på oss nya
                             foreach (var annanSak in inv.GetAllaSaker())
                             {
                                 if (annanSak is Klader k && k != plagg && (k.Typ == "ute" || k.Typ == "inne"))
@@ -192,42 +188,69 @@ namespace Stugan
                         }
                         break;
                 }
-
-                // 3. Returnera det personliga meddelandet vi hämtade från plagg.Anvand
                 return meddelandeFrånPlagget;
             }
 
-            // Vanliga saker (mat, dryck, nycklar)
+            // 2. Hantera Redskap (Spade, Rörtång etc)
+            if (sak is Redskap redskap)
+            {
+                // Anropar redskapets egna logik (som vi ska fixa härnäst)
+                string svar = redskap.Anvand(s);
+
+                // Om vi just aktiverade (tog fram) ett redskap, avaktivera alla andra redskap
+                if (redskap.ArAktiv && inv != null)
+                {
+                    foreach (var r in inv.GetAllaSaker().OfType<Redskap>())
+                    {
+                        if (r != redskap)
+                        {
+                            r.ArAktiv = false;
+                        }
+                    }
+                }
+                return svar;
+            }
+
+            // 3. Fallback för vanliga saker (Mat, nycklar etc)
             return sak.Anvand(s);
         }
 
-        private void UppmärksammaRad(bool skaPrata = true)
+        private void UppmarksammaRad(bool skaPrata = true)
         {
             if (_saker.Count == 0) return;
 
-            // 1. Flytta markören till den raden vi står på (+1 för rubriken)
+            // 1. Först rensar vi gamla markörer på alla rader (visuellt)
+            for (int i = 0; i < _saker.Count; i++)
+            {
+                SetCursorPosition(0, i + 1);
+                Write("  "); // Skriv två mellanslag för att sudda ut ev. gammal "> "
+            }
+
+            // 2. Flytta markören till den raden vi står på (+1 för rubriken)
             SetCursorPosition(0, _markeratIndex + 1);
 
             var sak = _saker[_markeratIndex];
 
-            // 2. Fixa statussträngen så den matchar det du vill höra
+            // 3. Fixa statussträngen så den matchar det du vill höra
             string status = "";
             if (sak is Klader p)
             {
                 status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
             }
+            else if (sak is Redskap r)
+            {
+                status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
+            }
 
-            // 3. Skriv ut raden visuellt med markören ">"
-            // PadRight(40) är viktig för att sudda ut gammal text
-            Write($"{sak.Namn}{status}".PadRight(40));
+            // 4. Skriv ut raden visuellt med markören "> "
+            // Vi skriver "> " först och sen namnet + status.
+            Write($" {sak.Namn}{status}".PadRight(45));
 
-            // 4. För att JAWS ska läsa upp statusen korrekt utan Tolk:
-            // Vi sätter markören i slutet av raden vi just skrev. 
-            // Det tvingar skärmläsaren att fokusera på den nya texten.
+            // 5. För att JAWS ska läsa upp statusen korrekt:
+            // Vi ställer markören i slutet av namnet.
             if (skaPrata)
             {
-                // Vi behöver inte en extra Write här, piltangenterna och 
-                // SetCursorPosition sköter snacket om vi har skrivit ut texten ovan.
+                SetCursorPosition(2, _markeratIndex + 1);
             }
         }
     }
