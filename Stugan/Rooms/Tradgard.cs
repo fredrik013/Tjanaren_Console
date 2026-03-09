@@ -9,7 +9,7 @@ namespace Stugan.Rooms
             "och doften av våt jord är stark. Här och var ser man spår av gamla odlingar.")
         {
             // Nu använder vi de korrekta namnen från basen: KanPlockasUpp och ArGomd
-            SakerIRummet.Add(new AllmanSak("Rörtång", "En tung och lite rostig rörtång. Perfekt för trilskande rör.", true, true));
+            SakerIRummet.Add(new Redskap("Rörtång", "En tung och lite rostig rörtång. Perfekt för trilskande rör.", true, true));
         }
 
         public override void UndersokRum(Spelare spelare)
@@ -18,10 +18,34 @@ namespace Stugan.Rooms
 
             if (rortang != null && rortang.ArGomd)
             {
-                rortang.ArGomd = false;
-                WriteLine("\nDu rotar runt i det höga gräset och den våta jorden.");
-                WriteLine("Där, halvt begravd under några vissna växter, hittar du en rörtång!");
-                WriteLine("Den ser ut att ha legat där ett tag, men den fungerar nog fortfarande.");
+                // HÄR ÄR FIXEN: Vi kollar om spelaren har en AKTIV spade
+                var aktivSpade = spelare.Ryggsack.GetAllaSaker()
+                    .OfType<Redskap>()
+                    .FirstOrDefault(r => r.Namn == "Spade" && r.ArAktiv);
+
+                if (aktivSpade != null)
+                {
+                    rortang.ArGomd = false;
+                    WriteLine("\nDu greppar tag i spaden och sätter bladet i den mjuka jorden.");
+                    WriteLine("Klonk! Spaden träffar något hårt. Du drar upp en rostig rörtång!");
+                }
+                else
+                {
+                    // Vi "jävlas" lite genom att ge olika ledtrådar
+                    bool harSpadeMenInaktiv = spelare.Ryggsack.GetAllaSaker().Any(s => s.Namn == "Spade");
+
+                    if (harSpadeMenInaktiv)
+                    {
+                        WriteLine("\nDet ser ut som att någon har grävt här tidigare. Markytan är lös.");
+                        WriteLine("Du provar att krafsa lite med fingrarna, men det är lönlöst.");
+                        WriteLine("Du behöver nog ta fram ett riktigt redskap om du ska komma någon vart.");
+                    }
+                    else
+                    {
+                        WriteLine("\nDu rotar runt i gräset. Marken känns mjuk och uppbökad på ett ställe.");
+                        WriteLine("Det verkar finnas något här under, men du behöver nog ett verktyg för att få upp det.");
+                    }
+                }
             }
             else
             {
@@ -35,21 +59,27 @@ namespace Stugan.Rooms
             {
                 case "inne":
                     WriteLine("\n[EN STRÄNG RÖST FRÅN VERANDAN]");
-                    WriteLine("'Men vad sysslar du med?! Gå inte ut här och skita ner dina tofflor och sen klampa runt inne!'");
+                    WriteLine("'Men vad sysslar du med?! Gå inte ut här och skita ner dina tofflor!'");
                     WriteLine("'Visa lite hyfs och byt om till något som tål lera innan du sätter din fot på gräsmattan.'");
+
+                    // FIX FÖR JAWS: Ge skärmläsaren tid att läsa utskällningen!
+                    System.Threading.Thread.Sleep(2000);
+                    WriteLine("\n(Tryck på en tangent för att backa...)");
+                    ReadKey(true);
+
                     return false;
 
                 case "ute":
-                    WriteLine("\nDet klafsar till när bootsen möter den mjuka, våta jorden.");
-                    WriteLine("Du ser hur sulorna omedelbart täcks av ett tjockt lager lera.");
-                    WriteLine("En röst inifrån muttrar: 'Den där figuren får snart sparken om han fortsätter i den här stilen...'");
+                    WriteLine("\nDet klafsar till när bootsen möter den mjuka jorden.");
+                    WriteLine("Du ser hur sulorna omedelbart täcks av lera.");
                     return true;
 
-                default: // Barfota
-                    WriteLine("\nDu kliver ut barfota i det våta gräset. Det är kallt och klibbigt mellan tårna,");
-                    WriteLine("men du slipper i alla fall att dra in lera med grova sulor.");
+                default:
+                    WriteLine("\nDu kliver ut barfota i det våta gräset. Det är kallt och klibbigt.");
                     return true;
             }
         }
+
+
     }
 }

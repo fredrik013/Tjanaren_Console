@@ -4,7 +4,6 @@ namespace Stugan.Rooms
 {
     public class Vardagsrum : Rum
     {
-        private bool harLuftats = false; // För framtiden om man öppnar fönstret?
         private bool luktarSvett = false;
 
         public Vardagsrum() : base("Vardagsrummet", "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
