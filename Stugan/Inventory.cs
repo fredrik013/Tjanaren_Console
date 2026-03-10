@@ -10,7 +10,7 @@ namespace Stugan
         public void LaggTill(Spelsak sak) => _saker.Add(sak);
         public List<Spelsak> GetAllaSaker() => _saker;
 
-        public void AvaktiveraTyp(string typ)
+        public void AvaktiveraTyp(Bekladnadstyp typ)
         {
             foreach (var sak in _saker)
             {
@@ -114,7 +114,8 @@ namespace Stugan
                         if (sakAttSlappa is Klader plagg)
                         {
                             plagg.ArAktiv = false;
-                            if (plagg.Typ.ToLower() == "skodon") s.AktivtSkodon = "";
+                            if (plagg.Typ == Bekladnadstyp.Ute || plagg.Typ == Bekladnadstyp.Inne || plagg.Typ == Bekladnadstyp.Skydd)
+                                s.AktivtSkodon = "";
                         }
 
                         // Flytta från ryggsäck till rummet
@@ -166,21 +167,41 @@ namespace Stugan
             {
                 string meddelandeFrånPlagget = plagg.Anvand(s);
 
-                switch (plagg.Typ.ToLower())
+                switch (plagg.Typ)
                 {
-                    case "ute":
-                    case "inne":
+                    case Bekladnadstyp.Ute:
+                    case Bekladnadstyp.Inne:
                         if (inv != null && plagg.ArAktiv)
                         {
                             // Klä av andra skor om vi tar på oss nya
                             foreach (var annanSak in inv.GetAllaSaker())
                             {
-                                if (annanSak is Klader k && k != plagg && (k.Typ == "ute" || k.Typ == "inne"))
+                                if (annanSak is Klader k && k != plagg && (k.Typ == Bekladnadstyp.Ute || k.Typ == Bekladnadstyp.Inne))
                                 {
                                     k.ArAktiv = false;
                                 }
                             }
-                            s.AktivtSkodon = plagg.Typ;
+                            s.AktivtSkodon = plagg.Typ.ToString();
+                        }
+                        else if (!plagg.ArAktiv)
+                        {
+                            s.AktivtSkodon = "";
+                        }
+                        break;
+
+                    case Bekladnadstyp.Skydd:
+                        // Samma logik som för Ute och Inne
+                        if (inv != null && plagg.ArAktiv)
+                        {
+                            foreach (var annanSak in inv.GetAllaSaker())
+                            {
+                                if (annanSak is Klader k && k != plagg &&
+                                   (k.Typ == Bekladnadstyp.Ute || k.Typ == Bekladnadstyp.Inne || k.Typ == Bekladnadstyp.Skydd))
+                                {
+                                    k.ArAktiv = false;
+                                }
+                            }
+                            s.AktivtSkodon = plagg.Typ.ToString();
                         }
                         else if (!plagg.ArAktiv)
                         {

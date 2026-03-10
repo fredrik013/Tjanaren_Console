@@ -35,14 +35,21 @@ namespace Stugan.Rooms
                 WriteLine("Genom det gråa flimret hörs en raspig röst:");
 
                 // HÄR ÄR DEN NYA RENA LOGIKEN (Ingen hårdkodning av namn!)
-                switch (spelare.AktivtSkodon?.ToLower())
+                // HÄR ÄR DEN NYA RENA LOGIKEN (Nu helt synkad med din Enum!)
+                switch (spelare.AktivtSkodon)
                 {
-                    case "ute":
+                    case var s when s == Bekladnadstyp.Ute.ToString():
                         WriteLine("'...smutsen från utsidan följer dina steg... det gillas inte...'");
                         break;
-                    case "inne":
+
+                    case var s when s == Bekladnadstyp.Inne.ToString():
                         WriteLine("'...mjuka steg... ett klokt val... men de räcker inte till alla... sök i källaren...'");
                         break;
+
+                    case var s when s == Bekladnadstyp.Skydd.ToString():
+                        WriteLine("'...stövlar av gummi... redo för vätan... men akta så du inte dränker minnet...'");
+                        break;
+
                     default:
                         WriteLine("'...barfota och blöt... jag känner doften av instängda boots ända hit...'");
                         break;
@@ -61,9 +68,11 @@ namespace Stugan.Rooms
 
         public override void ReageraPaHandling(string handling)
         {
+            // Vi rensar bort ToLower här om vi vill vara strikta, 
+            // men eftersom detta ofta kommer från användarkommandon kan det vara kvar.
             switch (handling.ToLower())
             {
-                case "vadra": // NYTT CASE för Ticket #25
+                case "vadra":
                     if (luktarSvett)
                     {
                         luktarSvett = false;
@@ -72,26 +81,33 @@ namespace Stugan.Rooms
                     }
                     break;
 
-                case "pa_ute":
+                // Vi använder interpolerade strängar för att matcha våra Enums exakt
+                case string h when h == $"pa_{Bekladnadstyp.Ute.ToString().ToLower()}":
                     WriteLine("\n[TV:N SPRAKAR TILL]");
                     WriteLine("'...smutsen från utsidan följer dina steg... det gillas inte...'");
                     break;
 
-                case "pa_inne":
+                case string h when h == $"pa_{Bekladnadstyp.Inne.ToString().ToLower()}":
                     WriteLine("\n[TV:N FLIMRAR TILL]");
                     WriteLine("'...mjuka steg... ett klokt val... men sök vidare...'");
                     break;
 
-                case "av_ute":
-                    luktarSvett = true; // Nu sitter det i väggarna!
+                case string h when h == $"av_{Bekladnadstyp.Ute.ToString().ToLower()}":
+                    luktarSvett = true;
                     WriteLine("\n[TV:N GER IFRÅN SIG ETT DISKRET PIP]");
                     WriteLine("'...äntligen... men aromen av instängda fötter dröjer sig kvar...'");
                     WriteLine("En lätt dimma av tveksam doft sprider sig från de varma bootsen.");
                     break;
 
-                case "av_inne":
+                case string h when h == $"av_{Bekladnadstyp.Inne.ToString().ToLower()}":
                     WriteLine("\n[TV:N KNÄPPER TILL]");
                     WriteLine("Rummet känns plötsligt väldigt tyst när du tar av dig tofflorna.");
+                    break;
+
+                // Glöm inte skyddsskorna/gummistövlarna!
+                case string h when h == $"pa_{Bekladnadstyp.Skydd.ToString().ToLower()}":
+                    WriteLine("\n[TV:N BRUSAR UPPA]");
+                    WriteLine("'...gummi mot golv... du förbereder dig för djupet...'");
                     break;
             }
         }
