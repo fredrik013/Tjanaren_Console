@@ -1,8 +1,15 @@
 ﻿namespace Stugan
 {
+    public enum Bekladnadstyp
+    {
+        Inne = 0,
+        Ute = 1,
+        Skydd = 2
+    }
+
     public class Klader : Spelsak
     {
-        public string Typ { get; set; }
+        public Bekladnadstyp Typ { get; set; }
 
         public string MeddelandePa { get; set; } // Ny: Eget meddelande vid PÅ
 
@@ -10,7 +17,7 @@
 
         public bool SkyddarMotVatten { get; set; }
 
-        public Klader(string namn, string beskrivning, string typ, bool skyddarmotvatten,
+        public Klader(string namn, string beskrivning, Bekladnadstyp typ, bool skyddarmotvatten,
                               bool kanplockasupp, bool argomd, string meddelandePa = "", string meddelandeAv = "")
                     : base(namn, beskrivning, kanplockasupp, argomd)
         {
@@ -25,8 +32,9 @@
             ArAktiv = !ArAktiv;
             string meddelande = ArAktiv ? MeddelandePa : MeddelandeAv;
 
-            // Vi skickar med Typ (t.ex. "ute" eller "inne") istället för Namn
-            string handlingStrang = (ArAktiv ? "pa_" : "av_") + Typ.ToLower();
+            // Här ser vi till att oavsett om enumen heter Bekladnadstyp 
+            // så skickar vi "pa_inne", "pa_ute" eller "pa_skydd" till rummet.
+            string handlingStrang = (ArAktiv ? "pa_" : "av_") + Typ.ToString().ToLower();
             s.NuvarandeRum.ReageraPaHandling(handlingStrang);
 
             return meddelande;

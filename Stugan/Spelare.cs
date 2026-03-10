@@ -19,7 +19,7 @@
             Ryggsack.LaggTill(new Klader(
                     "Boots",
                     "Dina rejäla, leriga kängor.",
-                    "ute",
+                    Bekladnadstyp.Ute,
                     true,  // Skyddar mot vatten
                     true,  // Kan plockas upp
                     false, // Inte gömda
@@ -37,10 +37,10 @@
             get
             {
                 // Vi letar i ryggsäcken efter det plagg som är aktivt 
-                // och som matchar den aktuella skotypen (inne/ute).
+                // och som matchar de vanliga skotyperna.
                 var skodon = Ryggsack.GetAllaSaker()
                     .OfType<Klader>()
-                    .FirstOrDefault(k => k.ArAktiv && (k.Typ == "inne" || k.Typ == "ute"));
+                    .FirstOrDefault(k => k.ArAktiv && (k.Typ == Bekladnadstyp.Inne || k.Typ == Bekladnadstyp.Ute));
 
                 // Om vi hittar ett plagg, returnera dess namn. 
                 // Annars returnera en tom sträng.

@@ -43,7 +43,7 @@ namespace Stugan.Rooms
         {
             // Vi kollar om spelaren har på sig något av typen "Ute"
             // Vi använder ToLower() för att vara säkra, ifall vi råkat skriva "ute" med litet u på något plagg.
-            if (s.AktivtSkodon.ToLower() == "ute")
+            if (s.AktivtSkodon == Bekladnadstyp.Ute.ToString())
             {
                 WriteLine("Stopp! Du kan inte gå in i köket med uteskor, du smutsar ner det fina golvet!");
                 return false;

@@ -55,23 +55,28 @@ namespace Stugan.Rooms
 
         public override bool KanGaIn(Spelare s)
         {
-            switch (s.AktivtSkodon.ToLower())
+            // Vi matchar mot Enum-namnen (utan ToLower för att vara konsekventa)
+            switch (s.AktivtSkodon)
             {
-                case "inne":
+                case var skodon when skodon == Bekladnadstyp.Inne.ToString():
                     WriteLine("\n[EN STRÄNG RÖST FRÅN VERANDAN]");
                     WriteLine("'Men vad sysslar du med?! Gå inte ut här och skita ner dina tofflor!'");
                     WriteLine("'Visa lite hyfs och byt om till något som tål lera innan du sätter din fot på gräsmattan.'");
 
-                    // FIX FÖR JAWS: Ge skärmläsaren tid att läsa utskällningen!
+                    // Bra JAWS-fix! Vi behåller den.
                     System.Threading.Thread.Sleep(2000);
                     WriteLine("\n(Tryck på en tangent för att backa...)");
                     ReadKey(true);
 
                     return false;
 
-                case "ute":
+                case var skodon when skodon == Bekladnadstyp.Ute.ToString():
                     WriteLine("\nDet klafsar till när bootsen möter den mjuka jorden.");
                     WriteLine("Du ser hur sulorna omedelbart täcks av lera.");
+                    return true;
+
+                case var skodon when skodon == Bekladnadstyp.Skydd.ToString():
+                    WriteLine("\nGummistövlarna klafsar tryggt i leran. Det här är deras rätta element.");
                     return true;
 
                 default:
