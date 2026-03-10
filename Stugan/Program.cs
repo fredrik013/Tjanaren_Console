@@ -16,6 +16,11 @@ Rum SkapaVarlden(WorldMap karta)
     gardsplan.Plats = new Position(0, 0, 0);
     karta.LaggTillRum(gardsplan.Plats, gardsplan);
 
+    Skjul skjul = new Skjul();
+    skjul.Plats = new Position(1, 0, 0);
+    karta.LaggTillRum(skjul.Plats, skjul);
+
+
     Hall hall = new Hall();
     hall.Plats = new Position(0, 1, 0);
     karta.LaggTillRum(hall.Plats, hall);
