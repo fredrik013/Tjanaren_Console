@@ -162,63 +162,57 @@ namespace Stugan
 
         public static string HanteraUtrustning(Spelsak sak, Spelare s, Inventory inv)
         {
-            // 1. Hantera Kläder (Skodon etc)
+            // 1. Hantera Kläder (Lager, Placering och Skostatus)
             if (sak is Klader plagg)
             {
+                // Kontrollera krockar och lager-ordning INNAN vi tar på oss plagget
+                if (inv != null && !plagg.ArAktiv)
+                {
+                    var aktivaPaSammaStalle = inv.GetAllaSaker().OfType<Klader>()
+                                                 .Where(k => k.ArAktiv && k.Placering == plagg.Placering);
+
+                    foreach (var annat in aktivaPaSammaStalle)
+                    {
+                        // REGEL A: Samma lager? Ta av det gamla plagget först.
+                        if (annat.Lager == plagg.Lager)
+                        {
+                            annat.Anvand(s);
+                        }
+
+                        // REGEL B: Försöker vi sätta på något UNDER ett befintligt lager?
+                        // (T.ex. Strumpor när Skor redan är på)
+                        if (annat.Lager > plagg.Lager)
+                        {
+                            return $"Du kan inte ta på dig {plagg.Namn.ToLower()} under {annat.Namn.ToLower()}!";
+                        }
+                    }
+                }
+
+                // Kör plaggets egen logik (växlar ArAktiv och pratar med rummet)
                 string meddelandeFrånPlagget = plagg.Anvand(s);
 
+                // Uppdatera spelarens AktivtSkodon baserat på dina original-switchar
                 switch (plagg.Typ)
                 {
                     case Bekladnadstyp.Ute:
                     case Bekladnadstyp.Inne:
-                        if (inv != null && plagg.ArAktiv)
-                        {
-                            // Klä av andra skor om vi tar på oss nya
-                            foreach (var annanSak in inv.GetAllaSaker())
-                            {
-                                if (annanSak is Klader k && k != plagg && (k.Typ == Bekladnadstyp.Ute || k.Typ == Bekladnadstyp.Inne))
-                                {
-                                    k.ArAktiv = false;
-                                }
-                            }
-                            s.AktivtSkodon = plagg.Typ.ToString();
-                        }
-                        else if (!plagg.ArAktiv)
-                        {
-                            s.AktivtSkodon = "";
-                        }
-                        break;
-
                     case Bekladnadstyp.Skydd:
-                        // Samma logik som för Ute och Inne
-                        if (inv != null && plagg.ArAktiv)
+                        // Vi uppdaterar bara skostatus om det är fötternas yttersta/mellersta lager
+                        if (plagg.Placering == Kroppsdel.Fot && plagg.Lager != BekladnadsLager.Underst)
                         {
-                            foreach (var annanSak in inv.GetAllaSaker())
-                            {
-                                if (annanSak is Klader k && k != plagg &&
-                                   (k.Typ == Bekladnadstyp.Ute || k.Typ == Bekladnadstyp.Inne || k.Typ == Bekladnadstyp.Skydd))
-                                {
-                                    k.ArAktiv = false;
-                                }
-                            }
-                            s.AktivtSkodon = plagg.Typ.ToString();
-                        }
-                        else if (!plagg.ArAktiv)
-                        {
-                            s.AktivtSkodon = "";
+                            s.AktivtSkodon = plagg.ArAktiv ? plagg.Typ.ToString() : "";
                         }
                         break;
                 }
+
                 return meddelandeFrånPlagget;
             }
 
-            // 2. Hantera Redskap (Spade, Rörtång etc)
+            // 2. Hantera Redskap (Behåll din existerande logik)
             if (sak is Redskap redskap)
             {
-                // Anropar redskapets egna logik (som vi ska fixa härnäst)
                 string svar = redskap.Anvand(s);
 
-                // Om vi just aktiverade (tog fram) ett redskap, avaktivera alla andra redskap
                 if (redskap.ArAktiv && inv != null)
                 {
                     foreach (var r in inv.GetAllaSaker().OfType<Redskap>())
@@ -232,7 +226,7 @@ namespace Stugan
                 return svar;
             }
 
-            // 3. Fallback för vanliga saker (Mat, nycklar etc)
+            // 3. Fallback för vanliga saker
             return sak.Anvand(s);
         }
 
