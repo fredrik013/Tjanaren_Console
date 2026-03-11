@@ -95,6 +95,20 @@ namespace Stugan
 
         private void FlyttaSpelare(string riktning)
         {
+            // KOLLA HÄR: Vi frågar rummet först!
+            if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
+            {
+                Rum hoppRum = _spelare.NuvarandeRum.Utgangar[riktning];
+                if (hoppRum.KanGaIn(_spelare))
+                {
+                    _spelare.NuvarandeRum = hoppRum;
+                    Clear();
+                    System.Threading.Thread.Sleep(100);
+                    _spelare.NuvarandeRum.VisaBeskrivning();
+                    return; // Vi hittade en koppling, avbryt den matematiska beräkningen!
+                }
+            }
+
             Position nuvarandePos = _spelare.NuvarandeRum.Plats;
 
             int x = nuvarandePos.X;

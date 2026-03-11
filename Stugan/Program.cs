@@ -49,6 +49,8 @@ Rum SkapaVarlden(WorldMap karta)
     Tradgard tradgard = new Tradgard();
     tradgard.Plats = new Position(-2, 1, 0);
     karta.LaggTillRum(tradgard.Plats, tradgard);
+    gardsplan.Koppla("Vaster", tradgard); // Pil Vänster på gården -> Trädgården
+    tradgard.Koppla("Soder", gardsplan);  // Pil Höger i trädgården -> Gården
 
     return gardsplan;
 }
