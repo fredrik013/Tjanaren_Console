@@ -17,7 +17,7 @@ namespace Stugan
 
         public List<Spelsak> SakerIRummet { get; set; } = new List<Spelsak>();
 
-        public Position Plats { get; set; }
+        public Position? Plats { get; set; }
 
         public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
 

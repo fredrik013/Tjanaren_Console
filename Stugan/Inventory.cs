@@ -183,7 +183,7 @@ namespace Stugan
                         // (T.ex. Strumpor när Skor redan är på)
                         if (annat.Lager > plagg.Lager)
                         {
-                            return $"Du kan inte ta på dig {plagg.Namn.ToLower()} under {annat.Namn.ToLower()}!";
+                            return $"Du kan inte ta på dig {plagg.Namn.ToLower()} utanpå {annat.Namn.ToLower()}!";
                         }
                     }
                 }
