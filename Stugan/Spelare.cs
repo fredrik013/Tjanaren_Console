@@ -19,7 +19,7 @@
             Ryggsack.LaggTill(new Klader(
                     "Boots",
                     "Dina rejäla, leriga kängor.",
-                    Bekladnadstyp.Ute,
+                    Bekladnadstyp.Ute, Kroppsdel.Fot, BekladnadsLager.Mellan,
                     true,  // Skyddar mot vatten
                     true,  // Kan plockas upp
                     false, // Inte gömda

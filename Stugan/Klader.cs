@@ -7,9 +7,28 @@
         Skydd = 2
     }
 
+    public enum Kroppsdel
+    {
+        Huvud = 0,
+        Kropp = 1,
+        Hand = 2,
+        Fot = 3
+    }
+
+    public enum BekladnadsLager
+    {
+        Underst = 0,
+        Mellan = 1,
+        Ytterst = 2
+    }
+
     public class Klader : Spelsak
     {
         public Bekladnadstyp Typ { get; set; }
+
+        public Kroppsdel Placering { get; set; }
+
+        public BekladnadsLager Lager { get; set; }
 
         public string MeddelandePa { get; set; } // Ny: Eget meddelande vid PÅ
 
@@ -17,11 +36,13 @@
 
         public bool SkyddarMotVatten { get; set; }
 
-        public Klader(string namn, string beskrivning, Bekladnadstyp typ, bool skyddarmotvatten,
+        public Klader(string namn, string beskrivning, Bekladnadstyp typ, Kroppsdel placering, BekladnadsLager lager, bool skyddarmotvatten,
                               bool kanplockasupp, bool argomd, string meddelandePa = "", string meddelandeAv = "")
                     : base(namn, beskrivning, kanplockasupp, argomd)
         {
             Typ = typ;
+            Placering = placering;
+            Lager = lager;
             SkyddarMotVatten = skyddarmotvatten;
             MeddelandePa = string.IsNullOrEmpty(meddelandePa) ? $"Du tar på dig {namn}." : meddelandePa;
             MeddelandeAv = string.IsNullOrEmpty(meddelandeAv) ? $"Du tar av dig {namn}." : meddelandeAv;
