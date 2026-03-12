@@ -10,6 +10,7 @@ namespace Stugan.Rooms
         {
             // Nu använder vi de korrekta namnen från basen: KanPlockasUpp och ArGomd
             SakerIRummet.Add(new Redskap("Rörtång", "En tung och lite rostig rörtång. Perfekt för trilskande rör.", true, true));
+            UtgangsMeddelanden.Add("Soder", "Du följer husväggen söderut och kommer in på en stig som leder fram till grinden.");
         }
 
         public override void UndersokRum(Spelare spelare)
