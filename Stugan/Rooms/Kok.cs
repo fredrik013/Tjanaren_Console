@@ -8,7 +8,6 @@ namespace Stugan.Rooms
             "Du kommer in i ett ljust och rymligt kök. Här doftar det av nybakat bröd och en hint av humle. " +
             "Köksbordet står dukat vid fönstret. Till vänster finns en liten dörr som leder ut till en trädgård.")
         {
-            // Vi använder objektinitierare direkt i Add-metoden:
             SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär.")
             {
                 Anvandningsmeddelande = "Kapsylen flyger med ett pys. Du tar en rejäl klunk. Skål!",
@@ -20,6 +19,7 @@ namespace Stugan.Rooms
                 Anvandningsmeddelande = "Du äter upp det nybakade brödet. Mums!",
                 ForsvinnerVidAnvandning = true
             });
+            OppnaUtgangar("Oster");
         }
 
         public override void UndersokRum(Spelare spelare)

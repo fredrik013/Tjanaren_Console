@@ -6,6 +6,7 @@
             "Runt omkring dig står verktyg och trädgårdsredskap staplade på hyllor.")
         {
             SakerIRummet.Add(new Klader("Gummistövlar", "Ett par gamla gummistövlar som har sett bättre dagar men de skyddar nog bra mot vatten.", Bekladnadstyp.Skydd, Kroppsdel.Fot, BekladnadsLager.Mellan, true, true, false));
+            OppnaUtgangar("Vaster");
         }
     }
 }

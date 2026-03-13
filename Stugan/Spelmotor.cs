@@ -97,51 +97,59 @@ namespace Stugan
         {
             bool visadeExit = _spelare.NuvarandeRum.VisaExitMeddelande(riktning);
 
-            // KOLLA HÄR: Vi frågar rummet först!
+            // 1. Vi frågar rummet först!
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
                 Rum hoppRum = _spelare.NuvarandeRum.Utgangar[riktning];
-                if (hoppRum.KanGaIn(_spelare))
+
+                // Om det finns ett hopp-rum (t.ex. källaren), gå dit.
+                if (hoppRum != null)
                 {
-                    _spelare.NuvarandeRum = hoppRum;
-                    _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
-                    return; // Vi hittade en koppling, avbryt den matematiska beräkningen!
-                }
-            }
-
-            Position? nuvarandePos = _spelare.NuvarandeRum.Plats;
-
-            if (nuvarandePos != null)
-            {
-                int x = nuvarandePos.X;
-                int y = nuvarandePos.Y;
-                int z = nuvarandePos.Z;
-
-                switch (riktning)
-                {
-                    case "Norr": y++; break;
-                    case "Soder": y--; break;
-                    case "Oster": x++; break;
-                    case "Vaster": x--; break;
-                    case "Upp": z++; break; // Page Up ökar Z
-                    case "Ner": z--; break; // Page Down minskar Z
+                    if (hoppRum.KanGaIn(_spelare))
+                    {
+                        _spelare.NuvarandeRum = hoppRum;
+                        _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                        return;
+                    }
+                    return;
                 }
 
-                Position nastaPos = new Position(x, y, z);
-                Rum nastaRum = _worldMap.HamtaRum(nastaPos);
-
-                if (nastaRum != null)
+                // --- HÄR KOMMER ÄNDRINGEN ---
+                // Om vi är här inne i IF-satsen men hoppRum är null, 
+                // då kör vi din matematik.
+                Position? nuvarandePos = _spelare.NuvarandeRum.Plats;
+                if (nuvarandePos != null)
                 {
-                    if (nastaRum.KanGaIn(_spelare))
+                    int x = nuvarandePos.X; int y = nuvarandePos.Y; int z = nuvarandePos.Z;
+
+                    switch (riktning)
+                    {
+                        case "Norr": y++; break;
+                        case "Soder": y--; break;
+                        case "Oster": x++; break;
+                        case "Vaster": x--; break;
+                        case "Upp": z++; break;
+                        case "Ner": z--; break;
+                    }
+
+                    Position nastaPos = new Position(x, y, z);
+                    Rum nastaRum = _worldMap.HamtaRum(nastaPos);
+
+                    if (nastaRum != null && nastaRum.KanGaIn(_spelare))
                     {
                         _spelare.NuvarandeRum = nastaRum;
                         _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
                     }
+                    else
+                    {
+                        WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
+                    }
                 }
-                else
-                {
-                    WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
-                }
+            }
+            else
+            {
+                // 2. Om riktningen INTE fanns i Utgangar, så är det en solid vägg.
+                WriteLine("Där är det stopp, det finns ingen utgång åt det hållet.");
             }
         }
 

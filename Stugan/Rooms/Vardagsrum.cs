@@ -10,6 +10,7 @@ namespace Stugan.Rooms
         "Ljuset från skärmen fladdrar mot de mörka tapeterna.")
         {
             SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+            OppnaUtgangar("Vaster", "Oster");
         }
 
         public override void UndersokRum(Spelare spelare)

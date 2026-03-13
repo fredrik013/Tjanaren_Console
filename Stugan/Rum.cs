@@ -39,6 +39,14 @@ namespace Stugan
             HarUndersokts = harundersokts;
         }
 
+        public void OppnaUtgangar(params string[] riktningar)
+        {
+            foreach (var riktning in riktningar)
+            {
+                Utgangar[riktning] = null;
+            }
+        }
+
         public string? HamtaUtgangsMeddelande(string riktning)
         {
             if (UtgangsMeddelanden.TryGetValue(riktning, out string? meddelande))
