@@ -4,7 +4,7 @@
     {
         public Rum NuvarandeRum { get; set; }
 
-        public Core.Position Position => NuvarandeRum.Plats;
+        public Core.Position? Position => NuvarandeRum.Plats;
 
         public Inventory Ryggsack { get; private set; }
 

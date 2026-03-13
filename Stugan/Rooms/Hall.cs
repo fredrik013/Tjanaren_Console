@@ -11,6 +11,7 @@ namespace Stugan.Rooms
         {
             SakerIRummet.Add(new Klader("Plasttofflor", "Ett par blå plasttofflor.", Bekladnadstyp.Inne, Kroppsdel.Fot, BekladnadsLager.Mellan, true, true, true));
             UtgangsMeddelanden.Add("Ner", "Trappan gnisslar betänkligt under din vikt för varje steg du tar neråt...");
+            OppnaUtgangar("Vaster", "Norr", "Soder", "Ner");
         }
 
         public override void UndersokRum(Spelare spelare)

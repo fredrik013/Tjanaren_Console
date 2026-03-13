@@ -7,6 +7,7 @@ namespace Stugan.Rooms
         public InreHall() : base("Hallen", "Du fortsätter längre in i hallen. Golvet här täcks av en tjock, ljus och extremt mjuk heltäckningsmatta " +
             "som verkar suga upp allt ljud. Till vänster hörs det dämpade ljudet från en TV – det måste vara vardagsrummet.")
         {
+            OppnaUtgangar("Soder", "Vaster");
         }
 
         public override void UndersokRum(Spelare spelare)
