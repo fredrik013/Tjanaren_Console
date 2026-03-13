@@ -8,7 +8,7 @@
 
         public Inventory Ryggsack { get; private set; }
 
-        public string AktivtSkodon { get; set; } // T.ex. "Ytterskor", "Tofflor", "Stövlar"
+        public string AktivtSkodon { get; set; } // Vanlig egenskap så den kan ändras!
 
         public bool ArSkadad { get; set; }
 
@@ -27,8 +27,7 @@
                     "Du sparkar av dig bootsen med en lättad suck."
                 )
             { ArAktiv = true }); // Den här lilla måsvingen sätter egenskapen direkt!
-
-            AktivtSkodon = "ute";
+            AktivtSkodon = Bekladnadstyp.Ute.ToString();
             ArSkadad = false;
         }
 
@@ -36,14 +35,10 @@
         {
             get
             {
-                // Vi letar i ryggsäcken efter det plagg som är aktivt 
-                // och som matchar de vanliga skotyperna.
                 var skodon = Ryggsack.GetAllaSaker()
                     .OfType<Klader>()
-                    .FirstOrDefault(k => k.ArAktiv && (k.Typ == Bekladnadstyp.Inne || k.Typ == Bekladnadstyp.Ute));
+                    .FirstOrDefault(k => k.ArAktiv && (k.Typ == Bekladnadstyp.Inne || k.Typ == Bekladnadstyp.Ute || k.Typ == Bekladnadstyp.Skydd));
 
-                // Om vi hittar ett plagg, returnera dess namn. 
-                // Annars returnera en tom sträng.
                 return skodon?.Namn ?? string.Empty;
             }
         }
