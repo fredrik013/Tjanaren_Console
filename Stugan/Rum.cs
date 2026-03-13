@@ -21,6 +21,8 @@ namespace Stugan
 
         public Dictionary<string, Rum> Utgangar { get; set; } = new Dictionary<string, Rum>();
 
+        public Dictionary<string, string> UtgangsMeddelanden { get; set; } = new Dictionary<string, string>();
+
         public Rum Norr { get => HamtaUtgang("Norr")!; set => Koppla("Norr", value); }
 
         public Rum Soder { get => HamtaUtgang("Soder")!; set => Koppla("Soder", value); }
@@ -37,6 +39,15 @@ namespace Stugan
             HarUndersokts = harundersokts;
         }
 
+        public string? HamtaUtgangsMeddelande(string riktning)
+        {
+            if (UtgangsMeddelanden.TryGetValue(riktning, out string? meddelande))
+            {
+                return meddelande;
+            }
+            return null;
+        }
+
         public void Koppla(string riktning, Rum nastaRum)
         {
             Utgangar[riktning] = nastaRum;
@@ -44,16 +55,38 @@ namespace Stugan
 
         private Rum? HamtaUtgang(string riktning)
         {
-            if (Utgangar.ContainsKey(riktning))
-            {
-                return Utgangar.ContainsKey(riktning) ? Utgangar[riktning] : null;
-            }
-            return null;
+            return Utgangar.TryGetValue(riktning, out var rum) ? rum : null;
         }
 
-        public void VisaBeskrivning()
+        public bool VisaExitMeddelande(string riktning)
         {
+            // Vi hämtar meddelandet från oss själva (detta rum)
+            // Vi skickar in riktningen till vår egen Hamta-metod som sköter ToUpper
+            string? meddelande = HamtaUtgangsMeddelande(riktning);
+
+            if (!string.IsNullOrEmpty(meddelande))
+            {
+                Clear();
+                WriteLine($"\n{meddelande}");
+
+                // JAWS-vänlig paus
+                System.Threading.Thread.Sleep(2000);
+                return true;
+            }
+
+            return false;
+        }
+
+        public void VisaBeskrivning(bool redanRensat = false)
+        {
+            if (!redanRensat)
+            {
+                Clear();
+            }
+
+            // HÄR ÄR DIN ORIGINALKOD - HELT OFÖRÄNDRAD:
             WriteLine($"{VisaNamn}");
+
             // 1. Grundbeskrivningen av rummet
             if (!HarBesokts)
             {

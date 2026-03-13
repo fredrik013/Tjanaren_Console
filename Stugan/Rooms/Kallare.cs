@@ -5,7 +5,7 @@ namespace Stugan.Rooms
     public class Kallare : Rum
     {
         public Kallare() : base("Källaren",
-                    "Trappan gnisslar betänkligt... Luften är kall och luktar fuktig jord. " +
+"Luften här nere är kall och luktar fuktig jord. " +
                     "Ett släpande ljud hörs inifrån mörkret.")
         {
             // Vi lägger in tofflorna här direkt

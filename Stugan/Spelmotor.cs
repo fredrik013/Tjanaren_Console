@@ -95,6 +95,8 @@ namespace Stugan
 
         private void FlyttaSpelare(string riktning)
         {
+            bool visadeExit = _spelare.NuvarandeRum.VisaExitMeddelande(riktning);
+
             // KOLLA HÄR: Vi frågar rummet först!
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
@@ -102,45 +104,44 @@ namespace Stugan
                 if (hoppRum.KanGaIn(_spelare))
                 {
                     _spelare.NuvarandeRum = hoppRum;
-                    Clear();
-                    System.Threading.Thread.Sleep(100);
-                    _spelare.NuvarandeRum.VisaBeskrivning();
+                    _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
                     return; // Vi hittade en koppling, avbryt den matematiska beräkningen!
                 }
             }
 
-            Position nuvarandePos = _spelare.NuvarandeRum.Plats;
+            Position? nuvarandePos = _spelare.NuvarandeRum.Plats;
 
-            int x = nuvarandePos.X;
-            int y = nuvarandePos.Y;
-            int z = nuvarandePos.Z;
-
-            switch (riktning)
+            if (nuvarandePos != null)
             {
-                case "Norr": y++; break;
-                case "Soder": y--; break;
-                case "Oster": x++; break;
-                case "Vaster": x--; break;
-                case "Upp": z++; break; // Page Up ökar Z
-                case "Ner": z--; break; // Page Down minskar Z
-            }
+                int x = nuvarandePos.X;
+                int y = nuvarandePos.Y;
+                int z = nuvarandePos.Z;
 
-            Position nastaPos = new Position(x, y, z);
-            Rum nastaRum = _worldMap.HamtaRum(nastaPos);
-
-            if (nastaRum != null)
-            {
-                if (nastaRum.KanGaIn(_spelare))
+                switch (riktning)
                 {
-                    _spelare.NuvarandeRum = nastaRum;
-                    Clear();
-                    System.Threading.Thread.Sleep(100);
-                    _spelare.NuvarandeRum.VisaBeskrivning();
+                    case "Norr": y++; break;
+                    case "Soder": y--; break;
+                    case "Oster": x++; break;
+                    case "Vaster": x--; break;
+                    case "Upp": z++; break; // Page Up ökar Z
+                    case "Ner": z--; break; // Page Down minskar Z
                 }
-            }
-            else
-            {
-                WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
+
+                Position nastaPos = new Position(x, y, z);
+                Rum nastaRum = _worldMap.HamtaRum(nastaPos);
+
+                if (nastaRum != null)
+                {
+                    if (nastaRum.KanGaIn(_spelare))
+                    {
+                        _spelare.NuvarandeRum = nastaRum;
+                        _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                    }
+                }
+                else
+                {
+                    WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
+                }
             }
         }
 
