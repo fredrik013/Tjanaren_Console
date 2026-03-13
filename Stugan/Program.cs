@@ -33,7 +33,6 @@ Rum SkapaVarlden(WorldMap karta)
     kallare.Plats = new Position(0, 1, -1);
     karta.LaggTillRum(kallare.Plats, kallare);
 
-
     InreHall hall2 = new InreHall();
     hall2.Plats = new Position(0, 2, 0);
     karta.LaggTillRum(hall2.Plats, hall2);

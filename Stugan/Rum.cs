@@ -58,7 +58,7 @@ namespace Stugan
             return Utgangar.TryGetValue(riktning, out var rum) ? rum : null;
         }
 
-        private bool VisaExitMeddelande(string riktning)
+        public bool VisaExitMeddelande(string riktning)
         {
             // Vi hämtar meddelandet från oss själva (detta rum)
             // Vi skickar in riktningen till vår egen Hamta-metod som sköter ToUpper
@@ -77,18 +77,9 @@ namespace Stugan
             return false;
         }
 
-        public void VisaBeskrivning(string? riktning = null)
+        public void VisaBeskrivning(bool redanRensat = false)
         {
-            // Vi kollar om vi ska visa en stämningstext först.
-            // VisaExitMeddelande sköter Clear() internt om den hittar text.
-            bool visadeExit = false;
-            if (!string.IsNullOrEmpty(riktning))
-            {
-                visadeExit = VisaExitMeddelande(riktning);
-            }
-
-            // Om vi INTE visade en exit-text, så måste vi rensa skärmen här
-            if (!visadeExit)
+            if (!redanRensat)
             {
                 Clear();
             }
