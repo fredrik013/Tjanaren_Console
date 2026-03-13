@@ -6,7 +6,7 @@ namespace Stugan.Rooms
     {
         public Kok() : base("Köket",
             "Du kommer in i ett ljust och rymligt kök. Här doftar det av nybakat bröd och en hint av humle. " +
-            "Köksbordet står dukat vid fönstret.")
+            "Köksbordet står dukat vid fönstret. Till vänster finns en liten dörr som leder ut till en trädgård.")
         {
             // Vi använder objektinitierare direkt i Add-metoden:
             SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär.")
