@@ -93,7 +93,7 @@ namespace Stugan
             }
 
             // HÄR ÄR DIN ORIGINALKOD - HELT OFÖRÄNDRAD:
-            WriteLine($"{VisaNamn}");
+            WriteLine($"{Namn}");
 
             // 1. Grundbeskrivningen av rummet
             if (!HarBesokts)
