@@ -9,6 +9,7 @@ namespace Stugan.Rooms
         public Vardagsrum() : base("Vardagsrummet", "Du kliver in i vardagsrummet. En stor, mjuk soffa står framför en gammal tjock-TV som står och brusar. " +
         "Ljuset från skärmen fladdrar mot de mörka tapeterna.")
         {
+            VisaNamn = "i vardagsrummet";
             SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
             OppnaUtgangar("Vaster", "Oster");
         }

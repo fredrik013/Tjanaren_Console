@@ -8,7 +8,7 @@ namespace Stugan.Rooms
             "Du kliver ut i den vildvuxna trädgården. Gräset är högt och fuktigt, " +
             "och doften av våt jord är stark. Här och var ser man spår av gamla odlingar. Åt sydost skymtar man en grind mot gården.")
         {
-            // Nu använder vi de korrekta namnen från basen: KanPlockasUpp och ArGomd
+            VisaNamn = "i trädgården";
             SakerIRummet.Add(new Redskap("Rörtång", "En tung och lite rostig rörtång. Perfekt för trilskande rör.", true, true));
             UtgangsMeddelanden.Add("Soder", "Du följer husväggen söderut och kommer in på en stig som leder fram till grinden.");
             OppnaUtgangar("Soder", "Norr");
