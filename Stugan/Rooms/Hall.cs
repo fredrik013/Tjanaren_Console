@@ -9,6 +9,7 @@ namespace Stugan.Rooms
         "På väggen hänger en spegel och under den står en skohylla. " +
         "Till vänster ser du en dörr och till höger verkar det finnas en trappa mot källaren." + "Rakt fram fortsätter hallen längre in i huset.")
         {
+            VisaNamn = "i hallen";
             SakerIRummet.Add(new Klader("Plasttofflor", "Ett par blå plasttofflor.", Bekladnadstyp.Inne, Kroppsdel.Fot, BekladnadsLager.Mellan, true, true, true));
             UtgangsMeddelanden.Add("Ner", "Trappan gnisslar betänkligt under din vikt för varje steg du tar neråt...");
             OppnaUtgangar("Vaster", "Norr", "Soder", "Ner");

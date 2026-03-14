@@ -98,12 +98,14 @@ namespace Stugan
             // 1. Grundbeskrivningen av rummet
             if (!HarBesokts)
             {
+                System.Threading.Thread.Sleep(300);
                 WriteLine($"{Beskrivning}");
                 HarBesokts = true;
             }
             else
             {
-                WriteLine($"Du är i {VisaNamn}.");
+                System.Threading.Thread.Sleep(300);
+                WriteLine($"Du är {VisaNamn}.");
             }
             VisaSakerIRummet();
         }
