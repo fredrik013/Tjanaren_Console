@@ -53,7 +53,8 @@ namespace Stugan
                 case ConsoleKey.S:
                     // Anropa spelarens nya metod med motorns story-objekt
                     _spelare.VisaStatus(_story);
-
+                    WriteLine("\nTryck på valfri tangent för att återgå till rummet...");
+                    ReadKey(true);
                     // Eftersom statusen skriver ut en del text, påminner vi om rummet
                     // så att JAWS läser upp var spelaren befinner sig igen.
                     _spelare.NuvarandeRum.VisaBeskrivning();
