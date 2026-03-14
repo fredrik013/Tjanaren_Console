@@ -2,15 +2,16 @@
 using Stugan.Core;
 using Stugan.Rooms;
 
+StoryState story = new StoryState();
 WorldMap karta = new WorldMap();
-Rum startRum = SkapaVarlden(karta);
+Rum startRum = SkapaVarlden(karta, story);
 
 Spelare spelare = new Spelare(startRum);
 
-Spelmotor motor = new Spelmotor(spelare, karta);
+Spelmotor motor = new Spelmotor(spelare, karta, story);
 motor.Starta();
 
-Rum SkapaVarlden(WorldMap karta)
+Rum SkapaVarlden(WorldMap karta, StoryState story)
 {
     Gardsplan gardsplan = new Gardsplan();
     gardsplan.Plats = new Position(0, 0, 0);

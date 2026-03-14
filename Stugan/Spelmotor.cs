@@ -9,12 +9,15 @@ namespace Stugan
 
         private WorldMap _worldMap;
 
+        private StoryState _story;
+
         private bool _isrunning = true;
 
-        public Spelmotor(Spelare spelare, WorldMap worldMap)
+        public Spelmotor(Spelare spelare, WorldMap worldMap, StoryState story)
         {
             _spelare = spelare;
             _worldMap = worldMap;
+            _story = story;
         }
 
         public void Starta()
@@ -43,9 +46,17 @@ namespace Stugan
             switch (tangent)
             {
                 case ConsoleKey.I:
-                    // Öppna din nya fina ryggsäck
                     _spelare.Ryggsack.Visa(_spelare);
-                    // När vi kommer tillbaka, påminn om rummet
+                    _spelare.NuvarandeRum.VisaBeskrivning();
+                    break;
+
+                case ConsoleKey.S:
+                    // Anropa spelarens nya metod med motorns story-objekt
+                    _spelare.VisaStatus(_story);
+                    WriteLine("\nTryck på valfri tangent för att återgå till rummet...");
+                    ReadKey(true);
+                    // Eftersom statusen skriver ut en del text, påminner vi om rummet
+                    // så att JAWS läser upp var spelaren befinner sig igen.
                     _spelare.NuvarandeRum.VisaBeskrivning();
                     break;
 

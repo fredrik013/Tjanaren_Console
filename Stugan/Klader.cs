@@ -10,9 +10,10 @@
     public enum Kroppsdel
     {
         Huvud = 0,
-        Kropp = 1,
+        Torso = 1,
         Hand = 2,
-        Fot = 3
+        Fot = 3,
+        Nederdel = 4
     }
 
     public enum BekladnadsLager
