@@ -1,4 +1,7 @@
-﻿namespace Stugan
+﻿using Stugan.Core;
+using static System.Console;
+
+namespace Stugan
 {
     public class Spelare
     {
@@ -41,6 +44,32 @@
 
                 return skodon?.Namn ?? string.Empty;
             }
+        }
+
+        public void VisaStatus(StoryState story)
+        {
+            WriteLine();
+            WriteLine("--- DIN STATUS ---");
+
+            // Hälsa
+            WriteLine(ArSkadad ? "Mående: Du är skadad och rör dig tungt." : "Mående: Du känner dig pigg och oskadd.");
+
+            // Hitta aktiva kläder i ryggsäcken
+            var allaKlader = Ryggsack.GetAllaSaker().OfType<Klader>().Where(k => k.ArAktiv).ToList();
+
+            string huvud = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Huvud)?.Namn ?? "inget";
+            string kropp = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Nederdel || k.Placering == Kroppsdel.Torso)?.Namn ?? "vanliga kläder";
+            string fötter = AktivtSkodonNamn;
+            if (string.IsNullOrEmpty(fötter)) fötter = "inget (barfota)";
+
+            WriteLine($"På huvudet: {huvud}");
+            WriteLine($"På kroppen: {kropp}");
+            WriteLine($"På fötterna: {fötter}");
+
+            WriteLine("------------------");
+            WriteLine($"Uppdrag: {story.GetStatusBeskrivning()}");
+            WriteLine("------------------");
+            WriteLine();
         }
     }
 }
