@@ -15,8 +15,6 @@
             OppnaUtgangar("Norr", "Vaster", "Oster");
         }
 
-        public override void UndersokRum(Spelare spelare)
-        {
-        }
+
     }
 }

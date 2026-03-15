@@ -134,7 +134,7 @@ namespace Stugan
             VisaSakerIRummet();
         }
 
-        public virtual void UndersokRum(Spelare spelare)
+        public virtual void UndersokRum(Spelare spelare, StoryState story)
         {
             // Som standard händer ingenting speciellt.
         }

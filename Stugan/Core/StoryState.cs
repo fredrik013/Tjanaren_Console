@@ -24,7 +24,6 @@
 
         public string GetStatusBeskrivning()
         {
-            int counter = 0;
             // Vi switchar på 'true' för att kunna utvärdera dina flaggor fritt i varje case
             switch (true)
             {
@@ -42,6 +41,9 @@
 
                 case var _ when RorArLagat:
                     return "Röret är lagat, men du har lämnat en rökig röra efter dig.";
+
+                case var _ when HarHittatRortang:
+                    return "Du har rörtången i säkert förvar. Nu är det väl bara att hitta pannrummet och börja jobba?";
 
                 // Standard: Om ingenting har hänt än
                 default:

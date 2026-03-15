@@ -23,7 +23,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Oster");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
             var brod = rum.SakerIRummet.FirstOrDefault(s => s.Namn == "Lunchbröd");

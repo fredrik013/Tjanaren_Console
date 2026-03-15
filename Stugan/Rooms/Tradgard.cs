@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using Stugan.Core;
+using static System.Console;
 
 namespace Stugan.Rooms
 {
@@ -14,7 +15,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Soder", "Norr");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, StoryState story)
         {
             var rortang = SakerIRummet.FirstOrDefault(s => s.Namn == "Rörtång");
 
@@ -28,6 +29,7 @@ namespace Stugan.Rooms
                 if (aktivSpade != null)
                 {
                     rortang.ArGomd = false;
+                    story.HarHittatRortang = true;
                     WriteLine("\nDu greppar tag i spaden och sätter bladet i den mjuka jorden.");
                     WriteLine("Klonk! Spaden träffar något hårt. Du drar upp en rostig rörtång!");
                 }

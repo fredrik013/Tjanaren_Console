@@ -62,7 +62,7 @@ namespace Stugan
 
                 case ConsoleKey.U:
                     WriteLine($"\nDu ser dig noga omkring i {_spelare.NuvarandeRum.Namn}...");
-                    _spelare.NuvarandeRum.UndersokRum(_spelare);
+                    _spelare.NuvarandeRum.UndersokRum(_spelare, _story);
                     break;
 
                 case ConsoleKey.T:

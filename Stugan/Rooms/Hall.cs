@@ -15,7 +15,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Vaster", "Norr", "Soder", "Ner");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
             // Använd StringComparison för att slippa ToLower-bekymmer
