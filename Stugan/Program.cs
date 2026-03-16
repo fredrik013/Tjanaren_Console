@@ -30,6 +30,11 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     kok.Plats = new Position(-1, 1, 0);
     karta.LaggTillRum(kok.Plats, kok);
 
+    Omkladningsrum omkladningsrum = new Omkladningsrum();
+    omkladningsrum.Plats = new Position(1, 1, 0);
+    karta.LaggTillRum(omkladningsrum.Plats, omkladningsrum);
+
+
     Kallare kallare = new Kallare();
     kallare.Plats = new Position(0, 1, -1);
     karta.LaggTillRum(kallare.Plats, kallare);
