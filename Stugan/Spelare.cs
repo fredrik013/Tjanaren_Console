@@ -43,6 +43,20 @@ namespace Stugan
                 )
             { ArAktiv = true });
 
+            Ryggsack.LaggTill(new Klader(
+        "T-shirt",
+"En svart t-shirt med ett slitet tryck av en gammal rockband.",
+        Bekladnadstyp.Inne, Kroppsdel.Torso, BekladnadsLager.Underst,
+        false,
+        true,
+        false,
+"Du drar på dig t-shirten och känner dig genast lite mer bekväm.",
+        "Du tar av dig t-shirten och känner dig lite mer utsatt."
+    )
+            { ArAktiv = true });
+
+
+
             ArSkadad = false;
         }
 
@@ -70,13 +84,23 @@ namespace Stugan
             var allaKlader = Ryggsack.GetAllaSaker().OfType<Klader>().Where(k => k.ArAktiv).ToList();
 
             string huvud = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Huvud)?.Namn ?? "inget";
-            string kropp = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Nederdel || k.Placering == Kroppsdel.Torso)?.Namn ?? "vanliga kläder";
-            string fötter = AktivtSkodonNamn;
-            if (string.IsNullOrEmpty(fötter)) fötter = "inget (barfota)";
+
+            string hander = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Hand)?.Namn ?? "inget";
+
+            var kroppsPlagg = allaKlader
+                .Where(k => k.Placering == Kroppsdel.Torso || k.Placering == Kroppsdel.Nederdel)
+                .Select(k => k.Namn)
+                .ToList();
+
+            string kropp = kroppsPlagg.Count > 0 ? string.Join(", ", kroppsPlagg) : "inget";
+
+            string fotter = AktivtSkodonNamn;
+            if (string.IsNullOrEmpty(fotter)) fotter = "inget (barfota)";
 
             WriteLine($"På huvudet: {huvud}");
+            WriteLine($"På händerna: {hander}");
             WriteLine($"På kroppen: {kropp}");
-            WriteLine($"På fötterna: {fötter}");
+            WriteLine($"På fötterna: {fotter}");
 
             WriteLine("------------------");
             WriteLine($"Uppdrag: {story.GetStatusBeskrivning()}");
