@@ -34,10 +34,13 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     omkladningsrum.Plats = new Position(1, 1, 0);
     karta.LaggTillRum(omkladningsrum.Plats, omkladningsrum);
 
-
     Kallare kallare = new Kallare();
     kallare.Plats = new Position(0, 1, -1);
     karta.LaggTillRum(kallare.Plats, kallare);
+
+    Pannrum pannrum = new Pannrum();
+    pannrum.Plats = new Position(1, 1, -1);
+    karta.LaggTillRum(pannrum.Plats, pannrum);
 
     InreHall hall2 = new InreHall();
     hall2.Plats = new Position(0, 2, 0);
