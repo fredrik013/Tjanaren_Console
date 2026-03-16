@@ -88,7 +88,7 @@ namespace Stugan
             string hander = allaKlader.FirstOrDefault(k => k.Placering == Kroppsdel.Hand)?.Namn ?? "inget";
 
             var kroppsPlagg = allaKlader
-                .Where(k => k.Placering == Kroppsdel.Torso || k.Placering == Kroppsdel.Nederdel)
+                .Where(k => k.Placering == Kroppsdel.Torso || k.Placering == Kroppsdel.Nederdel || k.Placering == Kroppsdel.Helakroppen)
                 .Select(k => k.Namn)
                 .ToList();
 

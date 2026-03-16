@@ -6,7 +6,17 @@
         {
             VisaNamn = "i omklädningsrummet";
             OppnaUtgangar("Vaster");
-            SakerIRummet.Add(new Klader("Overall", "Det här verkar vara en skyddsoverall av något slag. Den ser ut att tåla vatten.", Bekladnadstyp.Skydd, Kroppsdel.Torso, BekladnadsLager.Ytterst, true, true, false));
+            SakerIRummet.Add(new Klader("Overall", "Det här verkar vara en skyddsoverall av något slag. Den ser ut att tåla vatten.", Bekladnadstyp.Skydd, Kroppsdel.Helakroppen, BekladnadsLager.Ytterst, true, true, false));
+            SakerIRummet.Add(new Klader(
+    "Arbetshandskar",
+    "Ett par kraftiga gummihandskar som ser ut att tåla både fukt och smuts.",
+    Bekladnadstyp.Skydd,
+    Kroppsdel.Hand,
+    BekladnadsLager.Ytterst,
+    true, // Vattentäta
+    true,
+    false
+));
         }
     }
 }
