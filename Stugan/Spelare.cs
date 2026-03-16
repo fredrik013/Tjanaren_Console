@@ -27,10 +27,22 @@ namespace Stugan
                     true,  // Kan plockas upp
                     false, // Inte gömda
                     "Du snörar på dig de tunga bootsen.",
-                    "Du sparkar av dig bootsen med en lättad suck."
-                )
+                    "Du sparkar av dig bootsen med en lättad suck.")
             { ArAktiv = true }); // Den här lilla måsvingen sätter egenskapen direkt!
             AktivtSkodon = Bekladnadstyp.Ute.ToString();
+
+            Ryggsack.LaggTill(new Klader(
+                    "Byxor",
+"Ett par blåa men funktionella jeans.",
+                    Bekladnadstyp.Inne, Kroppsdel.Nederdel, BekladnadsLager.Mellan,
+                    false,
+                    true,
+                    false,
+"Du kränger på dig jeansen.",
+                    "Du kränger av dig jeansen."
+                )
+            { ArAktiv = true });
+
             ArSkadad = false;
         }
 
