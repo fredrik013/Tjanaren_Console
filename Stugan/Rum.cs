@@ -47,6 +47,28 @@ namespace Stugan
             }
         }
 
+        public string HamtaUtgangarBeskrivning()
+        {
+            if (Utgangar == null || Utgangar.Count == 0)
+            {
+                return "Det verkar inte finnas några synliga utgångar härifrån.";
+            }
+
+            // Vi mappar dina interna namn till mer naturligt språk
+            var utgangsNamn = Utgangar.Keys.Select(u => u switch
+            {
+                "Norr" => "framåt",
+                "Soder" => "bakåt",
+                "Oster" => "höger",
+                "Vaster" => "vänster",
+                "Upp" => "uppåt",
+                "Ner" => "nedåt",
+                _ => u.ToLower()
+            });
+
+            return "Tillgängliga utgångar: " + string.Join(", ", utgangsNamn) + ".";
+        }
+
         public string? HamtaUtgangsMeddelande(string riktning)
         {
             if (UtgangsMeddelanden.TryGetValue(riktning, out string? meddelande))
@@ -100,12 +122,14 @@ namespace Stugan
             {
                 System.Threading.Thread.Sleep(300);
                 WriteLine($"{Beskrivning}");
+                WriteLine(HamtaUtgangarBeskrivning());
                 HarBesokts = true;
             }
             else
             {
                 System.Threading.Thread.Sleep(300);
                 WriteLine($"Du är {VisaNamn}.");
+                WriteLine(HamtaUtgangarBeskrivning());
             }
             VisaSakerIRummet();
         }

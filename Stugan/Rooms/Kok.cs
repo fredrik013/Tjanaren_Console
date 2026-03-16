@@ -9,6 +9,7 @@ namespace Stugan.Rooms
             "Köksbordet står dukat vid fönstret. Till vänster finns en liten dörr som leder ut till en trädgård.")
         {
             VisaNamn = "i köket";
+            OppnaUtgangar("Oster");
             SakerIRummet.Add(new AllmanSak("Eriksberg", "En immande kall Eriksberg Karaktär.")
             {
                 Anvandningsmeddelande = "Kapsylen flyger med ett pys. Du tar en rejäl klunk. Skål!",
@@ -20,7 +21,6 @@ namespace Stugan.Rooms
                 Anvandningsmeddelande = "Du äter upp det nybakade brödet. Mums!",
                 ForsvinnerVidAnvandning = true
             });
-            OppnaUtgangar("Oster");
         }
 
         public override void UndersokRum(Spelare spelare, Core.StoryState story)

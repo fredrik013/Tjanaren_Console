@@ -10,8 +10,8 @@ namespace Stugan.Rooms
         "Ljuset från skärmen fladdrar mot de mörka tapeterna.")
         {
             VisaNamn = "i vardagsrummet";
-            SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
             OppnaUtgangar("Vaster", "Oster");
+            SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
         }
 
         public override void UndersokRum(Spelare spelare, Core.StoryState story)

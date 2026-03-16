@@ -13,7 +13,8 @@
         Torso = 1,
         Hand = 2,
         Fot = 3,
-        Nederdel = 4
+        Nederdel = 4,
+        Helakroppen = 5
     }
 
     public enum BekladnadsLager
