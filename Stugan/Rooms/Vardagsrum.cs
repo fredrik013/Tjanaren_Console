@@ -14,7 +14,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Vaster", "Oster");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
             // Vi letar fortfarande efter TV-objektet för att veta om vi kan interagera

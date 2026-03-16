@@ -11,9 +11,9 @@ namespace Stugan.Rooms
             OppnaUtgangar("Soder", "Vaster");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
-            base.UndersokRum(spelare);
+            base.UndersokRum(spelare, story);
 
             // Vi switchar på typen, men hämtar namnet dynamiskt för texten
             switch (spelare.AktivtSkodon.ToLower())

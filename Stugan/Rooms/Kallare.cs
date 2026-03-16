@@ -13,7 +13,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Upp");
         }
 
-        public override void UndersokRum(Spelare spelare)
+        public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
 
