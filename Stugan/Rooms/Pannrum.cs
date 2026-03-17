@@ -13,15 +13,22 @@ namespace Stugan.Rooms
 
         public override bool KanGaIn(Spelare s)
         {
-            var aktivaSkydd = s.Ryggsack.GetAllaSaker().OfType<Klader>().Where(k => k.ArAktiv && k.Typ == Bekladnadstyp.Skydd);
+            // Vi hämtar ALLA aktiva skyddskläder en gång för alla
+            var aktivaSkydd = s.Ryggsack.GetAllaSaker()
+                .OfType<Klader>()
+                .Where(k => k.ArAktiv && k.Typ == Bekladnadstyp.Skydd)
+                .ToList();
 
-            // Vi switchar direkt på det första "falska" tillståndet vi hittar
+            // 1. "Naken-kontrollen" - har man inget skydd alls på sig?
+            if (!aktivaSkydd.Any())
+            {
+                WriteLine("Det ser farligt ut där inne. Du behöver nog någon form av skyddsutrustning.");
+                return false;
+            }
+
+            // 2. Switchen kollar nu bara VAD som saknas i listan
             switch (true)
             {
-                case bool _ when s.AktivtSkodon != "Skydd":
-                    WriteLine("Det ser farligt ut där inne. Du behöver nog någon form av skyddsutrustning.");
-                    return false;
-
                 case bool _ when !aktivaSkydd.Any(k => k.Placering == Kroppsdel.Fot):
                     WriteLine("Du kan inte gå in där utan skydd på fötterna, det är alldeles för blött.");
                     return false;
@@ -35,6 +42,7 @@ namespace Stugan.Rooms
                     return false;
 
                 default:
+                    // Om vi har något skydd (if-satsen ovan) och inget saknas i switchen...
                     return true;
             }
         }
