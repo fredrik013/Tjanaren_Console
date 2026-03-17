@@ -13,6 +13,7 @@ motor.Starta();
 
 Rum SkapaVarlden(WorldMap karta, StoryState story)
 {
+    // Utomhus
     Gardsplan gardsplan = new Gardsplan();
     gardsplan.Plats = new Position(0, 0, 0);
     karta.LaggTillRum(gardsplan.Plats, gardsplan);
@@ -21,7 +22,13 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     skjul.Plats = new Position(1, 0, 0);
     karta.LaggTillRum(skjul.Plats, skjul);
 
+    Tradgard tradgard = new Tradgard();
+    tradgard.Plats = new Position(-2, 1, 0);
+    karta.LaggTillRum(tradgard.Plats, tradgard);
+    gardsplan.Koppla("Vaster", tradgard); // Pil Vänster på gården -> Trädgården
+    tradgard.Koppla("Soder", gardsplan);  // Pil Höger i trädgården -> Gården
 
+    // Entré
     Hall hall = new Hall();
     hall.Plats = new Position(0, 1, 0);
     karta.LaggTillRum(hall.Plats, hall);
@@ -34,13 +41,10 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     omkladningsrum.Plats = new Position(1, 1, 0);
     karta.LaggTillRum(omkladningsrum.Plats, omkladningsrum);
 
-    Kallare kallare = new Kallare();
-    kallare.Plats = new Position(0, 1, -1);
-    karta.LaggTillRum(kallare.Plats, kallare);
-
-    Pannrum pannrum = new Pannrum();
-    pannrum.Plats = new Position(1, 1, -1);
-    karta.LaggTillRum(pannrum.Plats, pannrum);
+    // Inre regionen
+    Glasveranda glasveranda = new Glasveranda();
+    glasveranda.Plats = new Position(-2, 2, 0);
+    karta.LaggTillRum(glasveranda.Plats, glasveranda);
 
     InreHall hall2 = new InreHall();
     hall2.Plats = new Position(0, 2, 0);
@@ -50,15 +54,14 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     vardagsrum.Plats = new Position(-1, 2, 0);
     karta.LaggTillRum(vardagsrum.Plats, vardagsrum);
 
-    Glasveranda glasveranda = new Glasveranda();
-    glasveranda.Plats = new Position(-2, 2, 0);
-    karta.LaggTillRum(glasveranda.Plats, glasveranda);
+    // Källare
+    Kallare kallare = new Kallare();
+    kallare.Plats = new Position(0, 1, -1);
+    karta.LaggTillRum(kallare.Plats, kallare);
 
-    Tradgard tradgard = new Tradgard();
-    tradgard.Plats = new Position(-2, 1, 0);
-    karta.LaggTillRum(tradgard.Plats, tradgard);
-    gardsplan.Koppla("Vaster", tradgard); // Pil Vänster på gården -> Trädgården
-    tradgard.Koppla("Soder", gardsplan);  // Pil Höger i trädgården -> Gården
+    Pannrum pannrum = new Pannrum();
+    pannrum.Plats = new Position(1, 1, -1);
+    karta.LaggTillRum(pannrum.Plats, pannrum);
 
     return gardsplan;
 }
