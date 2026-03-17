@@ -108,26 +108,23 @@ namespace Stugan
         {
             bool visadeExit = _spelare.NuvarandeRum.VisaExitMeddelande(riktning);
 
-            // 1. Vi frågar rummet först!
+            // 1. Vi frågar rummet först om riktningen överhuvudtaget existerar som utgång
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
                 Rum hoppRum = _spelare.NuvarandeRum.Utgangar[riktning];
 
-                // Om det finns ett hopp-rum (t.ex. källaren), gå dit.
+                // Om det finns ett hopp-rum (t.ex. källaren)
                 if (hoppRum != null)
                 {
                     if (hoppRum.KanGaIn(_spelare))
                     {
                         _spelare.NuvarandeRum = hoppRum;
                         _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
-                        return;
                     }
                     return;
                 }
 
-                // --- HÄR KOMMER ÄNDRINGEN ---
-                // Om vi är här inne i IF-satsen men hoppRum är null, 
-                // då kör vi din matematik.
+                // Om riktningen fanns men hoppRum var null, kör koordinat-matematiken
                 Position? nuvarandePos = _spelare.NuvarandeRum.Plats;
                 if (nuvarandePos != null)
                 {
@@ -146,10 +143,14 @@ namespace Stugan
                     Position nastaPos = new Position(x, y, z);
                     Rum nastaRum = _worldMap.HamtaRum(nastaPos);
 
-                    if (nastaRum != null && nastaRum.KanGaIn(_spelare))
+                    if (nastaRum != null)
                     {
-                        _spelare.NuvarandeRum = nastaRum;
-                        _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                        // Kör KanGaIn separat även för koordinatrummet
+                        if (nastaRum.KanGaIn(_spelare))
+                        {
+                            _spelare.NuvarandeRum = nastaRum;
+                            _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                        }
                     }
                     else
                     {
