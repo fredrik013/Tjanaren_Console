@@ -1,4 +1,5 @@
-﻿using static System.Console;
+﻿using Stugan.Core;
+using static System.Console;
 
 namespace Stugan.Rooms
 {
@@ -44,6 +45,52 @@ namespace Stugan.Rooms
                 default:
                     // Om vi har något skydd (if-satsen ovan) och inget saknas i switchen...
                     return true;
+            }
+        }
+
+        public override void UndersokRum(Spelare spelare, StoryState story)
+        {
+            // Om röret redan är lagat finns det inget mer att undersöka här
+            if (story.RorArLagat)
+            {
+                WriteLine("\nDu ser det lagade röret. Det ser torrt och säkert ut nu.");
+                return;
+            }
+
+            // Vi kollar om spelaren har en AKTIV rörtång i handen
+            var aktivRortang = spelare.Ryggsack.GetAllaSaker()
+                .OfType<Redskap>()
+                .FirstOrDefault(r => r.Namn == "Rörtång" && r.ArAktiv);
+
+            if (aktivRortang != null)
+            {
+                // Framgång! Spelaren har rörtången redo.
+                story.RorArLagat = true;
+
+                // Vi uppdaterar rumsbeskrivningen permanent
+                this.Beskrivning = "Ett nu tyst och varmt pannrum. Röret är lagat och ångan har lagt sig.";
+
+                WriteLine("\nDu placerar rörtången runt den lösa kopplingen och tar i allt vad du orkar.");
+                WriteLine("Med ett metalliskt knarrande ger muttern med sig och dras åt.");
+                WriteLine("Det sista pysandet dör ut. Röret är lagat!");
+            }
+            else
+            {
+                // Spelaren har inte rörtången aktiv
+                bool harRortangMenInaktiv = spelare.Ryggsack.GetAllaSaker().Any(s => s.Namn == "Rörtång");
+
+                if (harRortangMenInaktiv)
+                {
+                    WriteLine("\nDet sprutar ånga från en koppling som verkar sitta helt lös.");
+                    WriteLine("Du har visserligen en rörtång i ryggsäcken, men den gör ingen nytta där.");
+                    WriteLine("Du behöver nog ta fram den (Gör den aktiv) om du ska kunna dra åt muttern.");
+                }
+                else
+                {
+                    WriteLine("\nDet läckande röret sprutar het ånga rätt ut i rummet.");
+                    WriteLine("Muttern sitter alldeles för hårt för att dras åt med fingrarna.");
+                    WriteLine("Du behöver ett rejält verktyg – som en rörtång – för att få stopp på läckan.");
+                }
             }
         }
     }

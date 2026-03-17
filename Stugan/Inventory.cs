@@ -4,8 +4,6 @@ namespace Stugan
 {
     public class Inventory
     {
-        private int _forraIndex = 0;
-
         private List<Spelsak> _saker = new List<Spelsak>();
         private int _markeratIndex = 0;
 
