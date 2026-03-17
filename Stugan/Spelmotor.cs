@@ -107,21 +107,29 @@ namespace Stugan
         private void FlyttaSpelare(string riktning)
         {
             bool visadeExit = _spelare.NuvarandeRum.VisaExitMeddelande(riktning);
-            Rum? nastaRum = null;
 
-            // 1. Först hittar vi vilket rum som FINNS där (antingen via Utgangar eller Koordinater)
+            // 1. Vi frågar rummet först om riktningen överhuvudtaget existerar som utgång
             if (_spelare.NuvarandeRum.Utgangar.ContainsKey(riktning))
             {
-                nastaRum = _spelare.NuvarandeRum.Utgangar[riktning];
-            }
+                Rum hoppRum = _spelare.NuvarandeRum.Utgangar[riktning];
 
-            // Om vi inte hittade ett hopp-rum, kör din koordinat-matematik
-            if (nastaRum == null)
-            {
+                // Om det finns ett hopp-rum (t.ex. källaren)
+                if (hoppRum != null)
+                {
+                    if (hoppRum.KanGaIn(_spelare))
+                    {
+                        _spelare.NuvarandeRum = hoppRum;
+                        _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                    }
+                    return;
+                }
+
+                // Om riktningen fanns men hoppRum var null, kör koordinat-matematiken
                 Position? nuvarandePos = _spelare.NuvarandeRum.Plats;
                 if (nuvarandePos != null)
                 {
                     int x = nuvarandePos.X; int y = nuvarandePos.Y; int z = nuvarandePos.Z;
+
                     switch (riktning)
                     {
                         case "Norr": y++; break;
@@ -131,26 +139,29 @@ namespace Stugan
                         case "Upp": z++; break;
                         case "Ner": z--; break;
                     }
-                    nastaRum = _worldMap.HamtaRum(new Position(x, y, z));
-                }
-            }
 
-            // 2. Nu hanterar vi resultatet
-            if (nastaRum != null)
-            {
-                // Rummet existerar! Nu kollar vi om vi får gå in.
-                if (nastaRum.KanGaIn(_spelare))
-                {
-                    _spelare.NuvarandeRum = nastaRum;
-                    _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                    Position nastaPos = new Position(x, y, z);
+                    Rum nastaRum = _worldMap.HamtaRum(nastaPos);
+
+                    if (nastaRum != null)
+                    {
+                        // Kör KanGaIn separat även för koordinatrummet
+                        if (nastaRum.KanGaIn(_spelare))
+                        {
+                            _spelare.NuvarandeRum = nastaRum;
+                            _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
+                        }
+                    }
+                    else
+                    {
+                        WriteLine("Där är det stopp, det finns inget rum åt det hållet.");
+                    }
                 }
-                // Om KanGaIn är false gör vi INGENTING här, 
-                // eftersom rummet självt har skrivit varför det är stopp.
             }
             else
             {
-                // Här finns verkligen inget rum, varken via länk eller koordinat
-                WriteLine("Där är det stopp, det finns ingen väg åt det hållet.");
+                // 2. Om riktningen INTE fanns i Utgangar, så är det en solid vägg.
+                WriteLine("Där är det stopp, det finns ingen utgång åt det hållet.");
             }
         }
 
