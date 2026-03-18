@@ -34,7 +34,15 @@ namespace Stugan
             WriteLine("RYGGSÄCK");
             for (int i = 0; i < _saker.Count; i++)
             {
-                WriteLine($"   {_saker[i].Namn}");
+                var sak = _saker[i];
+                string status = "";
+
+                // Hämta statusen direkt här
+                if (sak is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
+                else if (sak is Redskap r) status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
+
+                // Skriv ut hela raden på en gång, inkl status
+                WriteLine($"   {sak.Namn}{status}");
             }
 
             UppmarksammaRad();
