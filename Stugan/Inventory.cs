@@ -91,23 +91,33 @@ namespace Stugan
                         var valdSak = _saker[_markeratIndex];
                         string svar = HanteraUtrustning(valdSak, s, this);
 
-                        // VIKTIGT: Skriv ut svaret på rad 12 så det hamnar under listan
-                        SetCursorPosition(0, 12);
-                        WriteLine(svar.PadRight(Console.WindowWidth));
-
-                        // Om saken försvann (ätit/druckit)
-                        if (!_saker.Contains(valdSak))
+                        if (_saker.Contains(valdSak))
                         {
-                            // Vi pausar en sekund så JAWS hinner läsa WriteLine 
-                            // innan vi stänger eller ritar om.
-                            System.Threading.Thread.Sleep(1000);
+                            // 1. Uppdatera statusen på raden där vi står (Skriv direkt)
+                            SetCursorPosition(0, _markeratIndex + 1);
+                            string status = "";
+                            if (valdSak is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
+                            else if (valdSak is Redskap r) status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
 
+                            Write($"   {valdSak.Namn}{status}".PadRight(45));
+
+                            // 2. Skriv svaret på rad 12
+                            SetCursorPosition(0, 12);
+                            Write(svar.PadRight(60));
+
+                            // 3. Parkera markören på föremålet igen
+                            UppmarksammaRad();
+                        }
+                        else
+                        {
+                            // Om saken försvann (äten/drickbar)
                             if (_saker.Count == 0) tittar = false;
-                            else Visa(s); // Starta om för att rensa listan
+                            else Visa(s);
+
+                            SetCursorPosition(0, 12);
+                            Write(svar.PadRight(60));
                             return;
                         }
-
-                        UppmarksammaRad();
                         break;
 
                     case ConsoleKey.Escape:
@@ -238,43 +248,11 @@ namespace Stugan
             return sak.Anvand(s);
         }
 
-        private void UppmarksammaRad(bool skaPrata = true)
+        private void UppmarksammaRad()
         {
             if (_saker.Count == 0) return;
-
-            // 1. Först rensar vi gamla markörer på alla rader (visuellt)
-            for (int i = 0; i < _saker.Count; i++)
-            {
-                SetCursorPosition(0, i + 1);
-                Write("  "); // Skriv två mellanslag för att sudda ut ev. gammal "> "
-            }
-
-            // 2. Flytta markören till den raden vi står på (+1 för rubriken)
-            SetCursorPosition(0, _markeratIndex + 1);
-
-            var sak = _saker[_markeratIndex];
-
-            // 3. Fixa statussträngen så den matchar det du vill höra
-            string status = "";
-            if (sak is Klader p)
-            {
-                status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
-            }
-            else if (sak is Redskap r)
-            {
-                status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
-            }
-
-            // 4. Skriv ut raden visuellt med markören "> "
-            // Vi skriver "> " först och sen namnet + status.
-            Write($" {sak.Namn}{status}".PadRight(45));
-
-            // 5. För att JAWS ska läsa upp statusen korrekt:
-            // Vi ställer markören i slutet av namnet.
-            if (skaPrata)
-            {
-                SetCursorPosition(2, _markeratIndex + 1);
-            }
+            // Flytta bara markören till den aktuella raden i listan
+            SetCursorPosition(3, _markeratIndex + 1);
         }
     }
 }
