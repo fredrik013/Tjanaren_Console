@@ -1,5 +1,4 @@
 ﻿using static System.Console;
-
 namespace Stugan
 {
     public class Inventory
@@ -102,11 +101,9 @@ namespace Stugan
                             Write($"   {valdSak.Namn}{status}".PadRight(45));
 
                             // 2. Skriv svaret på rad 12
-                            SetCursorPosition(0, 12);
-                            Write(svar.PadRight(60));
-
-                            // 3. Parkera markören på föremålet igen
                             UppmarksammaRad();
+                            SetCursorPosition(0, 12);
+                            Write(svar);
                         }
                         else
                         {
