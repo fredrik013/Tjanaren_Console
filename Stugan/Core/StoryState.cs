@@ -20,7 +20,7 @@
 
         public bool HarArbetskladerPaSig { get; set; } = false;
 
-        public bool HarNyckelTillStadskrubb { get; set; } = false;
+        public bool HarNyckel { get; set; } = false;
 
         public string GetStatusBeskrivning()
         {

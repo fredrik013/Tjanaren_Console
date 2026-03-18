@@ -9,11 +9,25 @@ namespace Stugan.Rooms
         {
             VisaNamn = "i hallen";
             OppnaUtgangar("Soder", "Vaster");
+
+            SakerIRummet.Add(new AllmanSak("Nyckel", "En rostig gammal nyckel. Undrar var den leder.", true, true));
         }
 
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             base.UndersokRum(spelare, story);
+            var rum = spelare.NuvarandeRum;
+            var nyckel = SakerIRummet.Find(s => s.Namn.ToLower().Contains("nyckel"));
+
+            if (string.IsNullOrEmpty(spelare.AktivtSkodon) && !HarUndersokts)
+            {
+                WriteLine("\nDen mjuka mattan kittlar skönt mellan dina bara tår. Plötsligt känner du något hårt.");
+                WriteLine("Du lyfter på mattkanten och hittar en rostig nyckel!");
+                nyckel.ArGomd = false;
+                story.HarNyckel = true;
+                HarUndersokts = true;
+                return; // Vi går ur här så vi inte får dubbla meddelanden från switchen
+            }
 
             // Vi switchar på typen, men hämtar namnet dynamiskt för texten
             switch (spelare.AktivtSkodon.ToLower())
@@ -27,12 +41,15 @@ namespace Stugan.Rooms
 
                 case "inne":
                     WriteLine($"\nDina {spelare.AktivtSkodonNamn} glider ljudlöst över den mjuka mattan.");
+                    WriteLine($"Du förnimmer något under foten men sulan på dina {spelare.AktivtSkodonNamn} är för tjocka för att du ska kunna veta vad det är.");
                     break;
 
                 case "":
                     WriteLine("\nDen mjuka mattan kittlar skönt mellan dina bara tår.");
                     break;
             }
+
+
         }
     }
 }
