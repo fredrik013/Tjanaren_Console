@@ -9,19 +9,19 @@
         {
 
         }
-        public override string Anvand(Spelare s)
+        public override string Anvand(Spelare spelare)
         {
-            // 1. Kör speciallogik om den finns (t.ex. s.ArSkadad = false)
-            Specialeffekt?.Invoke(s);
+            // Vi skiftar status: var den aktiv blir den inaktiv och tvärtom
+            ArAktiv = !ArAktiv;
 
-            // 2. Om du har skrivit in ett meddelande, använd det
-            if (!string.IsNullOrEmpty(Anvandningsmeddelande))
+            if (ArAktiv)
             {
-                return Anvandningsmeddelande;
+                return $"Du tar fram {Namn} och håller den i ett stadigt grepp.";
             }
-
-            // 3. Annars, ge standardmeddelandet
-            return $"Du undersöker {this.Namn}. Det verkar inte gå att göra så mycket med den just nu.";
+            else
+            {
+                return $"Du stoppar ner {Namn} i ryggsäcken igen.";
+            }
         }
     }
 }
