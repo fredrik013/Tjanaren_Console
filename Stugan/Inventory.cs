@@ -103,13 +103,13 @@ namespace Stugan
                             else if (valdSak is AllmanSak a) status = a.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
                             else if (valdSak is Livsmedel l) status = l.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
 
-
                             Write($"   {valdSak.Namn}{status}".PadRight(45));
 
                             // 2. Skriv svaret på rad 12
                             UppmarksammaRad();
                             SetCursorPosition(0, 12);
                             Write(svar);
+                            if (valdSak.ForsvinnerVidAnvandning) _saker.Remove(valdSak);
                         }
                         else
                         {
@@ -266,19 +266,7 @@ namespace Stugan
 
             if (sak is Livsmedel livsmedel)
             {
-                string svar = livsmedel.Anvand(s);
-
-                if (livsmedel.ArAktiv && inv != null)
-                {
-                    foreach (var l in inv.GetAllaSaker().OfType<Livsmedel>())
-                    {
-                        if (l != livsmedel)
-                        {
-                            l.ArAktiv = false;
-                        }
-                    }
-                }
-                return svar;
+                return livsmedel.Anvand(s);
             }
 
             // 3. Fallback för vanliga saker

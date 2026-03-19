@@ -11,6 +11,7 @@
 
         public override string Anvand(Spelare spelare)
         {
+            this.ForsvinnerVidAnvandning = true;
             return Anvandningsmeddelande;
         }
 
