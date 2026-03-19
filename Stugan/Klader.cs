@@ -4,7 +4,8 @@
     {
         Inne = 0,
         Ute = 1,
-        Skydd = 2
+        Skydd = 2,
+        Plagg = 3
     }
 
     public enum Kroppsdel

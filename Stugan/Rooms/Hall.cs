@@ -18,14 +18,14 @@ namespace Stugan.Rooms
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
-            // Använd StringComparison för att slippa ToLower-bekymmer
-            var plasttofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.Equals("Plasttofflor", StringComparison.OrdinalIgnoreCase));
+            var plasttofflor = SakerIRummet.Find(s => s.Namn.ToLower().Contains("tofflor"));
 
-            if (plasttofflor != null && plasttofflor.ArGomd)
+            if (!HarUndersokts)
             {
                 plasttofflor.ArGomd = false;
                 WriteLine("\nDu rotar bland de få sakerna i skohyllan...");
                 WriteLine("Där, längst in under en gammal tidning, hittar du ett par blå plasttofflor!");
+                HarUndersokts = true;
 
                 // Här kan vi "skryta" lite med vår nya prop
                 if (plasttofflor is Klader k && k.SkyddarMotVatten)
