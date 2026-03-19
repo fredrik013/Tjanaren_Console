@@ -10,7 +10,8 @@ namespace Stugan.Rooms
             VisaNamn = "i hallen";
             OppnaUtgangar("Soder", "Vaster");
 
-            SakerIRummet.Add(new AllmanSak("Nyckel", "En rostig gammal nyckel. Undrar var den leder.", true, true));
+            SakerIRummet.Add(new AllmanSak("Nyckel", "En rostig gammal nyckel. Undrar var den leder.", true, true)
+            { ArAktiv = true });
         }
 
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
@@ -41,7 +42,7 @@ namespace Stugan.Rooms
 
                 case "inne":
                     WriteLine($"\nDina {spelare.AktivtSkodonNamn} glider ljudlöst över den mjuka mattan.");
-                    WriteLine($"Du förnimmer något under foten men sulan på dina {spelare.AktivtSkodonNamn} är för tjocka för att du ska kunna veta vad det är.");
+                    WriteLine($"Du förnimmer något under foten men sulorna på dina {spelare.AktivtSkodonNamn} är för tjocka för att du ska kunna veta vad det är.");
                     break;
 
                 case "":

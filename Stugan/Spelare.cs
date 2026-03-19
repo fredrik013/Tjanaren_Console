@@ -34,7 +34,7 @@ namespace Stugan
             Ryggsack.LaggTill(new Klader(
                     "Byxor",
 "Ett par blåa men funktionella jeans.",
-                    Bekladnadstyp.Inne, Kroppsdel.Nederdel, BekladnadsLager.Mellan,
+                    Bekladnadstyp.Plagg, Kroppsdel.Nederdel, BekladnadsLager.Mellan,
                     false,
                     true,
                     false,
@@ -45,8 +45,8 @@ namespace Stugan
 
             Ryggsack.LaggTill(new Klader(
         "T-shirt",
-"En svart t-shirt med ett slitet tryck av en gammal rockband.",
-        Bekladnadstyp.Inne, Kroppsdel.Torso, BekladnadsLager.Underst,
+"En svart t-shirt med ett slitet tryck av ett gammalt rockband.",
+        Bekladnadstyp.Plagg, Kroppsdel.Torso, BekladnadsLager.Underst,
         false,
         true,
         false,

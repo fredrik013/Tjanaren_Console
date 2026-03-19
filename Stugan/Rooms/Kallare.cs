@@ -17,8 +17,7 @@ namespace Stugan.Rooms
         {
             var rum = spelare.NuvarandeRum;
 
-            // Vi letar i rummets lista efter saken som heter "Innetofflor"
-            var tofflor = rum.SakerIRummet.FirstOrDefault(s => s.Namn.Equals("Innetofflor", StringComparison.OrdinalIgnoreCase));
+            var tofflor = SakerIRummet.Find(s => s.Namn.ToLower().Contains("tofflor"));
 
             // 1. Hitta plagget (utan ToLower-slarv)
             var p = spelare.Ryggsack.GetAllaSaker()
@@ -45,25 +44,21 @@ namespace Stugan.Rooms
                     break;
             }
             // 2. Själva sökandet
-            if (tofflor != null && tofflor.ArGomd)
+            if (!HarUndersokts)
             {
-                // Här hittar vi dem!
                 WriteLine("\nDu undersöker den torra hyllan högt upp på väggen.");
                 WriteLine("Dina fingrar nuddar något mjukt... det är ett par innetofflor!");
 
-                // VIKTIGT: Vi sätter ArGomd till false så de blir synliga i rummet/kan tas upp
                 tofflor.ArGomd = false;
-
+                HarUndersokts = true;
                 WriteLine("\nEtt svagt, belåtet mumlande hörs från mörkret.");
             }
             else if (tofflor != null && !tofflor.ArGomd)
             {
-                // Om vi redan har hittat dem men inte plockat upp dem
                 WriteLine("\nDu ser innetofflorna ligga på hyllan där du hittade dem.");
             }
             else
             {
-                // Om 'tofflor' är null (dvs hittas inte i listan alls)
                 WriteLine("\nDu letar noga på hyllorna men hittar inget mer än damm och spindelväv.");
             }
         }
