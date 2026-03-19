@@ -40,6 +40,8 @@ namespace Stugan
                 if (sak is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
                 else if (sak is Redskap r) status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
                 else if (sak is AllmanSak a) status = a.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
+                else if (sak is Livsmedel l) status = l.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
+
 
                 // Skriv ut hela raden på en gång, inkl status
                 WriteLine($"   {sak.Namn}{status}");
@@ -99,6 +101,7 @@ namespace Stugan
                             if (valdSak is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
                             else if (valdSak is Redskap r) status = r.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
                             else if (valdSak is AllmanSak a) status = a.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
+                            else if (valdSak is Livsmedel l) status = l.ArAktiv ? " (i handen)" : " (i ryggsäcken)";
 
 
                             Write($"   {valdSak.Namn}{status}".PadRight(45));
@@ -255,6 +258,23 @@ namespace Stugan
                         if (a != allmanSak)
                         {
                             a.ArAktiv = false;
+                        }
+                    }
+                }
+                return svar;
+            }
+
+            if (sak is Livsmedel livsmedel)
+            {
+                string svar = livsmedel.Anvand(s);
+
+                if (livsmedel.ArAktiv && inv != null)
+                {
+                    foreach (var l in inv.GetAllaSaker().OfType<Livsmedel>())
+                    {
+                        if (l != livsmedel)
+                        {
+                            l.ArAktiv = false;
                         }
                     }
                 }
