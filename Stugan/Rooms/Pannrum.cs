@@ -50,6 +50,24 @@ namespace Stugan.Rooms
 
         public override void UndersokRum(Spelare spelare, StoryState story)
         {
+            if (story.RorArLagat)
+            {
+                // Den "belönande" beskrivningen
+                WriteLine("\nLuften i pannrummet är nu klar och torr. Det lagade röret blänker svagt i ljuset.");
+                WriteLine("Det sjuder hemtrevligt från pannan och värmen sprider sig i rören.");
+                WriteLine("Här finns inget mer som behöver underhållas just nu.");
+            }
+            else
+            {
+                // Hintens beskrivning (innan lagning)
+                WriteLine("\nDet läckande röret sprutar het ånga rätt ut i rummet.");
+                WriteLine("Det är uppenbart att anläggningen är i desperat behov av **underhåll** (M).");
+                WriteLine("Muttern sitter alldeles för hårt för att dras åt med bara händerna.");
+            }
+        }
+
+        public override void UtforUnderhall(Spelare spelare, StoryState story)
+        {
             // Om röret redan är lagat finns det inget mer att undersöka här
             if (story.RorArLagat)
             {

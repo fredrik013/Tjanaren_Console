@@ -173,9 +173,11 @@ namespace Stugan
             // Som standard händer absolut ingenting här.
         }
 
-        public virtual string UtforUnderhall(Spelare s)
+        // I Rum.cs
+        public virtual void UtforUnderhall(Spelare spelare, StoryState story)
         {
-            return "Det finns inget här som behöver underhållas just nu.";
+            // Som standard händer ingenting speciellt.
+            WriteLine("\nDet finns inget här som behöver underhållas just nu.");
         }
     }
 }

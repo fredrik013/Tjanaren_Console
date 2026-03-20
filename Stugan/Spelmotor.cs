@@ -74,10 +74,7 @@ namespace Stugan
                     break;
 
                 case ConsoleKey.M:
-                    string underhallsResultat = _spelare.NuvarandeRum.UtforUnderhall(_spelare);
-                    // Visa resultatet på din meddelanderad (rad 12 eller 15)
-                    SetCursorPosition(0, 15);
-                    Write(underhallsResultat.PadRight(Console.WindowWidth - 1));
+                    _spelare.NuvarandeRum.UtforUnderhall(_spelare, _story);
                     break;
 
                 case ConsoleKey.UpArrow:
