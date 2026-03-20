@@ -1,4 +1,6 @@
-﻿namespace Stugan.Rooms
+﻿using Stugan.Modeller.Saker;
+
+namespace Stugan.Rooms
 {
     public class Skjul : Rum
     {

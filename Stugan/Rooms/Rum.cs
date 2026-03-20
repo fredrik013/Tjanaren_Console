@@ -1,7 +1,8 @@
 ﻿using Stugan.Core;
+using Stugan.Modeller;
 using static System.Console;
 
-namespace Stugan
+namespace Stugan.Rooms
 {
     public class Rum
     {
@@ -100,7 +101,7 @@ namespace Stugan
                 WriteLine($"\n{meddelande}");
 
                 // JAWS-vänlig paus
-                System.Threading.Thread.Sleep(2000);
+                Thread.Sleep(2000);
                 return true;
             }
 
@@ -120,14 +121,14 @@ namespace Stugan
             // 1. Grundbeskrivningen av rummet
             if (!HarBesokts)
             {
-                System.Threading.Thread.Sleep(300);
+                Thread.Sleep(300);
                 WriteLine($"{Beskrivning}");
                 WriteLine(HamtaUtgangarBeskrivning());
                 HarBesokts = true;
             }
             else
             {
-                System.Threading.Thread.Sleep(300);
+                Thread.Sleep(300);
                 WriteLine($"Du är {VisaNamn}.");
                 WriteLine(HamtaUtgangarBeskrivning());
             }

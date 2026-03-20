@@ -1,4 +1,6 @@
-﻿namespace Stugan.Core
+﻿using Stugan.Rooms;
+
+namespace Stugan.Core
 {
     public class WorldMap
     {

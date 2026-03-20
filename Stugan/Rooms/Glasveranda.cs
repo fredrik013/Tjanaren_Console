@@ -1,4 +1,6 @@
-﻿namespace Stugan.Rooms
+﻿using Stugan.Core;
+
+namespace Stugan.Rooms
 {
     public class Glasveranda : Rum
     {

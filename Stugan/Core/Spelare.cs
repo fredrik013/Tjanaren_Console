@@ -1,13 +1,14 @@
-﻿using Stugan.Core;
+﻿using Stugan.Modeller.Saker;
+using Stugan.Rooms;
 using static System.Console;
 
-namespace Stugan
+namespace Stugan.Core
 {
     public class Spelare
     {
         public Rum NuvarandeRum { get; set; }
 
-        public Core.Position? Position => NuvarandeRum.Plats;
+        public Position? Position => NuvarandeRum.Plats;
 
         public Inventory Ryggsack { get; private set; }
 

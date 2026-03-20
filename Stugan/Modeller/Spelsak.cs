@@ -1,4 +1,6 @@
-﻿namespace Stugan
+﻿using Stugan.Core;
+
+namespace Stugan.Modeller
 {
     public abstract class Spelsak
     {

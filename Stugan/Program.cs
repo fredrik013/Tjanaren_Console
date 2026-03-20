@@ -1,5 +1,4 @@
-﻿using Stugan;
-using Stugan.Core;
+﻿using Stugan.Core;
 using Stugan.Rooms;
 
 StoryState story = new StoryState();
