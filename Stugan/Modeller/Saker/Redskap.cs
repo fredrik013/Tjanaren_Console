@@ -1,4 +1,4 @@
-﻿namespace Stugan
+﻿namespace Stugan.Modeller.Saker
 {
     public class Redskap : Spelsak
     {

@@ -1,4 +1,4 @@
-﻿namespace Stugan
+﻿namespace Stugan.Modeller.Saker
 {
     public class Livsmedel : Spelsak
     {
@@ -11,7 +11,7 @@
 
         public override string Anvand(Spelare spelare)
         {
-            this.ForsvinnerVidAnvandning = true;
+            ForsvinnerVidAnvandning = true;
             return Anvandningsmeddelande;
         }
 
