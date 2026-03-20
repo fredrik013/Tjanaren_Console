@@ -172,5 +172,10 @@ namespace Stugan
         {
             // Som standard händer absolut ingenting här.
         }
+
+        public virtual string UtforUnderhall(Spelare s)
+        {
+            return "Det finns inget här som behöver underhållas just nu.";
+        }
     }
 }
