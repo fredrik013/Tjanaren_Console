@@ -73,6 +73,10 @@ namespace Stugan
                     _spelare.NuvarandeRum.LasLangBeskrivning();
                     break;
 
+                case ConsoleKey.M:
+                    _spelare.NuvarandeRum.UtforUnderhall(_spelare, _story);
+                    break;
+
                 case ConsoleKey.UpArrow:
                     FlyttaSpelare("Norr");
                     break;
