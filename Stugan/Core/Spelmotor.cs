@@ -1,8 +1,7 @@
-﻿using Stugan.Core;
-using Stugan.Rooms;
+﻿using Stugan.Rooms;
 using static System.Console;
 
-namespace Stugan
+namespace Stugan.Core
 {
     public class Spelmotor
     {
@@ -187,7 +186,7 @@ namespace Stugan
                 _spelare.Ryggsack.LaggTill(sak);
                 rum.SakerIRummet.Remove(sak);
                 WriteLine($"\nDu plockar upp: {sak.Namn}.");
-                System.Threading.Thread.Sleep(800);
+                Thread.Sleep(800);
             }
             else
             {
@@ -208,12 +207,12 @@ namespace Stugan
                     rum.SakerIRummet.Remove(sak);
 
                     WriteLine($"\nDu valde att ta: {sak.Namn}.");
-                    System.Threading.Thread.Sleep(1000); // Paus för JAWS
+                    Thread.Sleep(1000); // Paus för JAWS
                 }
                 else
                 {
                     WriteLine("\nOgiltigt val, du plockade inte upp något.");
-                    System.Threading.Thread.Sleep(800);
+                    Thread.Sleep(800);
                 }
             }
         }

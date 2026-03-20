@@ -1,4 +1,6 @@
-﻿namespace Stugan.Modeller.Saker
+﻿using Stugan.Core;
+
+namespace Stugan.Modeller.Saker
 {
     public enum Bekladnadstyp
     {

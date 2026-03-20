@@ -1,7 +1,7 @@
 ﻿using Stugan.Modeller;
 using Stugan.Modeller.Saker;
 using static System.Console;
-namespace Stugan
+namespace Stugan.Core
 {
     public class Inventory
     {
@@ -69,10 +69,10 @@ namespace Stugan
 
                         // Skriv ut på rad 12 så JAWS läser upp det direkt
                         SetCursorPosition(0, 12);
-                        WriteLine(info.PadRight(Console.WindowWidth));
+                        WriteLine(info.PadRight(WindowWidth));
 
                         // Vi pausar lite så man hinner höra beskrivningen innan man trycker vidare
-                        System.Threading.Thread.Sleep(500);
+                        Thread.Sleep(500);
                         break;
 
                     case ConsoleKey.DownArrow:
@@ -147,9 +147,9 @@ namespace Stugan
 
                         // Bekräftelse till användaren
                         SetCursorPosition(0, 12);
-                        WriteLine($"Du lämnade {sakAttSlappa.Namn} i {s.NuvarandeRum.Namn}.".PadRight(Console.WindowWidth));
+                        WriteLine($"Du lämnade {sakAttSlappa.Namn} i {s.NuvarandeRum.Namn}.".PadRight(WindowWidth));
 
-                        System.Threading.Thread.Sleep(1000); // Paus för JAWS
+                        Thread.Sleep(1000); // Paus för JAWS
 
                         if (_saker.Count == 0)
                         {
@@ -176,7 +176,7 @@ namespace Stugan
             WriteLine("RYGGSÄCK");
             for (int i = 0; i < _saker.Count; i++)
             {
-                string markor = (i == _markeratIndex) ? "> " : "  ";
+                string markor = i == _markeratIndex ? "> " : "  ";
                 string status = "";
                 if (_saker[i] is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
                 WriteLine($"{markor}{_saker[i].Namn}{status}");
