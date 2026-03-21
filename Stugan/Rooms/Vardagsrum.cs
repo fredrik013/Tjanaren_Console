@@ -16,6 +16,22 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
         }
 
+        public override bool KanGaIn(Spelare spelare)
+        {
+            if (spelare.AktivtSkodon == Bekladnadstyp.Ute.ToString())
+            {
+                WriteLine("\n[VARNING]");
+                WriteLine("När du sätter foten över tröskeln sprakar TV:n till med ett ilsket ljud.");
+                WriteLine("En raspig röst skär genom bruset:");
+                WriteLine("'...ingen smuts på mina mattor... UT MED DIG OCH TA AV DIG BOOTSEN!...'");
+                WriteLine("\nTryck på valfri tangent för att gå vidare...");
+                ReadKey(true);
+            }
+
+            // Vi släpper in dem ändå så att de får ta konsekvensen (doften) inne i rummet
+            return true;
+        }
+
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;
