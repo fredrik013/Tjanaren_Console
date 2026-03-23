@@ -1,4 +1,5 @@
 ﻿using Stugan.Core;
+using Stugan.Modeller.Saker;
 
 namespace Stugan.Rooms
 {
@@ -8,6 +9,13 @@ namespace Stugan.Rooms
         {
             VisaNamn = "på glasverandan";
             OppnaUtgangar("Soder", "Oster");
+
+            SakerIRummet.Add(new AllmanSak("Minneslapp",
+                "Lappen är skriven med en nästan provocerande prydlig handstil: \n" +
+                "'Till den som eventuellt har gått vilse i mitt hus: \n" +
+                "Skulle källarrören få för sig att protestera igen, vänligen konsultera läskamraten. \n" +
+                "Och kom ihåg – blommorna i hallen behöver mer än bara vatten, de vaktar även ingångar.'",
+                true)); // true betyder att den går att plocka upp om man vill
         }
 
         public override bool KanGaIn(Spelare s, StoryState story)

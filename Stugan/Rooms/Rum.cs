@@ -161,18 +161,44 @@ namespace Stugan.Rooms
 
         public virtual void UndersokRum(Spelare spelare, StoryState story)
         {
-            // Vi hämtar ALLA saker (både inredning och lösa föremål)
+            // Som standard i basklassen ger vi bara en allmän beskrivning av rummets atmosfär.
+            // Inga menyer, inga listor – bara text.
+            WriteLine("Det verkar inte vara något som sticker ut just nu vid en snabb anblick.");
+        }
+
+        public virtual bool KanGaIn(Spelare s, StoryState story)
+        {
+            return true; // Standard: Alla får komma in!
+        }
+
+        public virtual void ReageraPaHandling(string handling)
+        {
+            // Som standard händer absolut ingenting här.
+        }
+
+        // I Rum.cs
+        public virtual void UtforUnderhall(Spelare spelare, StoryState story)
+        {
+            // Som standard händer ingenting speciellt.
+            WriteLine("\nDet finns inget här som behöver underhållas just nu.");
+        }
+
+        // Denna metod är fast och körs likadant för alla rum, 
+        // vilket gör att vi slipper rums-specifika utskällningar när vi bara vill se objekten.
+        public void VisaObjektLista(Spelare spelare, Core.StoryState story)
+        {
+            // Vi filtrerar bort gömda saker direkt
             var saker = SakerIRummet.Where(s => !s.ArGomd).ToList();
 
             if (saker.Count == 0)
             {
                 WriteLine("\nDet finns inget särskilt att undersöka här.");
-                Thread.Sleep(1000); // Paus för JAWS
+                Thread.Sleep(1000);
                 return;
             }
 
             Clear();
-            WriteLine($"--- UNDERSÖK {Namn.ToUpper()} ---");
+            WriteLine($"--- OBJEKT I {Namn.ToUpper()} ---");
             WriteLine("Vad vill du titta närmare på?");
 
             for (int i = 0; i < saker.Count; i++)
@@ -191,7 +217,6 @@ namespace Stugan.Rooms
                 WriteLine($"--- {valdSak.Namn.ToUpper()} ---");
                 WriteLine(valdSak.Beskrivning);
 
-                // Här kan vi ha en liten hint om saken kan plockas upp
                 if (valdSak.KanPlockasUpp && !spelare.Ryggsack.HarForemal(valdSak.Namn))
                 {
                     WriteLine($"\n(Du kan försöka plocka upp {valdSak.Namn.ToLower()} om du vill.)");
@@ -200,26 +225,9 @@ namespace Stugan.Rooms
                 WriteLine("\nTryck på valfri tangent för att fortsätta...");
                 ReadKey(true);
 
-                // Efter att man tittat på något, rita om rummet så man ser var man är
+                // Visa rumsbeskrivningen igen så man hittar tillbaka
                 VisaBeskrivning(false);
             }
-        }
-
-        public virtual bool KanGaIn(Spelare s, StoryState story)
-        {
-            return true; // Standard: Alla får komma in!
-        }
-
-        public virtual void ReageraPaHandling(string handling)
-        {
-            // Som standard händer absolut ingenting här.
-        }
-
-        // I Rum.cs
-        public virtual void UtforUnderhall(Spelare spelare, StoryState story)
-        {
-            // Som standard händer ingenting speciellt.
-            WriteLine("\nDet finns inget här som behöver underhållas just nu.");
         }
     }
 }
