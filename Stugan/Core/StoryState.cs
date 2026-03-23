@@ -6,6 +6,8 @@
 
         public bool RorArLagat { get; set; } = false;
 
+        public bool HarBlivitVarnadOmRor { get; set; } = false;
+
         public bool GrovstadatPannrum { get; set; } = false;
 
         public bool HeltRentIKallaren { get; set; } = false;
