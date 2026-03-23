@@ -15,6 +15,9 @@ namespace Stugan.Rooms
             UtgangsMeddelanden.Add("Ner", "Trappan gnisslar betänkligt under din vikt för varje steg du tar neråt...");
             OppnaUtgangar("Vaster", "Oster", "Norr", "Soder", "Ner");
             SakerIRummet.Add(new Klader("Plasttofflor", "Ett par blå plasttofflor.", Bekladnadstyp.Inne, Kroppsdel.Fot, BekladnadsLager.Mellan, true, true, true));
+            // I Hall-konstruktorn:
+            SakerIRummet.Add(new Inredning("Spegel", "En prålig spegel med guldram. Glaset är så rent att det nästan gör ont i ögonen. " +
+                "Du ser en person som ser ut att ha sovit för lite och jobbat för mycket. En liten lortfläck på din kind lyser som en varningslampa – Herrskapet kommer få ett utbrott om de ser den."));
         }
 
         public override bool KanGaIn(Spelare s, StoryState story)
