@@ -13,7 +13,7 @@ namespace Stugan.Rooms
         {
             VisaNamn = "i vardagsrummet";
             OppnaUtgangar("Vaster", "Oster");
-            SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+            SakerIRummet.Add(new Inredning("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
         }
 
         public override bool KanGaIn(Spelare spelare)
@@ -53,6 +53,17 @@ namespace Stugan.Rooms
             {
                 WriteLine("\nDu går fram till den brusande TV:n.");
                 WriteLine("Genom det gråa flimret hörs en raspig röst:");
+
+                if (!story.RorArLagat) // Om spelaren latat sig!
+                {
+                    WriteLine("Skärmen lyser upp i ett giftigt lila sken och volymen maxas:");
+                    WriteLine("\n'...SITT INTE HÄR OCH LATA DIG!...'");
+                    WriteLine("'...NER I KÄLLAREN OCH LAGA DET TRASIGA RÖRET, ANNARS JÄVLAR!...'");
+                    System.Threading.Thread.Sleep(1000);
+                    WriteLine("\nTV:n dör med en ljudlig smäll och en tunn strimma rök stiger från baksidan.");
+                    rum.HarUndersokts = true;
+                    return; // Vi avbryter här så de inte får resten av tipsen förrän de jobbat lite!
+                }
 
                 // HÄR ÄR DEN NYA RENA LOGIKEN (Ingen hårdkodning av namn!)
                 // HÄR ÄR DEN NYA RENA LOGIKEN (Nu helt synkad med din Enum!)
