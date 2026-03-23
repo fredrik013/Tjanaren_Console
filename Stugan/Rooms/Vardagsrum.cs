@@ -13,7 +13,9 @@ namespace Stugan.Rooms
         {
             VisaNamn = "i vardagsrummet";
             OppnaUtgangar("Vaster", "Oster");
-            SakerIRummet.Add(new AllmanSak("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+            SakerIRummet.Add(new Inredning("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+
+            SakerIRummet.Add(new Inredning("Soffa", "En mjuk och pösig soffa med tjocka dynor. Undrar om den gömmer på några hemligheter."));
         }
 
         public override bool KanGaIn(Spelare spelare)
@@ -54,6 +56,17 @@ namespace Stugan.Rooms
                 WriteLine("\nDu går fram till den brusande TV:n.");
                 WriteLine("Genom det gråa flimret hörs en raspig röst:");
 
+                if (!story.RorArLagat) // Om spelaren latat sig!
+                {
+                    WriteLine("Skärmen lyser upp i ett giftigt lila sken och volymen maxas:");
+                    WriteLine("\n'...SITT INTE HÄR OCH LATA DIG!...'");
+                    WriteLine("'...NER I KÄLLAREN OCH LAGA DET TRASIGA RÖRET, ANNARS JÄVLAR!...'");
+                    System.Threading.Thread.Sleep(1000);
+                    WriteLine("\nTV:n dör med en ljudlig smäll och en tunn strimma rök stiger från baksidan.");
+                    rum.HarUndersokts = true;
+                    return; // Vi avbryter här så de inte får resten av tipsen förrän de jobbat lite!
+                }
+
                 // HÄR ÄR DEN NYA RENA LOGIKEN (Ingen hårdkodning av namn!)
                 // HÄR ÄR DEN NYA RENA LOGIKEN (Nu helt synkad med din Enum!)
                 switch (spelare.AktivtSkodon)
@@ -83,6 +96,13 @@ namespace Stugan.Rooms
             else
             {
                 WriteLine("\nTV:n står mörk och tyst. Du ser din spegelbild i det svarta glaset.");
+            }
+            Thread.Sleep(500);
+            WriteLine("\nVill du titta på något annat i rummet? (J/N)");
+            var svar = ReadKey(true);
+            if (svar.Key == ConsoleKey.J)
+            {
+                base.UndersokRum(spelare, story); // Detta anropar menyn i Rum.cs!
             }
         }
 

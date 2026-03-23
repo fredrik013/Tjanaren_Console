@@ -1,6 +1,7 @@
 ﻿using Stugan.Modeller;
 using Stugan.Modeller.Saker;
 using static System.Console;
+
 namespace Stugan.Core
 {
     public class Inventory
@@ -10,6 +11,9 @@ namespace Stugan.Core
 
         public void LaggTill(Spelsak sak) => _saker.Add(sak);
         public List<Spelsak> GetAllaSaker() => _saker;
+
+        // Lägg till denna i Inventory.cs
+        public bool HarForemal(string namn) => _saker.Any(s => s.Namn.Equals(namn, StringComparison.OrdinalIgnoreCase));
 
         public void AvaktiveraTyp(Bekladnadstyp typ)
         {

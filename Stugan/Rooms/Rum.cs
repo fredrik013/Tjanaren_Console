@@ -161,7 +161,48 @@ namespace Stugan.Rooms
 
         public virtual void UndersokRum(Spelare spelare, StoryState story)
         {
-            // Som standard händer ingenting speciellt.
+            // Vi hämtar ALLA saker (både inredning och lösa föremål)
+            var saker = SakerIRummet;
+
+            if (saker.Count == 0)
+            {
+                WriteLine("\nDet finns inget särskilt att undersöka här.");
+                Thread.Sleep(1000); // Paus för JAWS
+                return;
+            }
+
+            Clear();
+            WriteLine($"--- UNDERSÖK {Namn.ToUpper()} ---");
+            WriteLine("Vad vill du titta närmare på?");
+
+            for (int i = 0; i < saker.Count; i++)
+            {
+                WriteLine($"{i + 1}. {saker[i].Namn}");
+            }
+            WriteLine($"{saker.Count + 1}. Gå tillbaka");
+
+            // Läs in valet
+            var info = ReadKey(true);
+            if (int.TryParse(info.KeyChar.ToString(), out int index) && index >= 1 && index <= saker.Count)
+            {
+                var valdSak = saker[index - 1];
+
+                Clear();
+                WriteLine($"--- {valdSak.Namn.ToUpper()} ---");
+                WriteLine(valdSak.Beskrivning);
+
+                // Här kan vi ha en liten hint om saken kan plockas upp
+                if (valdSak.KanPlockasUpp && !spelare.Ryggsack.HarForemal(valdSak.Namn))
+                {
+                    WriteLine($"\n(Du kan försöka plocka upp {valdSak.Namn.ToLower()} om du vill.)");
+                }
+
+                WriteLine("\nTryck på valfri tangent för att fortsätta...");
+                ReadKey(true);
+
+                // Efter att man tittat på något, rita om rummet så man ser var man är
+                VisaBeskrivning(false);
+            }
         }
 
         public virtual bool KanGaIn(Spelare s)

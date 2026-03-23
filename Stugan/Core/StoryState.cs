@@ -12,6 +12,8 @@
 
         public bool MoppArTvattad { get; set; } = false;
 
+        public bool TvattmaskinArIgang { get; set; }
+
         public bool HarAtitBrod { get; set; } = false;
 
         public bool HarSmutsatNerMattan { get; set; } = false;

@@ -62,5 +62,9 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     pannrum.Plats = new Position(1, 1, -1);
     karta.LaggTillRum(pannrum.Plats, pannrum);
 
+    Tvattstuga tvattstuga = new Tvattstuga();
+    tvattstuga.Plats = new Position(-1, 1, -1);
+    karta.LaggTillRum(tvattstuga.Plats, tvattstuga);
+
     return gardsplan;
 }
