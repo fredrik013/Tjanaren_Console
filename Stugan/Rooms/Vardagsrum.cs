@@ -48,7 +48,7 @@ namespace Stugan.Rooms
             {
                 WriteLine("\nDet vilar en tung, unken doft av fotsvett i rummet.");
             }
-            base.UndersokRum(spelare, story);
+
 
             if (tv != null)
             {

@@ -221,5 +221,52 @@ namespace Stugan.Rooms
             // Som standard händer ingenting speciellt.
             WriteLine("\nDet finns inget här som behöver underhållas just nu.");
         }
+
+        // Denna metod är fast och körs likadant för alla rum, 
+        // vilket gör att vi slipper rums-specifika utskällningar när vi bara vill se objekten.
+        public void VisaObjektLista(Spelare spelare, Core.StoryState story)
+        {
+            // Vi filtrerar bort gömda saker direkt
+            var saker = SakerIRummet.Where(s => !s.ArGomd).ToList();
+
+            if (saker.Count == 0)
+            {
+                WriteLine("\nDet finns inget särskilt att undersöka här.");
+                Thread.Sleep(1000);
+                return;
+            }
+
+            Clear();
+            WriteLine($"--- OBJEKT I {Namn.ToUpper()} ---");
+            WriteLine("Vad vill du titta närmare på?");
+
+            for (int i = 0; i < saker.Count; i++)
+            {
+                WriteLine($"{i + 1}. {saker[i].Namn}");
+            }
+            WriteLine($"{saker.Count + 1}. Gå tillbaka");
+
+            // Läs in valet
+            var info = ReadKey(true);
+            if (int.TryParse(info.KeyChar.ToString(), out int index) && index >= 1 && index <= saker.Count)
+            {
+                var valdSak = saker[index - 1];
+
+                Clear();
+                WriteLine($"--- {valdSak.Namn.ToUpper()} ---");
+                WriteLine(valdSak.Beskrivning);
+
+                if (valdSak.KanPlockasUpp && !spelare.Ryggsack.HarForemal(valdSak.Namn))
+                {
+                    WriteLine($"\n(Du kan försöka plocka upp {valdSak.Namn.ToLower()} om du vill.)");
+                }
+
+                WriteLine("\nTryck på valfri tangent för att fortsätta...");
+                ReadKey(true);
+
+                // Visa rumsbeskrivningen igen så man hittar tillbaka
+                VisaBeskrivning(false);
+            }
+        }
     }
 }

@@ -72,6 +72,12 @@ namespace Stugan.Core
                     _spelare.NuvarandeRum.UndersokRum(_spelare, _story);
                     break;
 
+                case ConsoleKey.O:
+                    // "O" för Objekt - går direkt till den rena listan i Rum.cs
+                    _spelare.NuvarandeRum.VisaObjektLista(_spelare, _story);
+                    break;
+
+
                 case ConsoleKey.T:
                     TaUppSak();
                     break;
