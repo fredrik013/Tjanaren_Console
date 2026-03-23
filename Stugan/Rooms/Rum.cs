@@ -205,7 +205,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public virtual bool KanGaIn(Spelare s)
+        public virtual bool KanGaIn(Spelare s, StoryState story)
         {
             return true; // Standard: Alla får komma in!
         }

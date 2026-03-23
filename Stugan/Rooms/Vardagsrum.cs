@@ -18,9 +18,9 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new Inredning("Soffa", "En mjuk och pösig soffa med tjocka dynor. Undrar om den gömmer på några hemligheter."));
         }
 
-        public override bool KanGaIn(Spelare spelare)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
-            if (spelare.AktivtSkodon == Bekladnadstyp.Ute.ToString())
+            if (s.AktivtSkodon == Bekladnadstyp.Ute.ToString())
             {
                 WriteLine("\n[VARNING]");
                 WriteLine("När du sätter foten över tröskeln sprakar TV:n till med ett ilsket ljud.");

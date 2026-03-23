@@ -17,6 +17,27 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new Klader("Plasttofflor", "Ett par blå plasttofflor.", Bekladnadstyp.Inne, Kroppsdel.Fot, BekladnadsLager.Mellan, true, true, true));
         }
 
+        public override bool KanGaIn(Spelare s, StoryState story)
+        {
+            // Vi kollar om spelaren har boots OCH om huset inte redan skällt ut dem
+            if (s.AktivtSkodon == Bekladnadstyp.Ute.ToString() && !story.HarBlivitUtskalldHallen)
+            {
+                WriteLine("\n[SYSTEMMEDDELANDE: SMUTS-DETEKTOR AKTIVERAD]");
+                WriteLine("En gäll, metallisk röst ekar från taket:");
+                WriteLine("'STOPP! Obehörig smuts detekterad på Herrskapet Von Krångels parkett!'");
+                WriteLine("'Noll-tolerans råder. Sanering krävs omedelbart, tjänare!'");
+
+                WriteLine("\nDu känner hur nackhåren reser sig. Det här huset verkar ha ögon överallt.");
+                WriteLine("Tryck på valfri tangent för att kliva in...");
+                ReadKey(true);
+
+                // Nu sätter vi flaggan så huset håller tyst nästa gång (men smutsen är kvar)
+                story.HarBlivitUtskalldHallen = true;
+            }
+
+            return true;
+        }
+
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;

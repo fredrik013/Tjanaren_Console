@@ -40,7 +40,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi kollar om spelaren har på sig något av typen "Ute"
             // Vi använder ToLower() för att vara säkra, ifall vi råkat skriva "ute" med litet u på något plagg.

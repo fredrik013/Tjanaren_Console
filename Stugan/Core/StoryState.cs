@@ -14,6 +14,8 @@
 
         public bool TvattmaskinArIgang { get; set; }
 
+        public bool HarBlivitUtskalldHallen { get; set; } = false;
+
         public bool HarAtitBrod { get; set; } = false;
 
         public bool HarSmutsatNerMattan { get; set; } = false;
