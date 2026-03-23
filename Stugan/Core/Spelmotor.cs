@@ -23,10 +23,17 @@ namespace Stugan.Core
         public void Starta()
         {
             // Första hälsningen till JAWS
-            WriteLine("Välkommen till Stugan!");
-            WriteLine("Du står utanför den gamla träbyggnaden.");
-            WriteLine("Du har din ryggsäck på ryggen och dina boots är ordentligt snörade på fötterna.");
+            WriteLine("--- TJÄNARE HOS HERRSKAPET VON KRÅNGEL ---");
+            WriteLine("\nVälkommen till Stugan.");
+            WriteLine("Regnet piskar mot nacken när du står utanför den gamla träbyggnaden.");
+            WriteLine("Du har blivit anställd för att städa upp efter familjen Von Krångel,");
+            WriteLine("men de dömande blickarna från fönstren antyder att de förväntar sig underverk.");
 
+            WriteLine("\nDu känner tyngden av ryggsäcken på ryggen,");
+            WriteLine("och dina boots är ordentligt snörade på fötterna – bäst att inte smutsa ner finmattorna...");
+
+            WriteLine("\nTryck på valfri tangent för att kliva på ditt skift.");
+            ReadKey(true);
             // Visa rummet man startar i
             _spelare.NuvarandeRum.VisaBeskrivning();
 
