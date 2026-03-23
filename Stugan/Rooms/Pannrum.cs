@@ -13,7 +13,7 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new AllmanSak("Rör", "Ett läckande rör. Du måste ha ett verktyg för att kunna laga det.", false, false));
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi hämtar ALLA aktiva skyddskläder en gång för alla
             var aktivaSkydd = s.Ryggsack.GetAllaSaker()

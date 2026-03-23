@@ -15,6 +15,24 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new Klader("Innetofflor", "Mjuka innetofflor för fina mattor.", Bekladnadstyp.Inne, Kroppsdel.Fot, BekladnadsLager.Mellan, false, true, true, "Du tar på dig tofflorna. Nu behöver du inte frysa om fötterna och finfolket kan inte klaga på några smutsiga skor.", "Du tar av dig tofflorna."));
         }
 
+        public override bool KanGaIn(Spelare s, StoryState story)
+        {
+            // Vi använder din snygga property för att ge feedback direkt vid ankomst
+            if (s.AktivtSkodon == Bekladnadstyp.Ute.ToString())
+            {
+                WriteLine("\nDånandet från dina tunga steg i trappan ekar fortfarande mellan källarväggarna.");
+                WriteLine("Det fuktiga betonggolvet här nere verkar nästan vibrera av oväsendet.");
+            }
+            else
+            {
+                WriteLine("\nDu smyger ner för trappan och landar mjukt på det kalla källargolvet.");
+                WriteLine("Dina steg är nästan ljudlösa i tystnaden häruppe.");
+            }
+
+            // Vi släpper alltid in dem, men nu har de fått veta att de hörs!
+            return true;
+        }
+
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
             var rum = spelare.NuvarandeRum;

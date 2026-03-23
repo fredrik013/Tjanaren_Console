@@ -10,7 +10,7 @@ namespace Stugan.Rooms
             OppnaUtgangar("Soder", "Oster");
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Innan spelaren kliver in på verandan, kollar vi var han kommer ifrån
             if (s.NuvarandeRum is Vardagsrum v)
@@ -19,7 +19,7 @@ namespace Stugan.Rooms
                 v.ReageraPaHandling("vadra");
             }
 
-            return base.KanGaIn(s);
+            return base.KanGaIn(s, story);
         }
     }
 }

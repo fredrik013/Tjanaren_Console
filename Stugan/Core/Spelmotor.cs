@@ -127,7 +127,7 @@ namespace Stugan.Core
                 // Om det finns ett hopp-rum (t.ex. källaren)
                 if (hoppRum != null)
                 {
-                    if (hoppRum.KanGaIn(_spelare))
+                    if (hoppRum.KanGaIn(_spelare, _story))
                     {
                         _spelare.NuvarandeRum = hoppRum;
                         _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
@@ -157,7 +157,7 @@ namespace Stugan.Core
                     if (nastaRum != null)
                     {
                         // Kör KanGaIn separat även för koordinatrummet
-                        if (nastaRum.KanGaIn(_spelare))
+                        if (nastaRum.KanGaIn(_spelare, _story))
                         {
                             _spelare.NuvarandeRum = nastaRum;
                             _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);

@@ -24,7 +24,7 @@ namespace Stugan.Rooms
 ));
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             var aktivNyckel = s.Ryggsack.GetAllaSaker()
     .OfType<AllmanSak>()

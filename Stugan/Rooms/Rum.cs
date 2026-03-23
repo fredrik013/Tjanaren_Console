@@ -162,7 +162,7 @@ namespace Stugan.Rooms
         public virtual void UndersokRum(Spelare spelare, StoryState story)
         {
             // Vi hämtar ALLA saker (både inredning och lösa föremål)
-            var saker = SakerIRummet;
+            var saker = SakerIRummet.Where(s => !s.ArGomd).ToList();
 
             if (saker.Count == 0)
             {
@@ -205,7 +205,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public virtual bool KanGaIn(Spelare s)
+        public virtual bool KanGaIn(Spelare s, StoryState story)
         {
             return true; // Standard: Alla får komma in!
         }

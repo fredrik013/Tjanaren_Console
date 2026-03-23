@@ -58,7 +58,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi matchar mot Enum-namnen (utan ToLower för att vara konsekventa)
             switch (s.AktivtSkodon)
