@@ -14,6 +14,8 @@ namespace Stugan.Rooms
             VisaNamn = "i vardagsrummet";
             OppnaUtgangar("Vaster", "Oster");
             SakerIRummet.Add(new Inredning("TV", "En gammal Philips-TV. Den visar bara myrornas krig, men ljudet är öronbedövande.", false, false));
+
+            SakerIRummet.Add(new Inredning("Soffa", "En mjuk och pösig soffa med tjocka dynor. Undrar om den gömmer på några hemligheter."));
         }
 
         public override bool KanGaIn(Spelare spelare)
@@ -94,6 +96,13 @@ namespace Stugan.Rooms
             else
             {
                 WriteLine("\nTV:n står mörk och tyst. Du ser din spegelbild i det svarta glaset.");
+            }
+            Thread.Sleep(500);
+            WriteLine("\nVill du titta på något annat i rummet? (J/N)");
+            var svar = ReadKey(true);
+            if (svar.Key == ConsoleKey.J)
+            {
+                base.UndersokRum(spelare, story); // Detta anropar menyn i Rum.cs!
             }
         }
 
