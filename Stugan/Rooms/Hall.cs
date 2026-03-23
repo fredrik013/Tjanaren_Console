@@ -43,6 +43,7 @@ namespace Stugan.Rooms
 
         public override void UndersokRum(Spelare spelare, Core.StoryState story)
         {
+            base.UndersokRum(spelare, story);
             var rum = spelare.NuvarandeRum;
             var plasttofflor = SakerIRummet.Find(s => s.Namn.ToLower().Contains("tofflor"));
 
