@@ -28,18 +28,40 @@
 
         public bool HarNyckel { get; set; } = false;
 
+        public int AntalOvertramp { get; set; } = 0; // 3 = Hejdå!
+
+        public bool GrasetKlippt { get; set; } = false;
+
+        public bool ArNyduschad { get; set; } = false;
+
+        public bool HarPlastratOmFinger { get; set; } = false;
+
+        public bool HarSkuritSigVidRakning { get; set; } = false;
+
+        public bool HarAnvantSpabad { get; set; } = false;
+
         public string GetStatusBeskrivning()
         {
             // Vi switchar på 'true' för att kunna utvärdera dina flaggor fritt i varje case
             switch (true)
             {
+                // Prioritet 0: Du har åkt ut!
+                case var _ when AntalOvertramp >= 3:
+                    return "Du står på uppfarten med din väska. Finfolket har låst dörren. Det är slut.";
+
                 // Prioritet 1: Allt är klart
-                case var _ when RorArLagat && HeltRentIKallaren && MoppArTvattad:
-                    return "Arbetet är utfört till belåtenhet (under omständigheterna).";
+                case var _ when RorArLagat && HeltRentIKallaren && GrasetKlippt && ArNyduschad:
+                    return "Du doftar lavendel och röret är tyst. Glasverandan väntar.";
 
                 // Prioritet 2: Specifika hån (t.ex. brödtjuven)
                 case var _ when HarAtitBrod && !RorArLagat:
                     return "Du ser misstänkt mätt ut för att inte ha rört ett finger i källaren än!";
+
+                case var _ when HarSkuritSigVidRakning:
+                    return "Du blöder ymnigt från hakan. Herr von Krångel ser inte imponerad ut över din hantering av hans hyvel.";
+
+                case var _ when HarPlastratOmFinger && !ArNyduschad:
+                    return "Fingret är omplåstrat, men du luktar fortfarande som en dränkt källarråtta. Dags för en dusch?";
 
                 // Prioritet 3: Delmål i källaren
                 case var _ when RorArLagat && !GrovstadatPannrum:
