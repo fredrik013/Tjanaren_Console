@@ -95,9 +95,12 @@ namespace Stugan.Core
 
             string kropp = kroppsPlagg.Count > 0 ? string.Join(", ", kroppsPlagg) : "inget";
 
-            string fotter = AktivtSkodonNamn;
-            if (string.IsNullOrEmpty(fotter)) fotter = "inget (barfota)";
+            var fotPlagg = allaKlader
+                    .Where(k => k.Placering == Kroppsdel.Fot)
+                    .Select(k => k.Namn)
+                    .ToList();
 
+            string fotter = fotPlagg.Count > 0 ? string.Join(", ", fotPlagg) : "inget (barfota)";
             WriteLine($"På huvudet: {huvud}");
             WriteLine($"På händerna: {hander}");
             WriteLine($"På kroppen: {kropp}");
