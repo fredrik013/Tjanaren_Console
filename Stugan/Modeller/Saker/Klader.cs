@@ -7,7 +7,8 @@ namespace Stugan.Modeller.Saker
         Inne = 0,
         Ute = 1,
         Skydd = 2,
-        Plagg = 3
+        Plagg = 3,
+        Arbete = 4
     }
 
     public enum Kroppsdel

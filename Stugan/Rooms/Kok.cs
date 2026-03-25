@@ -12,12 +12,12 @@ namespace Stugan.Rooms
         {
             VisaNamn = "i köket";
             OppnaUtgangar("Oster");
-            SakerIRummet.Add(new Livsmedel("Eriksberg", "En immande kall Eriksberg Karaktär.")
+            SakerIRummet.Add(new Livsmedel("Eriksberg", "En immande kall Eriksberg Karaktär.", Livsmedelstyp.Dryck)
             {
                 Anvandningsmeddelande = "Kapsylen flyger med ett pys. Du tar en rejäl klunk. Skål!",
             });
 
-            SakerIRummet.Add(new Livsmedel("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true)
+            SakerIRummet.Add(new Livsmedel("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", Livsmedelstyp.Mat, true, true)
             {
                 Anvandningsmeddelande = "Du äter upp det nybakade brödet. Mums!",
             });
