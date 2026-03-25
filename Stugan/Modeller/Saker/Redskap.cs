@@ -11,7 +11,7 @@ namespace Stugan.Modeller.Saker
             ArGomd = arGomd;
         }
 
-        public override string Anvand(Spelare spelare)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             // Vi skiftar status: var den aktiv blir den inaktiv och tvärtom
             ArAktiv = !ArAktiv;

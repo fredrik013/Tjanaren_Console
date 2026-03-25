@@ -27,6 +27,6 @@ namespace Stugan.Modeller
             ArAktiv = false;
         }
 
-        public abstract string Anvand(Spelare s);
+        public abstract string Anvand(Spelare spelare, StoryState story);
     }
 }

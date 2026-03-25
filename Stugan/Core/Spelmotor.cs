@@ -53,7 +53,7 @@ namespace Stugan.Core
             switch (tangent)
             {
                 case ConsoleKey.I:
-                    _spelare.Ryggsack.Visa(_spelare);
+                    _spelare.Ryggsack.Visa(_spelare, _story);
                     _spelare.NuvarandeRum.VisaBeskrivning();
                     break;
 

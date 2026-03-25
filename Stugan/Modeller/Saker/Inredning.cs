@@ -10,7 +10,7 @@ namespace Stugan.Modeller.Saker
 
         }
 
-        public override string Anvand(Spelare s)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             return "Du kan inte använda " + Namn + ".";
         }

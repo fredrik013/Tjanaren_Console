@@ -54,7 +54,7 @@ namespace Stugan.Modeller.Saker
             MeddelandeAv = string.IsNullOrEmpty(meddelandeAv) ? $"Du tar av dig {namn}." : meddelandeAv;
         }
 
-        public override string Anvand(Spelare s)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             ArAktiv = !ArAktiv;
             string meddelande = ArAktiv ? MeddelandePa : MeddelandeAv;
@@ -62,7 +62,7 @@ namespace Stugan.Modeller.Saker
             // Här ser vi till att oavsett om enumen heter Bekladnadstyp 
             // så skickar vi "pa_inne", "pa_ute" eller "pa_skydd" till rummet.
             string handlingStrang = (ArAktiv ? "pa_" : "av_") + Typ.ToString().ToLower();
-            s.NuvarandeRum.ReageraPaHandling(handlingStrang);
+            spelare.NuvarandeRum.ReageraPaHandling(handlingStrang);
 
             return meddelande;
         }

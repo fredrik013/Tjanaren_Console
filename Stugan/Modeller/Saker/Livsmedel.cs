@@ -20,7 +20,7 @@ namespace Stugan.Modeller.Saker
             ArGomd = arGomd;
         }
 
-        public override string Anvand(Spelare spelare)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             ForsvinnerVidAnvandning = true;
             return Anvandningsmeddelande;
