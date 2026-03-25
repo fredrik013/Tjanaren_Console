@@ -22,7 +22,18 @@ namespace Stugan.Modeller.Saker
 
         public override string Anvand(Spelare spelare, StoryState story)
         {
+            // Allt livsmedel försvinner när det används
             ForsvinnerVidAnvandning = true;
+
+            // Om det är mat, flagga för det i storyn
+            if (Typ == Livsmedelstyp.Mat)
+            {
+                story.HarAtitBrod = true;
+            }
+
+            // Om det är dryck, visas meddelandet ändå, 
+            // och vi kan lägga till törst-logik här i framtiden om vi vill.
+
             return Anvandningsmeddelande;
         }
 
