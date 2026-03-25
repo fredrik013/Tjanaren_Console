@@ -5,8 +5,8 @@ namespace Stugan.Modeller.Saker
     public enum Livsmedelstyp
     {
         Mat = 0,
-        Dryck = 1
-
+        Dryck = 1,
+        Sprit = 2
     }
 
     public class Livsmedel : Spelsak
@@ -25,14 +25,21 @@ namespace Stugan.Modeller.Saker
             // Allt livsmedel försvinner när det används
             ForsvinnerVidAnvandning = true;
 
-            // Om det är mat, flagga för det i storyn
-            if (Typ == Livsmedelstyp.Mat)
+            // Logik baserad på typ
+            switch (Typ)
             {
-                story.HarAtitBrod = true;
-            }
+                case Livsmedelstyp.Mat:
+                    story.HarAtitBrod = true;
+                    break;
 
-            // Om det är dryck, visas meddelandet ändå, 
-            // och vi kan lägga till törst-logik här i framtiden om vi vill.
+                case Livsmedelstyp.Sprit:
+                    story.AntalOvertramp++; // Här räknas snedsteget!
+                    break;
+
+                case Livsmedelstyp.Dryck:
+                    // Törst-logik kan läggas här senare
+                    break;
+            }
 
             return Anvandningsmeddelande;
         }
