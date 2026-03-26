@@ -1,4 +1,6 @@
-﻿namespace Stugan.Rooms
+﻿using Stugan.Modeller.Saker;
+
+namespace Stugan.Rooms
 {
     public class Matkallare : Rum
     {
@@ -7,6 +9,8 @@
             VisaNamn = "i matkällaren";
             OppnaUtgangar("Soder");
 
+            SakerIRummet.Add(new Livsmedel("En whiskyflaska", "En flaska Jameson som ser väldigt dyr ut.", Livsmedelstyp.Sprit)
+            { Anvandningsmeddelande = "Du klunkar i dig whiskyflaskan och känner dig på mycket bra humör. Nu jäklar ska världsproblemen lösas! Skål!" });
         }
     }
 }

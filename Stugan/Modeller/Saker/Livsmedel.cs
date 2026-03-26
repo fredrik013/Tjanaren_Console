@@ -33,12 +33,12 @@ namespace Stugan.Modeller.Saker
                     break;
 
                 case Livsmedelstyp.Sprit:
-                    story.AntalOvertramp++; // Här räknas snedsteget!
+                    return "Du stinker sprit! Det var inte så smart att dricka det här. Du känner dig yr och illamående. Kanske borde du inte ha druckit det här?";
                     break;
 
-                case Livsmedelstyp.Dryck:
-                    // Törst-logik kan läggas här senare
+                default:
                     break;
+
             }
 
             return Anvandningsmeddelande;
