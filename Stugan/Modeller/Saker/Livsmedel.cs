@@ -16,6 +16,7 @@ namespace Stugan.Modeller.Saker
         public Livsmedel(string namn, string beskrivning, Livsmedelstyp Typ, bool kanPlockasUpp = true, bool arGomd = false)
             : base(namn, beskrivning)
         {
+            this.Typ = Typ;
             KanPlockasUpp = kanPlockasUpp;
             ArGomd = arGomd;
         }
@@ -33,7 +34,7 @@ namespace Stugan.Modeller.Saker
                     break;
 
                 case Livsmedelstyp.Sprit:
-                    return "Du stinker sprit! Det var inte så smart att dricka det här. Du känner dig yr och illamående. Kanske borde du inte ha druckit det här?";
+                    story.AntalOvertramp++;
                     break;
 
                 default:

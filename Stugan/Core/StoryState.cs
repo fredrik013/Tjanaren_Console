@@ -20,6 +20,8 @@
 
         public bool HarAtitBrod { get; set; } = false;
 
+        public bool HarDruckitSprit { get; set; } = false;
+
         public bool HarSmutsatNerMattan { get; set; } = false;
 
         public bool HallenArSkurad { get; set; } = false;
@@ -48,6 +50,12 @@
                 // Prioritet 0: Du har åkt ut!
                 case var _ when AntalOvertramp >= 3:
                     return "Du står på uppfarten med din väska. Finfolket har låst dörren. Det är slut.";
+
+                case var _ when AntalOvertramp == 2:
+                    return $"Du vinglar betänkligt och sjunger snapsvisor. Herr von Krångel håller hårt i dörrhandtaget. (Varningar: {AntalOvertramp}/3)";
+
+                case var _ when AntalOvertramp == 1:
+                    return $"Du doftar misstänkt mycket malt. Finfolket ser skeptiska ut, men du har en chans kvar. (Varningar: {AntalOvertramp}/3)";
 
                 // Prioritet 1: Allt är klart
                 case var _ when RorArLagat && HeltRentIKallaren && GrasetKlippt && ArNyduschad:
