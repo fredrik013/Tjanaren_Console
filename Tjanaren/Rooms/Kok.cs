@@ -1,6 +1,8 @@
-﻿using static System.Console;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
+using static System.Console;
 
-namespace Stugan.Rooms
+namespace Tjanaren_Console.Rooms
 {
     public class Kok : Rum
     {
@@ -10,18 +12,18 @@ namespace Stugan.Rooms
         {
             VisaNamn = "i köket";
             OppnaUtgangar("Oster");
-            SakerIRummet.Add(new Livsmedel("Eriksberg", "En immande kall Eriksberg Karaktär.")
+            SakerIRummet.Add(new Livsmedel("Eriksberg", "En immande kall Eriksberg Karaktär.", Livsmedelstyp.Dryck)
             {
                 Anvandningsmeddelande = "Kapsylen flyger med ett pys. Du tar en rejäl klunk. Skål!",
             });
 
-            SakerIRummet.Add(new Livsmedel("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", true, true)
+            SakerIRummet.Add(new Livsmedel("Lunchbröd", "Ett nybakat bröd, perfekt för en vardagslunch.", Livsmedelstyp.Mat, true, true)
             {
                 Anvandningsmeddelande = "Du äter upp det nybakade brödet. Mums!",
             });
         }
 
-        public override void UndersokRum(Spelare spelare, Core.StoryState story)
+        public override void UndersokRum(Spelare spelare, StoryState story)
         {
             var rum = spelare.NuvarandeRum;
             var brod = rum.SakerIRummet.FirstOrDefault(s => s.Namn == "Lunchbröd");
@@ -38,7 +40,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi kollar om spelaren har på sig något av typen "Ute"
             // Vi använder ToLower() för att vara säkra, ifall vi råkat skriva "ute" med litet u på något plagg.

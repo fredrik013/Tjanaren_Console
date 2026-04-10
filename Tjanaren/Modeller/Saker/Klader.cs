@@ -1,11 +1,15 @@
-﻿namespace Stugan
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller;
+
+namespace Tjanaren_Console.Modeller.Saker
 {
     public enum Bekladnadstyp
     {
         Inne = 0,
         Ute = 1,
         Skydd = 2,
-        Plagg = 3
+        Plagg = 3,
+        Arbete = 4
     }
 
     public enum Kroppsdel
@@ -51,7 +55,7 @@
             MeddelandeAv = string.IsNullOrEmpty(meddelandeAv) ? $"Du tar av dig {namn}." : meddelandeAv;
         }
 
-        public override string Anvand(Spelare s)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             ArAktiv = !ArAktiv;
             string meddelande = ArAktiv ? MeddelandePa : MeddelandeAv;
@@ -59,7 +63,7 @@
             // Här ser vi till att oavsett om enumen heter Bekladnadstyp 
             // så skickar vi "pa_inne", "pa_ute" eller "pa_skydd" till rummet.
             string handlingStrang = (ArAktiv ? "pa_" : "av_") + Typ.ToString().ToLower();
-            s.NuvarandeRum.ReageraPaHandling(handlingStrang);
+            spelare.NuvarandeRum.ReageraPaHandling(handlingStrang);
 
             return meddelande;
         }

@@ -1,4 +1,4 @@
-﻿namespace Stugan.Core
+﻿namespace Tjanaren_Console.Core
 {
     /// <summary>
     /// Representerar en koordinat i spelvärlden (X, Y, Z).

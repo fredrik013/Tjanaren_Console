@@ -1,4 +1,6 @@
-﻿namespace Stugan.Core
+﻿using Tjanaren_Console.Rooms;
+
+namespace Tjanaren_Console.Core
 {
     public class WorldMap
     {

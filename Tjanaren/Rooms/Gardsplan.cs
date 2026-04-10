@@ -1,4 +1,6 @@
-﻿namespace Stugan.Rooms
+﻿using Tjanaren_Console.Modeller.Saker;
+
+namespace Tjanaren_Console.Rooms
 {
     public class Gardsplan : Rum
     {

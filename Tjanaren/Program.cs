@@ -1,6 +1,5 @@
-﻿using Stugan;
-using Stugan.Core;
-using Stugan.Rooms;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Rooms;
 
 StoryState story = new StoryState();
 WorldMap karta = new WorldMap();
@@ -59,9 +58,23 @@ Rum SkapaVarlden(WorldMap karta, StoryState story)
     kallare.Plats = new Position(0, 1, -1);
     karta.LaggTillRum(kallare.Plats, kallare);
 
+    Matkallare matkallare = new Matkallare();
+    matkallare.Plats = new Position(0, 2, -1);
+    karta.LaggTillRum(matkallare.Plats, matkallare);
+
+
     Pannrum pannrum = new Pannrum();
     pannrum.Plats = new Position(1, 1, -1);
     karta.LaggTillRum(pannrum.Plats, pannrum);
+
+    Tjanarrum tjanarrum = new Tjanarrum();
+    tjanarrum.Plats = new Position(0, 0, -1);
+    karta.LaggTillRum(tjanarrum.Plats, tjanarrum);
+
+
+    Tvattstuga tvattstuga = new Tvattstuga();
+    tvattstuga.Plats = new Position(-1, 1, -1);
+    karta.LaggTillRum(tvattstuga.Plats, tvattstuga);
 
     return gardsplan;
 }

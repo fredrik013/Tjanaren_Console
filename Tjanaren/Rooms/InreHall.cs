@@ -1,6 +1,7 @@
-﻿using static System.Console;
-
-namespace Stugan.Rooms
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
+using static System.Console;
+namespace Tjanaren_Console.Rooms
 {
     public class InreHall : Rum
     {
@@ -14,7 +15,7 @@ namespace Stugan.Rooms
             { ArAktiv = true });
         }
 
-        public override void UndersokRum(Spelare spelare, Core.StoryState story)
+        public override void UndersokRum(Spelare spelare, StoryState story)
         {
             base.UndersokRum(spelare, story);
             var rum = spelare.NuvarandeRum;

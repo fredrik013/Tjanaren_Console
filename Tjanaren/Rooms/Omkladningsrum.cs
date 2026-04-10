@@ -1,6 +1,8 @@
-﻿using static System.Console;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
+using static System.Console;
 
-namespace Stugan.Rooms
+namespace Tjanaren_Console.Rooms
 {
     public class Omkladningsrum : Rum
     {
@@ -22,7 +24,7 @@ namespace Stugan.Rooms
 ));
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             var aktivNyckel = s.Ryggsack.GetAllaSaker()
     .OfType<AllmanSak>()

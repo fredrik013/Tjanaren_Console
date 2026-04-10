@@ -1,4 +1,7 @@
-﻿namespace Stugan.Rooms
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
+
+namespace Tjanaren_Console.Rooms
 {
     public class Glasveranda : Rum
     {
@@ -6,9 +9,16 @@
         {
             VisaNamn = "på glasverandan";
             OppnaUtgangar("Soder", "Oster");
+
+            SakerIRummet.Add(new AllmanSak("Minneslapp",
+                "Lappen är skriven med en nästan provocerande prydlig handstil: \n" +
+                "'Till den som eventuellt har gått vilse i mitt hus: \n" +
+                "Skulle källarrören få för sig att protestera igen, vänligen konsultera läskamraten. \n" +
+                "Och kom ihåg – blommorna i hallen behöver mer än bara vatten, de vaktar även ingångar.'",
+                true)); // true betyder att den går att plocka upp om man vill
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Innan spelaren kliver in på verandan, kollar vi var han kommer ifrån
             if (s.NuvarandeRum is Vardagsrum v)
@@ -17,7 +27,7 @@
                 v.ReageraPaHandling("vadra");
             }
 
-            return base.KanGaIn(s);
+            return base.KanGaIn(s, story);
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Stugan.Core;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
 using static System.Console;
 
-namespace Stugan.Rooms
+namespace Tjanaren_Console.Rooms
 {
     public class Pannrum : Rum
     {
@@ -12,7 +13,7 @@ namespace Stugan.Rooms
             SakerIRummet.Add(new AllmanSak("Rör", "Ett läckande rör. Du måste ha ett verktyg för att kunna laga det.", false, false));
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi hämtar ALLA aktiva skyddskläder en gång för alla
             var aktivaSkydd = s.Ryggsack.GetAllaSaker()
@@ -50,6 +51,24 @@ namespace Stugan.Rooms
 
         public override void UndersokRum(Spelare spelare, StoryState story)
         {
+            if (story.RorArLagat)
+            {
+                // Den "belönande" beskrivningen
+                WriteLine("\nLuften i pannrummet är nu klar och torr. Det lagade röret blänker svagt i ljuset.");
+                WriteLine("Det sjuder hemtrevligt från pannan och värmen sprider sig i rören.");
+                WriteLine("Här finns inget mer som behöver underhållas just nu.");
+            }
+            else
+            {
+                // Hintens beskrivning (innan lagning)
+                WriteLine("\nDet läckande röret sprutar het ånga rätt ut i rummet.");
+                WriteLine("Det är uppenbart att anläggningen är i desperat behov av **underhåll** (M).");
+                WriteLine("Muttern sitter alldeles för hårt för att dras åt med bara händerna.");
+            }
+        }
+
+        public override void UtforUnderhall(Spelare spelare, StoryState story)
+        {
             // Om röret redan är lagat finns det inget mer att undersöka här
             if (story.RorArLagat)
             {
@@ -68,7 +87,7 @@ namespace Stugan.Rooms
                 story.RorArLagat = true;
 
                 // Vi uppdaterar rumsbeskrivningen permanent
-                this.Beskrivning = "Ett nu tyst och varmt pannrum. Röret är lagat och ångan har lagt sig.";
+                Beskrivning = "Ett nu tyst och varmt pannrum. Röret är lagat och ångan har lagt sig.";
 
                 WriteLine("\nDu placerar rörtången runt den lösa kopplingen och tar i allt vad du orkar.");
                 WriteLine("Med ett metalliskt knarrande ger muttern med sig och dras åt.");

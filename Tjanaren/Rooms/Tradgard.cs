@@ -1,7 +1,8 @@
-﻿using Stugan.Core;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller.Saker;
 using static System.Console;
 
-namespace Stugan.Rooms
+namespace Tjanaren_Console.Rooms
 {
     public class Tradgard : Rum
     {
@@ -57,7 +58,7 @@ namespace Stugan.Rooms
             }
         }
 
-        public override bool KanGaIn(Spelare s)
+        public override bool KanGaIn(Spelare s, StoryState story)
         {
             // Vi matchar mot Enum-namnen (utan ToLower för att vara konsekventa)
             switch (s.AktivtSkodon)
@@ -68,7 +69,7 @@ namespace Stugan.Rooms
                     WriteLine("'Visa lite hyfs och byt om till något som tål lera innan du sätter din fot på gräsmattan.'");
 
                     // Bra JAWS-fix! Vi behåller den.
-                    System.Threading.Thread.Sleep(2000);
+                    Thread.Sleep(2000);
                     WriteLine("\n(Tryck på en tangent för att backa...)");
                     ReadKey(true);
 

@@ -1,5 +1,8 @@
-﻿using static System.Console;
-namespace Stugan
+﻿using Tjanaren_Console.Modeller;
+using Tjanaren_Console.Modeller.Saker;
+using static System.Console;
+
+namespace Tjanaren_Console.Core
 {
     public class Inventory
     {
@@ -8,6 +11,9 @@ namespace Stugan
 
         public void LaggTill(Spelsak sak) => _saker.Add(sak);
         public List<Spelsak> GetAllaSaker() => _saker;
+
+        // Lägg till denna i Inventory.cs
+        public bool HarForemal(string namn) => _saker.Any(s => s.Namn.Equals(namn, StringComparison.OrdinalIgnoreCase));
 
         public void AvaktiveraTyp(Bekladnadstyp typ)
         {
@@ -18,7 +24,7 @@ namespace Stugan
             }
         }
 
-        public void Visa(Spelare s)
+        public void Visa(Spelare spelare, StoryState story)
         {
             if (_saker.Count == 0)
             {
@@ -67,10 +73,10 @@ namespace Stugan
 
                         // Skriv ut på rad 12 så JAWS läser upp det direkt
                         SetCursorPosition(0, 12);
-                        WriteLine(info.PadRight(Console.WindowWidth));
+                        WriteLine(info.PadRight(WindowWidth));
 
                         // Vi pausar lite så man hinner höra beskrivningen innan man trycker vidare
-                        System.Threading.Thread.Sleep(500);
+                        Thread.Sleep(500);
                         break;
 
                     case ConsoleKey.DownArrow:
@@ -91,7 +97,7 @@ namespace Stugan
 
                     case ConsoleKey.Enter:
                         var valdSak = _saker[_markeratIndex];
-                        string svar = HanteraUtrustning(valdSak, s, this);
+                        string svar = HanteraUtrustning(valdSak, spelare, story, this);
 
                         if (_saker.Contains(valdSak))
                         {
@@ -115,7 +121,7 @@ namespace Stugan
                         {
                             // Om saken försvann (äten/drickbar)
                             if (_saker.Count == 0) tittar = false;
-                            else Visa(s);
+                            else Visa(spelare, story);
 
                             SetCursorPosition(0, 12);
                             Write(svar.PadRight(60));
@@ -136,18 +142,18 @@ namespace Stugan
                         {
                             plagg.ArAktiv = false;
                             if (plagg.Typ == Bekladnadstyp.Ute || plagg.Typ == Bekladnadstyp.Inne || plagg.Typ == Bekladnadstyp.Skydd)
-                                s.AktivtSkodon = "";
+                                spelare.AktivtSkodon = "";
                         }
 
                         // Flytta från ryggsäck till rummet
-                        s.NuvarandeRum.SakerIRummet.Add(sakAttSlappa);
+                        spelare.NuvarandeRum.SakerIRummet.Add(sakAttSlappa);
                         _saker.RemoveAt(_markeratIndex);
 
                         // Bekräftelse till användaren
                         SetCursorPosition(0, 12);
-                        WriteLine($"Du lämnade {sakAttSlappa.Namn} i {s.NuvarandeRum.Namn}.".PadRight(Console.WindowWidth));
+                        WriteLine($"Du lämnade {sakAttSlappa.Namn} i {spelare.NuvarandeRum.Namn}.".PadRight(WindowWidth));
 
-                        System.Threading.Thread.Sleep(1000); // Paus för JAWS
+                        Thread.Sleep(1000); // Paus för JAWS
 
                         if (_saker.Count == 0)
                         {
@@ -159,7 +165,7 @@ namespace Stugan
                             if (_markeratIndex >= _saker.Count) _markeratIndex = _saker.Count - 1;
 
                             // Rita om och fortsätt
-                            Visa(s);
+                            Visa(spelare, story);
                             return;
                         }
                         break;
@@ -174,14 +180,14 @@ namespace Stugan
             WriteLine("RYGGSÄCK");
             for (int i = 0; i < _saker.Count; i++)
             {
-                string markor = (i == _markeratIndex) ? "> " : "  ";
+                string markor = i == _markeratIndex ? "> " : "  ";
                 string status = "";
                 if (_saker[i] is Klader p) status = p.ArAktiv ? " (påtagen)" : " (i ryggsäcken)";
                 WriteLine($"{markor}{_saker[i].Namn}{status}");
             }
         }
 
-        public static string HanteraUtrustning(Spelsak sak, Spelare s, Inventory inv)
+        public static string HanteraUtrustning(Spelsak sak, Spelare spelare, StoryState story, Inventory inv)
         {
             // 1. Hantera Kläder (Lager, Placering och Skostatus)
             if (sak is Klader plagg)
@@ -197,7 +203,7 @@ namespace Stugan
                         // REGEL A: Samma lager? Ta av det gamla plagget först.
                         if (annat.Lager == plagg.Lager)
                         {
-                            annat.Anvand(s);
+                            annat.Anvand(spelare, story);
                         }
 
                         // REGEL B: Försöker vi sätta på något UNDER ett befintligt lager?
@@ -210,7 +216,7 @@ namespace Stugan
                 }
 
                 // Kör plaggets egen logik (växlar ArAktiv och pratar med rummet)
-                string meddelandeFrånPlagget = plagg.Anvand(s);
+                string meddelandeFrånPlagget = plagg.Anvand(spelare, story);
 
                 // Uppdatera spelarens AktivtSkodon baserat på dina original-switchar
                 switch (plagg.Typ)
@@ -221,7 +227,7 @@ namespace Stugan
                         // Vi uppdaterar bara skostatus om det är fötternas yttersta/mellersta lager
                         if (plagg.Placering == Kroppsdel.Fot && plagg.Lager != BekladnadsLager.Underst)
                         {
-                            s.AktivtSkodon = plagg.ArAktiv ? plagg.Typ.ToString() : "";
+                            spelare.AktivtSkodon = plagg.ArAktiv ? plagg.Typ.ToString() : "";
                         }
                         break;
                 }
@@ -232,7 +238,7 @@ namespace Stugan
             // 2. Hantera Redskap (Behåll din existerande logik)
             if (sak is Redskap redskap)
             {
-                string svar = redskap.Anvand(s);
+                string svar = redskap.Anvand(spelare, story);
 
                 if (redskap.ArAktiv && inv != null)
                 {
@@ -249,7 +255,7 @@ namespace Stugan
 
             if (sak is AllmanSak allmanSak)
             {
-                string svar = allmanSak.Anvand(s);
+                string svar = allmanSak.Anvand(spelare, story);
 
                 if (allmanSak.ArAktiv && inv != null)
                 {
@@ -266,11 +272,11 @@ namespace Stugan
 
             if (sak is Livsmedel livsmedel)
             {
-                return livsmedel.Anvand(s);
+                return livsmedel.Anvand(spelare, story);
             }
 
             // 3. Fallback för vanliga saker
-            return sak.Anvand(s);
+            return sak.Anvand(spelare, story);
         }
 
         private void UppmarksammaRad()

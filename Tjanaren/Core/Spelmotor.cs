@@ -1,7 +1,7 @@
-﻿using Stugan.Core;
+﻿using Tjanaren_Console.Rooms;
 using static System.Console;
 
-namespace Stugan
+namespace Tjanaren_Console.Core
 {
     public class Spelmotor
     {
@@ -23,10 +23,17 @@ namespace Stugan
         public void Starta()
         {
             // Första hälsningen till JAWS
-            WriteLine("Välkommen till Stugan!");
-            WriteLine("Du står utanför den gamla träbyggnaden.");
-            WriteLine("Du har din ryggsäck på ryggen och dina boots är ordentligt snörade på fötterna.");
+            WriteLine("--- TJÄNARE HOS HERRSKAPET VON KRÅNGEL ---");
+            WriteLine("\nVälkommen till Tjänaren!");
+            WriteLine("Regnet piskar mot nacken när du står utanför den gamla träbyggnaden.");
+            WriteLine("Du har blivit anställd för att städa upp efter familjen Von Krångel,");
+            WriteLine("men de dömande blickarna från fönstren antyder att de förväntar sig underverk.");
 
+            WriteLine("\nDu känner tyngden av ryggsäcken på ryggen,");
+            WriteLine("och dina boots är ordentligt snörade på fötterna – bäst att inte smutsa ner finmattorna...");
+
+            WriteLine("\nTryck på valfri tangent för att kliva på ditt skift.");
+            ReadKey(true);
             // Visa rummet man startar i
             _spelare.NuvarandeRum.VisaBeskrivning();
 
@@ -46,7 +53,7 @@ namespace Stugan
             switch (tangent)
             {
                 case ConsoleKey.I:
-                    _spelare.Ryggsack.Visa(_spelare);
+                    _spelare.Ryggsack.Visa(_spelare, _story);
                     _spelare.NuvarandeRum.VisaBeskrivning();
                     break;
 
@@ -65,12 +72,22 @@ namespace Stugan
                     _spelare.NuvarandeRum.UndersokRum(_spelare, _story);
                     break;
 
+                case ConsoleKey.O:
+                    // "O" för Objekt - går direkt till den rena listan i Rum.cs
+                    _spelare.NuvarandeRum.VisaObjektLista(_spelare, _story);
+                    break;
+
+
                 case ConsoleKey.T:
                     TaUppSak();
                     break;
 
                 case ConsoleKey.B:
                     _spelare.NuvarandeRum.LasLangBeskrivning();
+                    break;
+
+                case ConsoleKey.M:
+                    _spelare.NuvarandeRum.UtforUnderhall(_spelare, _story);
                     break;
 
                 case ConsoleKey.UpArrow:
@@ -116,7 +133,7 @@ namespace Stugan
                 // Om det finns ett hopp-rum (t.ex. källaren)
                 if (hoppRum != null)
                 {
-                    if (hoppRum.KanGaIn(_spelare))
+                    if (hoppRum.KanGaIn(_spelare, _story))
                     {
                         _spelare.NuvarandeRum = hoppRum;
                         _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
@@ -146,7 +163,7 @@ namespace Stugan
                     if (nastaRum != null)
                     {
                         // Kör KanGaIn separat även för koordinatrummet
-                        if (nastaRum.KanGaIn(_spelare))
+                        if (nastaRum.KanGaIn(_spelare, _story))
                         {
                             _spelare.NuvarandeRum = nastaRum;
                             _spelare.NuvarandeRum.VisaBeskrivning(visadeExit);
@@ -182,7 +199,7 @@ namespace Stugan
                 _spelare.Ryggsack.LaggTill(sak);
                 rum.SakerIRummet.Remove(sak);
                 WriteLine($"\nDu plockar upp: {sak.Namn}.");
-                System.Threading.Thread.Sleep(800);
+                Thread.Sleep(800);
             }
             else
             {
@@ -203,12 +220,12 @@ namespace Stugan
                     rum.SakerIRummet.Remove(sak);
 
                     WriteLine($"\nDu valde att ta: {sak.Namn}.");
-                    System.Threading.Thread.Sleep(1000); // Paus för JAWS
+                    Thread.Sleep(1000); // Paus för JAWS
                 }
                 else
                 {
                     WriteLine("\nOgiltigt val, du plockade inte upp något.");
-                    System.Threading.Thread.Sleep(800);
+                    Thread.Sleep(800);
                 }
             }
         }

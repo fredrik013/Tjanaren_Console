@@ -1,7 +1,8 @@
-﻿using Stugan.Core;
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller;
 using static System.Console;
 
-namespace Stugan
+namespace Tjanaren_Console.Rooms
 {
     public class Rum
     {
@@ -100,7 +101,7 @@ namespace Stugan
                 WriteLine($"\n{meddelande}");
 
                 // JAWS-vänlig paus
-                System.Threading.Thread.Sleep(2000);
+                Thread.Sleep(2000);
                 return true;
             }
 
@@ -120,14 +121,14 @@ namespace Stugan
             // 1. Grundbeskrivningen av rummet
             if (!HarBesokts)
             {
-                System.Threading.Thread.Sleep(300);
+                Thread.Sleep(300);
                 WriteLine($"{Beskrivning}");
                 WriteLine(HamtaUtgangarBeskrivning());
                 HarBesokts = true;
             }
             else
             {
-                System.Threading.Thread.Sleep(300);
+                Thread.Sleep(300);
                 WriteLine($"Du är {VisaNamn}.");
                 WriteLine(HamtaUtgangarBeskrivning());
             }
@@ -160,10 +161,12 @@ namespace Stugan
 
         public virtual void UndersokRum(Spelare spelare, StoryState story)
         {
-            // Som standard händer ingenting speciellt.
+            // Som standard i basklassen ger vi bara en allmän beskrivning av rummets atmosfär.
+            // Inga menyer, inga listor – bara text.
+            WriteLine("Det verkar inte vara något som sticker ut just nu vid en snabb anblick.");
         }
 
-        public virtual bool KanGaIn(Spelare s)
+        public virtual bool KanGaIn(Spelare s, StoryState story)
         {
             return true; // Standard: Alla får komma in!
         }
@@ -171,6 +174,60 @@ namespace Stugan
         public virtual void ReageraPaHandling(string handling)
         {
             // Som standard händer absolut ingenting här.
+        }
+
+        // I Rum.cs
+        public virtual void UtforUnderhall(Spelare spelare, StoryState story)
+        {
+            // Som standard händer ingenting speciellt.
+            WriteLine("\nDet finns inget här som behöver underhållas just nu.");
+        }
+
+        // Denna metod är fast och körs likadant för alla rum, 
+        // vilket gör att vi slipper rums-specifika utskällningar när vi bara vill se objekten.
+        public void VisaObjektLista(Spelare spelare, StoryState story)
+        {
+            // Vi filtrerar bort gömda saker direkt
+            var saker = SakerIRummet.Where(s => !s.ArGomd).ToList();
+
+            if (saker.Count == 0)
+            {
+                WriteLine("\nDet finns inget särskilt att undersöka här.");
+                Thread.Sleep(1000);
+                return;
+            }
+
+            Clear();
+            WriteLine($"--- OBJEKT I {Namn.ToUpper()} ---");
+            WriteLine("Vad vill du titta närmare på?");
+
+            for (int i = 0; i < saker.Count; i++)
+            {
+                WriteLine($"{i + 1}. {saker[i].Namn}");
+            }
+            WriteLine($"{saker.Count + 1}. Gå tillbaka");
+
+            // Läs in valet
+            var info = ReadKey(true);
+            if (int.TryParse(info.KeyChar.ToString(), out int index) && index >= 1 && index <= saker.Count)
+            {
+                var valdSak = saker[index - 1];
+
+                Clear();
+                WriteLine($"--- {valdSak.Namn.ToUpper()} ---");
+                WriteLine(valdSak.Beskrivning);
+
+                if (valdSak.KanPlockasUpp && !spelare.Ryggsack.HarForemal(valdSak.Namn))
+                {
+                    WriteLine($"\n(Du kan försöka plocka upp {valdSak.Namn.ToLower()} om du vill.)");
+                }
+
+                WriteLine("\nTryck på valfri tangent för att fortsätta...");
+                ReadKey(true);
+
+                // Visa rumsbeskrivningen igen så man hittar tillbaka
+                VisaBeskrivning(false);
+            }
         }
     }
 }

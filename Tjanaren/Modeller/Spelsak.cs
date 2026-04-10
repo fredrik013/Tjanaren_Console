@@ -1,4 +1,6 @@
-﻿namespace Stugan
+﻿using Tjanaren_Console.Core;
+
+namespace Tjanaren_Console.Modeller
 {
     public abstract class Spelsak
     {
@@ -25,6 +27,6 @@
             ArAktiv = false;
         }
 
-        public abstract string Anvand(Spelare s);
+        public abstract string Anvand(Spelare spelare, StoryState story);
     }
 }

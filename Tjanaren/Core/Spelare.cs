@@ -1,13 +1,14 @@
-﻿using Stugan.Core;
+﻿using Tjanaren_Console.Modeller.Saker;
+using Tjanaren_Console.Rooms;
 using static System.Console;
 
-namespace Stugan
+namespace Tjanaren_Console.Core
 {
     public class Spelare
     {
         public Rum NuvarandeRum { get; set; }
 
-        public Core.Position? Position => NuvarandeRum.Plats;
+        public Position? Position => NuvarandeRum.Plats;
 
         public Inventory Ryggsack { get; private set; }
 
@@ -94,9 +95,12 @@ namespace Stugan
 
             string kropp = kroppsPlagg.Count > 0 ? string.Join(", ", kroppsPlagg) : "inget";
 
-            string fotter = AktivtSkodonNamn;
-            if (string.IsNullOrEmpty(fotter)) fotter = "inget (barfota)";
+            var fotPlagg = allaKlader
+                    .Where(k => k.Placering == Kroppsdel.Fot)
+                    .Select(k => k.Namn)
+                    .ToList();
 
+            string fotter = fotPlagg.Count > 0 ? string.Join(", ", fotPlagg) : "inget (barfota)";
             WriteLine($"På huvudet: {huvud}");
             WriteLine($"På händerna: {hander}");
             WriteLine($"På kroppen: {kropp}");

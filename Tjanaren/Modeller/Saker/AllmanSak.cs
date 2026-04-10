@@ -1,4 +1,7 @@
-﻿namespace Stugan
+﻿using Tjanaren_Console.Core;
+using Tjanaren_Console.Modeller;
+
+namespace Tjanaren_Console.Modeller.Saker
 {
     public class AllmanSak : Spelsak
     {
@@ -9,7 +12,7 @@
         {
 
         }
-        public override string Anvand(Spelare spelare)
+        public override string Anvand(Spelare spelare, StoryState story)
         {
             // Vi skiftar status: var den aktiv blir den inaktiv och tvärtom
             ArAktiv = !ArAktiv;
